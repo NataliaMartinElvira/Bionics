@@ -16,23 +16,13 @@ public interface DBManager {
 
 	public void addMatIntoProd(Material m);
 
-	public void addProdIntoMat(Product p);
-
 	public void addCustIntoProd(Customer cust);
-
-	public void addProdIntoCust(Product p);
 
 	public void addCustomer(Customer cust);
 
 	public void addEngineer(Engineer eng);
 	
-	public void addOrder(Order o);
-
-	public Engineer getEngineer(int id);
-
-	public void addCharacteristic(Characteristic c);
-
-	public Characteristic getCharacteristic(int id);
+	/*public void addOrder(Order o);*/
 
 	public List<String> viewBodyparts();
 
@@ -42,15 +32,15 @@ public interface DBManager {
 
 	public Engineer viewBonus(int engId);
 
-	public void addToOrder(Product product, Order order);
+	/*public void addToOrder(Product product, Order order);*/
 
-	public List<String> viewCart(Order o);
+	/*public List<String> viewCart(Order o);*/
 
-	public List<Integer> viewOtherOrders(int id);
+	/*public List<Integer> viewOtherOrders(int id);*/
 
 	public List<String> viewProjectAchieved(int engId);
 
-	public void deleteProdFromCart(String name, Order o);
+	/*public void deleteProdFromCart(String name, Order o);*/
 
 	public List<Characteristic> viewCharacteristicsFromProduct(int prodId);
 

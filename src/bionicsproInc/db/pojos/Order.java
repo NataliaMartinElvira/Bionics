@@ -1,20 +1,30 @@
 package bionicsproInc.db.pojos;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.util.ArrayList;
 
 public class Order implements Serializable {
-
-	public Order() {
-		super();
-	}
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 5234210426301713165L;
 	private int id;
+	private Date date_order;
 	private ArrayList<Product> products;
+	
+
+	public Order() {
+		super();
+	}
+
+	public Order(int id, Date date_order, ArrayList<Product> products) {
+		super();
+		this.id = id;
+		this.date_order = date_order;
+		this.products = products;
+	}
 
 	public int getOrder_id() {
 		return id;
@@ -30,6 +40,14 @@ public class Order implements Serializable {
 
 	public void setProducts(ArrayList<Product> products) {
 		this.products = products;
+	}
+	
+	public Date getDate_order() {
+		return date_order;
+	}
+
+	public void setDate_order(Date date_order) {
+		this.date_order = date_order;
 	}
 
 	public void addProduct(Product product) {
@@ -49,6 +67,7 @@ public class Order implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((date_order == null) ? 0 : date_order.hashCode());
 		result = prime * result + id;
 		result = prime * result + ((products == null) ? 0 : products.hashCode());
 		return result;
@@ -63,6 +82,11 @@ public class Order implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Order other = (Order) obj;
+		if (date_order == null) {
+			if (other.date_order != null)
+				return false;
+		} else if (!date_order.equals(other.date_order))
+			return false;
 		if (id != other.id)
 			return false;
 		if (products == null) {
@@ -72,5 +96,14 @@ public class Order implements Serializable {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "Order [id=" + id + ", date_order=" + date_order + ", products=" + products + "]";
+	}
+	
+	
+	
+	
 
 }

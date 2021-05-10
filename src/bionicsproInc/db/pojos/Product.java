@@ -5,10 +5,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-/**
- * @author macbookair
- *
- */
+
 public class Product implements Serializable {
 	/**
 	 * 

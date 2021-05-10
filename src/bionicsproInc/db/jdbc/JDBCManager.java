@@ -17,7 +17,7 @@ public class JDBCManager implements DBManager {
 			c = DriverManager.getConnection("jdbc:sqlite:./db/bionicsproInc.db");
 			c.createStatement().execute("PRAGMA foreign_keys=ON");
 			System.out.println("Database connection opened.");
-			//this.createTables();
+			this.createTables();
 		} catch (SQLException sqlE) {
 			System.out.println("There was a database exception.");
 			sqlE.printStackTrace();
@@ -55,10 +55,9 @@ public class JDBCManager implements DBManager {
 			Statement stmt4 = c.createStatement();
 			String sql4 = "CREATE TABLE engineer " + "(id INTEGER  PRIMARY KEY AUTOINCREMENT,"
 					+ " name_surname     TEXT     NOT NULL UNIQUE, " + " contract_starting_date DATE NOT NULL UNIQUE,"
-					+ " contract_ending_date DATE NOT NULL," + " current_service TEXT NOT NULL,"
-					+ " salary REAL NOT NULL," + " bonus REAL NOT NULL," + " project_achieved INTEGER NOT NULL,"
-					+ " experience_in_years INTEGER NOT NULL," + " date_of_birth DATE NOT NULL,"
-					+ " product_id INETEGR NOT NULL REFERENCES products(id))";
+					+ " contract_ending_date DATE NOT NULL," + " salary REAL NOT NULL," 
+					+ " bonus REAL NOT NULL," + " experience_in_years INTEGER NOT NULL," 
+					+ " date_of_birth DATE NOT NULL)";
 			stmt4.executeUpdate(sql4);
 			stmt4.close();
 
@@ -69,12 +68,11 @@ public class JDBCManager implements DBManager {
 			stmt5.executeUpdate(sql5);
 			stmt5.close();
 
-			//TODO Repasar las tablas bien
-			/*Statement stmt6 = c.createStatement();
-			String sql6 = "CREATE TABLE order " + "(order_id INTEGER PRIMARY KEY AUTOINCREMENT,"
-					+ " product_id INTEGER  REFERENCES products(id))";
+			Statement stmt6 = c.createStatement();
+			String sql6 = "CREATE TABLE orders " + "(id INTEGER PRIMARY KEY AUTOINCREMENT,"
+					+ " date_order DATE NOT NULL)";
 			stmt6.executeUpdate(sql6);
-			stmt6.close();*/
+			stmt6.close();
 
 			// now we create the table that references the N-N relationships
 
@@ -84,11 +82,7 @@ public class JDBCManager implements DBManager {
 			stmt7.executeUpdate(sql7);
 			stmt7.close();
 
-			Statement stmt8 = c.createStatement();
-			String sql8 = "CREATE TABLE products_customers " + "(product_id INTEGER REFERENCES products(id),"
-					+ " customer_id INTEGER REFERENCES customer(id))";
-			stmt8.executeUpdate(sql8);
-			stmt8.close();
+			
 
 			Statement stmt9 = c.createStatement();
 			String sql9 = "CREATE TABLE engineers_products " + "(engineer_id INTEGER REFERENCES engineer(id),"
@@ -103,14 +97,19 @@ public class JDBCManager implements DBManager {
 
 			stmt10.execute(sql10);
 			stmt10.close();
+			
+			Statement stmt8 = c.createStatement();
+			String sql8 = "CREATE TABLE products_orders " + "(product_id INTEGER REFERENCES products(id),"
+					+ " order_id INTEGER REFERENCES orders(id))";
+			stmt8.executeUpdate(sql8);
+			stmt8.close();
 
-			/*TODO REVISAR
-			 * Statement stmt11 = c.createStatement();
+			Statement stmt11 = c.createStatement();
 			 
-			String sql11 = " CREATE TABLE customer_order " + "(customer_id INTEGER REFERENCES customer(id), "
-					+ " order_id INTEGER REFERENCES order(order_id))";
+			String sql11 = " CREATE TABLE order_customer " + "(id INTEGER PRIMARY KEY AUTOINCREMENT, "
+					+ " customer_id INTEGER REFERENCES customer(id))";
 			stmt11.executeUpdate(sql11);
-			stmt11.close();*/
+			stmt11.close();
 
 		} catch (SQLException e) {
 			if (!e.getMessage().contains("already exists")) {
@@ -167,17 +166,6 @@ public class JDBCManager implements DBManager {
 		}
 	}
 
-	public void addProdIntoMat(Product p) {
-		try {
-			Statement st = c.createStatement();
-			String sql = "INSERT INTO products_materials (product_id) " + " VALUES ('" + p.getId() + "')'";
-			st.executeUpdate(sql);
-			st.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
 	public void addCustIntoProd(Customer cust) {
 		try {
 			Statement st = c.createStatement();
@@ -189,16 +177,6 @@ public class JDBCManager implements DBManager {
 		}
 	}
 
-	public void addProdIntoCust(Product p) {
-		try {
-			Statement st = c.createStatement();
-			String sql = "INSERT INTO products_customers (product_id) " + " VALUES ('" + p.getId() + "')'";
-			st.executeUpdate(sql);
-			st.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
 
 	public void addCustomer(Customer cust) {
 		try {
@@ -219,11 +197,11 @@ public class JDBCManager implements DBManager {
 		try {
 
 			Statement stmt = c.createStatement();
-			String sql = " INSERT INTO Engineer (id, name_surname, contract_starting_date, contract_ending_date, current_service, salary, bonus, project_achieved,"
+			String sql = " INSERT INTO Engineer (id, name_surname, contract_starting_date, contract_ending_date,salary, bonus,"
 					+ " experience_in_years, date_of_birth) " + " VALUES ('" + eng.getId()+ "','" + eng.getName_surname() + "','"
 					+ eng.getContract_strating_date() + "','" + eng.getContract_ending_date() + "','"
-					+ eng.getCurrent_service() + "','" + eng.getSalary() + "','" + eng.getBonus() + "','" + eng.getProject_achieved() + "','"
-					+ eng.getExperience_in_years() + "','" + eng.getDate_of_birth() + "');";
+					+ eng.getSalary() + "','" + eng.getBonus() + "','" + eng.getExperience_in_years() + "','" 
+					+ eng.getDate_of_birth() + "');";
 			stmt.executeUpdate(sql);
 			stmt.close();
 		} catch (Exception e) {
@@ -231,7 +209,7 @@ public class JDBCManager implements DBManager {
 		}
 
 	}
-	public void addOrder(Order o) {
+/*	public void addOrder(Order o) {
 		try {
 			Statement stmt=c.createStatement();
 			String sql= " INSERT INTO customer_order (order_id) VALUES ('"+ o.getOrder_id()+ "')";
@@ -240,25 +218,8 @@ public class JDBCManager implements DBManager {
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
-	@Override
-	public Engineer getEngineer(int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void addCharacteristic(Characteristic c) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public Characteristic getCharacteristic(int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public List<String> viewBodyparts() {
@@ -333,7 +294,7 @@ public class JDBCManager implements DBManager {
 	}
 
 	// LIKE ADDTOCART- THE SAME FUNCTION
-	public void addToOrder(Product product, Order order) {
+	/*public void addToOrder(Product product, Order order) {
 
 		try {
 			Statement stmt = c.createStatement();
@@ -346,9 +307,9 @@ public class JDBCManager implements DBManager {
 		}
 		order.addProduct(product);
 
-	}
+	}*/
 
-
+/*
 	public List<String> viewCart(Order o) {
 		List<String> p_names = new ArrayList<String>();
 		try {
@@ -367,9 +328,9 @@ public class JDBCManager implements DBManager {
 		}
 		return p_names;
 	}
-
+*/
 	@Override
-	public List<Integer> viewOtherOrders(int id) {
+	/*public List<Integer> viewOtherOrders(int id) {
 		List<Integer> Ids = new ArrayList<Integer>();
 		try {
 			String sql = " SELECT c.order_id FROM costumer_order AS c WHERE c.costumer_id= ? ";
@@ -387,7 +348,7 @@ public class JDBCManager implements DBManager {
 		}
 		return Ids;
 	}
-
+*/
 	public List<String> viewProjectAchieved(int engId) {
 		List<String> prodname = new ArrayList<String>();
 		try {

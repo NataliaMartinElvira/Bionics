@@ -139,19 +139,19 @@ public class Menu {
 			int choice = Integer.parseInt(reader.readLine());
 			switch (choice) {
 			case 1:
-				viewProductC();
+				/*viewProductC();*/
 				break;
 
 			case 2:
-				makePurchase();
+				/*makePurchase();*/
 				break;
 
 			case 3:
-				changeProduct();
+				/*changeProduct();*/
 				break;
 
 			case 4:
-				seeOtherPurchases();
+				/*seeOtherPurchases();*/
 				break;
 
 			case 0:
@@ -245,7 +245,7 @@ public class Menu {
 	}
 
 	// CUSTOMER OPTION 1
-	private static void viewProductC() throws Exception {
+	/*private static void viewProductC() throws Exception {
 		try {
 			System.out.println("Choose a bodypart:");
 			dbman.viewBodyparts();
@@ -271,10 +271,10 @@ public class Menu {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
 	// Customer OPTION 2
-	private static void makePurchase() throws Exception {
+	/*private static void makePurchase() throws Exception {
 		try {
 			System.out.println("These are the products: \n");
 			dbman.viewCart(temporaryOrder);
@@ -308,7 +308,7 @@ public class Menu {
 	}
 
 	// CUSTOMER OPTION 4
-	private static void seeOtherPurchases() throws Exception {
+	/*private static void seeOtherPurchases() throws Exception {
 		try {
 			System.out.println("Confirm your ID: ");
 			int id = Integer.parseInt(reader.readLine());
@@ -327,4 +327,5 @@ public class Menu {
 			e.printStackTrace();
 		}
 	}
+*/
 }
