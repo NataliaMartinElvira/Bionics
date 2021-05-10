@@ -209,7 +209,7 @@ public class JDBCManager implements DBManager {
 		}
 
 	}
-/*	public void addOrder(Order o) {
+	public void addOrder(Order o) {
 		try {
 			Statement stmt=c.createStatement();
 			String sql= " INSERT INTO customer_order (order_id) VALUES ('"+ o.getOrder_id()+ "')";
@@ -218,7 +218,7 @@ public class JDBCManager implements DBManager {
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-	}*/
+	}
 
 
 	@Override

@@ -22,7 +22,7 @@ public interface DBManager {
 
 	public void addEngineer(Engineer eng);
 	
-	/*public void addOrder(Order o);*/
+	public void addOrder(Order o);
 
 	public List<String> viewBodyparts();
 
