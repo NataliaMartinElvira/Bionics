@@ -212,7 +212,7 @@ public class JDBCManager implements DBManager {
 	public void addOrder(Order o) {
 		try {
 			Statement stmt=c.createStatement();
-			String sql= " INSERT INTO customer_order (order_id) VALUES ('"+ o.getOrder_id()+ "')";
+			String sql= " INSERT INTO order_customer (order_id,customer_id) VALUES ('"+ o.getOrder_id()+ "')";
 			stmt.executeUpdate(sql);
 			stmt.close();
 		}catch(Exception e) {
