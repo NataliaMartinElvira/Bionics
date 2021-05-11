@@ -167,7 +167,10 @@ public class Menu {
 		System.out.println("Choose a bodypart:");
 		dbman.viewBodyparts();
 		String name = reader.readLine();
-		dbman.searchProductByBody(name);
+		List <Product> prods=dbman.searchProductByBody(name);
+		for (int i=0; i<prods.size(); i++) {
+			System.out.println(prods.get(i).getId() +"." + prods.get(i).getName());
+		}
 		System.out.println("Choose a product: ");
 		int id = Integer.parseInt(reader.readLine());
 		dbman.viewCharacteristicsFromProduct(id);
@@ -188,6 +191,7 @@ public class Menu {
 			LocalDate creation_date=LocalDate.parse(reader.readLine(),formatter);
 			Product np=new Product(name,bodypart,price,Date.valueOf(creation_date));
 			dbman.addProduct(np);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
