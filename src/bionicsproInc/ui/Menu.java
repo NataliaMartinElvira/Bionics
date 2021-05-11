@@ -167,7 +167,7 @@ public class Menu {
 		System.out.println("Choose a bodypart:");
 		dbman.viewBodyparts();
 		String name = reader.readLine();
-		dbman.searchProductByBody(name);
+		List <Product> prods=dbman.searchProductByBody(name);
 		System.out.println("Choose a product: ");
 		int id = Integer.parseInt(reader.readLine());
 		dbman.viewCharacteristicsFromProduct(id);
