@@ -45,10 +45,9 @@ public class JDBCManager implements DBManager {
 
 			Statement stmt3 = c.createStatement();
 			String sql3 = "CREATE TABLE customer " + "(id INTEGER  PRIMARY KEY AUTOINCREMENT,"
-					+ " first_name     TEXT     NOT NULL, " + " last_name   TEXT  	NOT NULL, "
-					+ " age INTEGER NOT NULL," + " gender TEXT NOT NULL,"
-					+ " phone INTEGER NOT NULL," + " email TEXT NOT NULL," + " street TEXT NOT NULL,"
-					+ " city TEXT NOT NULL," + " postal_code INTEGER NOT NULL)";
+					+ " name     TEXT     NOT NULL, " + " phone INTEGER NOT NULL," + " email TEXT NOT NULL," 
+					+ " street TEXT NOT NULL," + " city TEXT NOT NULL," 
+					+ " postal_code INTEGER NOT NULL)";
 			stmt3.executeUpdate(sql3);
 			stmt3.close();
 
@@ -181,10 +180,10 @@ public class JDBCManager implements DBManager {
 	public void addCustomer(Customer cust) {
 		try {
 			Statement st = c.createStatement();
-			String sql = "INSERT INTO customer (first_name, last_name, age, gender, phone, email, street, city, postal_code) "
-					+ " VALUES ('" + cust.getFirst_name() + "', '" + cust.getLast_name() + "','" + cust.getAge() + "','"
-					+ cust.getGender() + "','" + cust.getPhone() + "', " + "'" + cust.getEmail() + "','"
-					+ cust.getStreet() + "','" + cust.getCity() + "','" + cust.getPostal_code() + "')";
+			String sql = "INSERT INTO customer (name, phone, email, street, city, postal_code) "
+					+ " VALUES ('" + cust.getName() + "', '"+ cust.getPhone() + "', '" 
+					+ cust.getEmail() + "','" + cust.getStreet() + "','" + cust.getCity() + "','" 
+					+ cust.getPostal_code() + "')";
 			st.executeUpdate(sql);
 			st.close();
 		} catch (Exception e) {
