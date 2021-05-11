@@ -191,7 +191,6 @@ public class Menu {
 			LocalDate creation_date=LocalDate.parse(reader.readLine(),formatter);
 			Product np=new Product(name,bodypart,price,Date.valueOf(creation_date));
 			dbman.addProduct(np);
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
