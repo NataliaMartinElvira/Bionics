@@ -32,8 +32,7 @@ public class JDBCManager implements DBManager {
 		try {
 			Statement stmt1 = c.createStatement();
 			String sql1 = "CREATE TABLE products " + "(id INTEGER  PRIMARY KEY AUTOINCREMENT," + " name TEXT NOT NULL, "
-					+ " bodypart  TEXT UNIQUE NOT NULL," + " price REAL NOT NULL," + " date_creation DATE NOT NULL,"
-					+ " photo BLOB )";
+					+ " bodypart  TEXT UNIQUE NOT NULL," + " price REAL NOT NULL," + " date_creation DATE NOT NULL)";
 			stmt1.executeUpdate(sql1);
 			stmt1.close();
 
@@ -130,12 +129,14 @@ public class JDBCManager implements DBManager {
 
 	public void addProduct(Product p) {
 		try {
-			Statement st1 = c.createStatement();
-			String sql = "INSERT INTO products (name,bodypart,price,date_creation) " + " VALUES('" + p.getName()
-					+ "','" + p.getBodypart() + "','" + p.getPrice() + "','" + p.getDate_creation() + "','"
-					+  "')'";
-			st1.executeUpdate(sql);
-			st1.close();
+			String sql = "INSERT INTO products (name,bodypart,price,date_creation) " + " VALUES(?,?,?,?)";
+			PreparedStatement prep= c.prepareStatement(sql);
+			prep.setString(1,p.getName());
+			prep.setString(2,p.getBodypart());
+			prep.setFloat(3, p.getPrice());
+			prep.setDate(4,p.getDate_creation());
+			prep.executeUpdate();
+			prep.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -200,7 +201,7 @@ public class JDBCManager implements DBManager {
 					+ " experience_in_years, date_of_birth) " + " VALUES ('" + eng.getId()+ "','" + eng.getName_surname() + "','"
 					+ eng.getContract_strating_date() + "','" + eng.getContract_ending_date() + "','"
 					+ eng.getSalary() + "','" + eng.getBonus() + "','" + eng.getExperience_in_years() + "','" 
-					+ eng.getDate_of_birth() + "');";
+					+ eng.getDate_of_birth() + "')";
 			stmt.executeUpdate(sql);
 			stmt.close();
 		} catch (Exception e) {
@@ -243,7 +244,7 @@ public class JDBCManager implements DBManager {
 	public List<Product> searchProductByBody(String bodypart) {
 		List<Product> products = new ArrayList<Product>();
 		try {
-			String sql = "SELECT name FROM products WHERE bodypart LIKE ?";
+			String sql = "SELECT id,name FROM products WHERE bodypart LIKE ?";
 			PreparedStatement stm = c.prepareStatement(sql);
 			stm.setString(1, "%" + bodypart + "%");
 			ResultSet rs = stm.executeQuery();

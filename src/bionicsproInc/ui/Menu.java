@@ -1,13 +1,11 @@
 package bionicsproInc.ui;
-
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.io.BufferedReader;
 
 import java.io.InputStreamReader;
 import java.security.MessageDigest;
 import java.sql.Date;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.List;
 import bionicsproInc.db.ifaces.*;
 import bionicsproInc.db.jdbc.JDBCManager;
@@ -21,7 +19,7 @@ public class Menu {
 	private static UserManager userman = new JPAUserManager();
 	private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 	private static Order temporaryOrder = new Order();
-	private static Product localprod = new Product();
+	private static DateTimeFormatter formatter=DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	private static JDBCManager JDBCmethod = new JDBCManager();
 	private static List<Product> p;
 
@@ -180,35 +178,16 @@ public class Menu {
 	// NEED TO SPEAK ABOUT HOW TO ADD PHOTO ATTRIBUTE FROM A STRING ...
 	private static void addProduct() throws Exception {
 		try {
-
-			int y, m, d;
-			System.out.println("Introduce prothesis ID: ");
-			int id = Integer.parseInt(reader.readLine());
-			localprod.setId(id);
-			System.out.println("Introduce prothesis name: ");
-			String name = reader.readLine();
-			localprod.setName(name);
-			System.out.println("Introduce prothesis bodypart: ");
-			String bodypart = reader.readLine();
-			localprod.setBodypart(bodypart);
-			System.out.println("Introduce prothesis price: ");
-			Float price = Float.parseFloat(reader.readLine());
-			localprod.setPrice(price);
-			System.out.println("Introduce prothesis creation's year: ");
-			y = Integer.parseInt(reader.readLine());
-			System.out.println("Introduce prothesis creation's month: ");
-			m = Integer.parseInt(reader.readLine());
-			System.out.println("Introduce prothesis creation's day: ");
-			d = Integer.parseInt(reader.readLine());
-			LocalDate ld = LocalDate.of(y, m, d);
-			ZoneId systemTimeZone = ZoneId.systemDefault();
-			ZonedDateTime zonedDateTime = ld.atStartOfDay(systemTimeZone);
-			Date date = (Date) Date.from(zonedDateTime.toInstant());
-			localprod.setDate_creation(date);
-			localprod.setCharacteristic(JDBCmethod.viewCharacteristicsFromProduct(id));
-			localprod.setMats(JDBCmethod.viewMaterialsFromProduct(id));
-			dbman.addProduct(localprod);
-
+			System.out.println("Introduce product name: ");
+			String name=reader.readLine();
+			System.out.println("Introduce bodypart: ");
+			String bodypart=reader.readLine();
+			System.out.println("Introduce price: ");
+			float price=Float.parseFloat(reader.readLine());
+			System.out.println("Introduce date of creation (yyyy-MM-dd): ");
+			LocalDate creation_date=LocalDate.parse(reader.readLine(),formatter);
+			Product np=new Product(name,bodypart,price,Date.valueOf(creation_date));
+			dbman.addProduct(np);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
