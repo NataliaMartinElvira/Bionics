@@ -90,7 +90,7 @@ public class JDBCManager implements DBManager {
 
 			Statement stmt10 = c.createStatement();
 			String sql10 = "CREATE TABLE characteristics_product"
-					+ "(characteristics_id INTEGER REFERENCES products(id),"
+					+ "(characteristics_id INTEGER REFERENCES characteristics(id),"
 					+ " products_id INTEGER REFERENCES products(id))";
 
 			stmt10.execute(sql10);
@@ -165,7 +165,16 @@ public class JDBCManager implements DBManager {
 			e.printStackTrace();
 		}
 	}
-
+	public void addCharIntoProd(Characteristic ch) {
+		try {
+			Statement st = c.createStatement();
+			String sql= "INSERT INTO characteristics_product (characteristics_id) " + " VALUES ('" + ch.getId() + "')'";
+			st.executeUpdate(sql);
+			st.close();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+	}
 	public void addCustIntoProd(Customer cust) {
 		try {
 			Statement st = c.createStatement();
