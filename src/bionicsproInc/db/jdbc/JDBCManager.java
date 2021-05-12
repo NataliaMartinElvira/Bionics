@@ -154,8 +154,8 @@ public class JDBCManager implements DBManager {
 	public void addCharacteristic(Characteristic ch) {
 		try {
 			Statement st = c.createStatement();
-			String sql = "INSERT INTO characteristics (dimentions,weight,joints_numb,flexibility_scale) "
-					+ " VALUES ('" + ch.getDimentions() + "','" + ch.getWeight() + "','" + ch.getJoints_numb()
+			String sql = "INSERT INTO characteristics (dimentions,weight,joints_numb,flexibility_scale) " + " VALUES ('"
+					+ ch.getDimentions() + "','" + ch.getWeight() + "','" + ch.getJoints_numb()
 					+ ch.getFlexibilty_scale() + "')'";
 			st.executeUpdate(sql);
 			st.close();
@@ -381,24 +381,31 @@ public class JDBCManager implements DBManager {
 		}
 	}
 
-	/*
-	 * public ArrayList<Characteristic> viewCharacteristicsFromProduct(int prodId) {
-	 * ArrayList<Characteristic> characteristics = new ArrayList<Characteristic>();
-	 * try { String sql =
-	 * "SELECT c.*, p.id FROM characteristics_product as cp JOIN characteristics as c "
-	 * +
-	 * "ON cp.characteristic_id = c.id JOIN products as p ON cp.products_id = p.id WHERE p.id = ?"
-	 * ; PreparedStatement stmt = c.prepareStatement(sql); stmt.setInt(1, prodId);
-	 * ResultSet rs = stmt.executeQuery(); while (rs.next()) {
-	 * 
-	 * int id = rs.getInt("id"); float length = rs.getFloat("length"); float width =
-	 * rs.getFloat("width"); float weight = rs.getFloat("weight"); float height =
-	 * rs.getFloat("height"); int joints_numb = rs.getInt("joints_numb"); int
-	 * flexibilty_scale = rs.getInt("flexibilty_scale"); Characteristic c = new
-	 * Characteristic( width, weight, height, joints_numb, flexibilty_scale);
-	 * characteristics.add(c); } rs.close(); stmt.close(); } catch (Exception e) {
-	 * e.printStackTrace(); } return characteristics; }
-	 */
+	public ArrayList<Characteristic> viewCharacteristicsFromProduct(int prodId) {
+		ArrayList<Characteristic> characteristics = new ArrayList<Characteristic>();
+		try {
+			String sql = "SELECT c.*, p.id FROM characteristics_product as cp JOIN characteristics as c "
+					+ "ON cp.characteristic_id = c.id JOIN products as p ON cp.products_id = p.id WHERE p.id = ?";
+			PreparedStatement stmt = c.prepareStatement(sql);
+			stmt.setInt(1, prodId);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String dimentions = rs.getString("dimentions");
+				float weight = rs.getFloat("weight");
+				int joints_numb = rs.getInt("joints_numb");
+				int flexibilty_scale = rs.getInt("flexibilty_scale");
+				Characteristic ch = new Characteristic(dimentions, weight, joints_numb, flexibilty_scale);
+				characteristics.add(ch);
+			}
+			rs.close();
+			stmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return characteristics;
+	}
+
 	public ArrayList<Material> viewMaterialsFromProduct(int prodId) {
 		ArrayList<Material> materials = new ArrayList<Material>();
 		try {

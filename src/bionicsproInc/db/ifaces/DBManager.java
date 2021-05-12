@@ -44,7 +44,7 @@ public interface DBManager {
 
 	/*public void deleteProdFromCart(String name, Order o);*/
 
-	//public List<Characteristic> viewCharacteristicsFromProduct(int prodId);
+	public List<Characteristic> viewCharacteristicsFromProduct(int prodId);
 
 	public List<Material> viewMaterialsFromProduct(int prodId);
 

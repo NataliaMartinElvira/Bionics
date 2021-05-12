@@ -203,7 +203,8 @@ public class Menu {
 				Material m=new Material(nameMat,pMat,amount);
 				dbman.addMaterial(m);
 				dbman.addMatIntoProd(m);
-			}//revisar este bucle
+			}
+			/*check this*/
 			System.out.println("Describe characteristics: ");
 			System.out.println("Dimensions (cm X cm X cm): ");
 			String dimentions=reader.readLine();
@@ -215,6 +216,7 @@ public class Menu {
 			int fScale=Integer.parseInt(reader.readLine());
 			Characteristic cha=new Characteristic(dimentions,weight,nJoints,fScale);
 			dbman.addCharacteristic(cha);
+			//missing addchar into product or addprod into char
 
 		} catch (Exception e) {
 			e.printStackTrace();
