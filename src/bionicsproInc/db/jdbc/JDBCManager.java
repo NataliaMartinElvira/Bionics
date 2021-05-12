@@ -216,11 +216,10 @@ public class JDBCManager implements DBManager {
 		try {
 
 			Statement stmt = c.createStatement();
-			String sql = " INSERT INTO Engineer (id, name_surname, contract_starting_date, contract_ending_date,salary, bonus,"
-					+ " experience_in_years, date_of_birth) " + " VALUES ('" + eng.getId() + "','"
-					+ eng.getName_surname() + "','" + eng.getContract_strating_date() + "','"
-					+ eng.getContract_ending_date() + "','" + eng.getSalary() + "','" + eng.getBonus() + "','"
-					+ eng.getExperience_in_years() + "','" + eng.getDate_of_birth() + "')";
+			String sql = " INSERT INTO Engineer (name_surname, contract_starting_date, contract_ending_date,salary, bonus,"
+					+ " experience_in_years, date_of_birth) " + " VALUES ('"  + eng.getName_surname() + "','" 
+					+ eng.getContract_strating_date() + "','"+ eng.getContract_ending_date() + "','" + eng.getSalary() + "','" 
+					+ eng.getBonus() + "','" + eng.getExperience_in_years() + "','" + eng.getDate_of_birth() + "')";
 			stmt.executeUpdate(sql);
 			stmt.close();
 		} catch (Exception e) {
@@ -384,13 +383,12 @@ public class JDBCManager implements DBManager {
 	public ArrayList<Characteristic> viewCharacteristicsFromProduct(int prodId) {
 		ArrayList<Characteristic> characteristics = new ArrayList<Characteristic>();
 		try {
-			String sql = "SELECT c.*, p.id FROM characteristics_product as cp JOIN characteristics as c "
+			String sql = "SELECT c.* FROM characteristics_product as cp JOIN characteristics as c "
 					+ "ON cp.characteristic_id = c.id JOIN products as p ON cp.products_id = p.id WHERE p.id = ?";
 			PreparedStatement stmt = c.prepareStatement(sql);
 			stmt.setInt(1, prodId);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
-				int id = rs.getInt("id");
 				String dimentions = rs.getString("dimentions");
 				float weight = rs.getFloat("weight");
 				int joints_numb = rs.getInt("joints_numb");
@@ -409,17 +407,16 @@ public class JDBCManager implements DBManager {
 	public ArrayList<Material> viewMaterialsFromProduct(int prodId) {
 		ArrayList<Material> materials = new ArrayList<Material>();
 		try {
-			String sql = "SELECT m.*, p.id FROM products_materials as pm JOIN materials as m "
+			String sql = "SELECT m.* FROM products_materials as pm JOIN materials as m "
 					+ "ON pm.material_id = m.id JOIN products as p ON pm.products_id = p.id WHERE p.id = ?";
 			PreparedStatement stmt = c.prepareStatement(sql);
 			stmt.setInt(1, prodId);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
-				int id = rs.getInt("id");
 				String name = rs.getString("name");
 				float price = rs.getFloat("price");
 				int amount = rs.getInt("amount");
-				Material m = new Material(id, name, price, amount);
+				Material m = new Material(name, price, amount);
 
 				materials.add(m);
 			}
