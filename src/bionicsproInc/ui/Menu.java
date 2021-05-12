@@ -202,7 +202,7 @@ public class Menu {
 				int amount=Integer.parseInt(reader.readLine());
 				Material m=new Material(nameMat,pMat,amount);
 				dbman.addMaterial(m);
-				dbman.addMatIntoProd(m);
+				dbman.addMatIntoProd(np,m);
 			}
 			/*check this*/
 			System.out.println("Describe characteristics: ");

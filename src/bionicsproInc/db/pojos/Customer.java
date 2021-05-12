@@ -17,7 +17,6 @@ public class Customer implements Serializable {
 	private String city;
 	private int postal_code;
 	private ArrayList<Order> orders;
-	private ArrayList<Product> products;
 
 	
 	public Customer() {
@@ -92,16 +91,8 @@ public class Customer implements Serializable {
 		return orders;
 	}
 
-	public void setOrdes(ArrayList<Order> orders) {
+	public void setOrders(ArrayList<Order> orders) {
 		this.orders = orders;
-	}
-
-	public ArrayList<Product> getProducts() {
-		return products;
-	}
-
-	public void setProducts(ArrayList<Product> products) {
-		this.products = products;
 	}
 
 	@Override
@@ -115,7 +106,6 @@ public class Customer implements Serializable {
 		result = prime * result + ((orders == null) ? 0 : orders.hashCode());
 		result = prime * result + phone;
 		result = prime * result + postal_code;
-		result = prime * result + ((products == null) ? 0 : products.hashCode());
 		result = prime * result + ((street == null) ? 0 : street.hashCode());
 		return result;
 	}
@@ -155,11 +145,6 @@ public class Customer implements Serializable {
 			return false;
 		if (postal_code != other.postal_code)
 			return false;
-		if (products == null) {
-			if (other.products != null)
-				return false;
-		} else if (!products.equals(other.products))
-			return false;
 		if (street == null) {
 			if (other.street != null)
 				return false;
@@ -171,9 +156,12 @@ public class Customer implements Serializable {
 	@Override
 	public String toString() {
 		return "Customer [id=" + id + ", name=" + name + ", phone=" + phone + ", email=" + email + ", street=" + street
-				+ ", city=" + city + ", postal_code=" + postal_code + ", orders=" + orders + ", products=" + products
-				+ "]";
+				+ ", city=" + city + ", postal_code=" + postal_code + ", orders=" + orders + "]";
 	}
+	
+	
+	
+	
 
 	
 }

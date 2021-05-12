@@ -14,9 +14,7 @@ public interface DBManager {
 
 	public void addMaterial(Material m);
 
-	public void addMatIntoProd(Material m);
-
-	public void addCustIntoProd(Customer cust);
+	public void addMatIntoProd(Product p, Material m);
 
 	public void addCustomer(Customer cust);
 
@@ -24,7 +22,9 @@ public interface DBManager {
 	
 	public void addCharacteristic(Characteristic ch);
 	
-	public void addOrder(Order o);
+	public void addOrder(Customer cust, Order o);
+	
+	public void addProducts_orders(Product product, Order order);
 
 	public List<String> viewBodyparts();
 
