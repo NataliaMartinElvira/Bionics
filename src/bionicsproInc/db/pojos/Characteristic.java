@@ -10,22 +10,18 @@ public class Characteristic implements Serializable {
 	 */
 	private static final long serialVersionUID = -8095684428083579778L;
 	private int id;
-	private float length;
-	private float width;
+	private String dimentions;
 	private float weight;
-	private float height;
 	private int joints_numb;
 	private int flexibilty_scale;
 	private ArrayList<Product> products;
 
-	public Characteristic(int id, float length, float width, float weight, float height, int joints_numb,
-			int flexibilty_scale) {
+	
+
+	public Characteristic(String dimentions, float weigth, int joints_numb, int flexibilty_scale) {
 		super();
-		this.id = id;
-		this.length = length;
-		this.width = width;
-		this.weight = weight;
-		this.height = height;
+		this.dimentions = dimentions;
+		this.weight=weigth;
 		this.joints_numb = joints_numb;
 		this.flexibilty_scale = flexibilty_scale;
 	}
@@ -46,36 +42,13 @@ public class Characteristic implements Serializable {
 		this.id = id;
 	}
 
-	public float getLength() {
-		return length;
+
+	public String getDimentions() {
+		return dimentions;
 	}
 
-	public void setLength(float length) {
-		this.length = length;
-	}
-
-	public float getWidth() {
-		return width;
-	}
-
-	public void setWidth(float width) {
-		this.width = width;
-	}
-
-	public float getWeight() {
-		return weight;
-	}
-
-	public void setWeight(float weight) {
-		this.weight = weight;
-	}
-
-	public float getHeight() {
-		return height;
-	}
-
-	public void setHeight(float height) {
-		this.height = height;
+	public void setDimentions(String dimentions) {
+		this.dimentions = dimentions;
 	}
 
 	public int getJoints_numb() {
@@ -93,19 +66,26 @@ public class Characteristic implements Serializable {
 	public void setFlexibilty_scale(int flexibilty_scale) {
 		this.flexibilty_scale = flexibilty_scale;
 	}
+	
+
+	public float getWeight() {
+		return weight;
+	}
+
+	public void setWeight(float weight) {
+		this.weight = weight;
+	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((dimentions == null) ? 0 : dimentions.hashCode());
 		result = prime * result + flexibilty_scale;
-		result = prime * result + Float.floatToIntBits(height);
 		result = prime * result + id;
 		result = prime * result + joints_numb;
-		result = prime * result + Float.floatToIntBits(length);
 		result = prime * result + ((products == null) ? 0 : products.hashCode());
 		result = prime * result + Float.floatToIntBits(weight);
-		result = prime * result + Float.floatToIntBits(width);
 		return result;
 	}
 
@@ -118,15 +98,16 @@ public class Characteristic implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Characteristic other = (Characteristic) obj;
-		if (flexibilty_scale != other.flexibilty_scale)
+		if (dimentions == null) {
+			if (other.dimentions != null)
+				return false;
+		} else if (!dimentions.equals(other.dimentions))
 			return false;
-		if (Float.floatToIntBits(height) != Float.floatToIntBits(other.height))
+		if (flexibilty_scale != other.flexibilty_scale)
 			return false;
 		if (id != other.id)
 			return false;
 		if (joints_numb != other.joints_numb)
-			return false;
-		if (Float.floatToIntBits(length) != Float.floatToIntBits(other.length))
 			return false;
 		if (products == null) {
 			if (other.products != null)
@@ -135,9 +116,9 @@ public class Characteristic implements Serializable {
 			return false;
 		if (Float.floatToIntBits(weight) != Float.floatToIntBits(other.weight))
 			return false;
-		if (Float.floatToIntBits(width) != Float.floatToIntBits(other.width))
-			return false;
 		return true;
 	}
+
+	
 
 }

@@ -22,6 +22,8 @@ public interface DBManager {
 
 	public void addEngineer(Engineer eng);
 	
+	public void addCharacteristic(Characteristic ch);
+	
 	public void addOrder(Order o);
 
 	public List<String> viewBodyparts();
@@ -42,7 +44,7 @@ public interface DBManager {
 
 	/*public void deleteProdFromCart(String name, Order o);*/
 
-	public List<Characteristic> viewCharacteristicsFromProduct(int prodId);
+	//public List<Characteristic> viewCharacteristicsFromProduct(int prodId);
 
 	public List<Material> viewMaterialsFromProduct(int prodId);
 

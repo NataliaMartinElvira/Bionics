@@ -30,6 +30,14 @@ public class Material implements Serializable {
 		this.price = price;
 		this.amount = amount;
 	}
+	
+
+	public Material(String name, float price, int amount) {
+		super();
+		this.name = name;
+		this.price = price;
+		this.amount = amount;
+	}
 
 	public int getId() {
 		return id;
