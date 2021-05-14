@@ -191,6 +191,8 @@ public class Menu {
 			LocalDate creation_date=LocalDate.parse(reader.readLine(),formatter);
 			Product np=new Product(name,bodypart,price,Date.valueOf(creation_date));
 			dbman.addProduct(np);
+			int id= dbman.getProduct(np.getName()).getId();
+			np.setId(id);
 			System.out.println("Now you need to list the materials\n");
 			System.out.println("How many materials does the p ");
 			int cont=Integer.parseInt(reader.readLine());
@@ -203,7 +205,10 @@ public class Menu {
 				int amount=Integer.parseInt(reader.readLine());
 				Material m=new Material(nameMat,pMat,amount);
 				dbman.addMaterial(m);
-				dbman.addMatIntoProd(np,m);
+				int mat_id=dbman.getMaterial(nameMat).getId();
+				m.setId(mat_id);
+				//dbman.addMatIntoProd(np,m);
+				cont--;
 			}
 			/*check this*/
 			System.out.println("Describe characteristics: ");

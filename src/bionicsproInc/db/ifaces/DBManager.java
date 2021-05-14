@@ -11,8 +11,12 @@ public interface DBManager {
 	public void disconnect();
 
 	public void addProduct(Product p);
+	
+	public Product getProduct (String nameP);
 
 	public void addMaterial(Material m);
+	
+	public Material getMaterial (String nameM);
 
 	public void addMatIntoProd(Product p, Material m);
 

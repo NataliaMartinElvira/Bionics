@@ -120,6 +120,7 @@ public class JDBCManager implements DBManager {
 		}
 	}
 	public Product getProduct (String nameP) {
+		Product p=new Product();
 		try {
 			String sql="SELECT * FROM products WHERE name=?";
 			PreparedStatement prep= c.prepareStatement(sql);
@@ -131,15 +132,14 @@ public class JDBCManager implements DBManager {
 				String bodypart=rs.getString("bodypart");
 				float price=rs.getFloat("price");
 				Date date_creation=rs.getDate("date_creation");
-				Product p=new Product(id,name,bodypart,price,date_creation);
-				return p;
+				p=new Product(id,name,bodypart,price,date_creation);
 			}
 			prep.close();
 			rs.close();
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		return null;
+		return p;
 	}
 
 	public void addMaterial(Material m) {
@@ -156,6 +156,27 @@ public class JDBCManager implements DBManager {
 		}
 
 	}
+	public Material getMaterial (String nameM) {
+		Material m= new Material();
+		try {
+			String sql="SELECT * FROM material WHERE name=?";
+			PreparedStatement prep= c.prepareStatement(sql);
+			prep.setString(1,"%"+nameM+"%");
+			ResultSet rs=prep.executeQuery();
+			while(rs.next()) {
+				int id=rs.getInt("id");
+				String name=rs.getString("name");
+				float price=rs.getFloat("price");
+				int amount=rs.getInt("amount");
+				m=new Material(id,name,price,amount);
+			}
+			prep.close();
+			rs.close();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return m;
+	}
 	public void addMatIntoProd(Product p, Material m) {
 		try {
 			String sql = "INSERT INTO products_materials (product_id,material_id) " + "VALUES(?,?)";
@@ -171,7 +192,7 @@ public class JDBCManager implements DBManager {
 
 	public void addCharacteristic(Characteristic ch, Product pr) {
 		try {
-			String sql = "INSERT INTO characteristics (product_id, dimentions,weight,joints_numb,flexibility_scale) "
+			String sql = "INSERT INTO characteristics (product_id, dimentions,weight,joint_numb,flexibility_scale) "
 					+ "VALUES(?,?,?,?,?)";
 			PreparedStatement prep = c.prepareStatement(sql);
 			prep.setInt(1, pr.getId());
