@@ -47,5 +47,9 @@ public interface DBManager {
 	public List<Material> viewMaterialsFromProduct(int prodId);
 
 	public List<Product> viewProductsFromOrder(int orderId);
+	
+	public void updateProduct(Product p, float newPrice);
+	
+	public void updateCharact(Characteristic ch, String newDimentions);
 
 }

@@ -132,6 +132,17 @@ public class JDBCManager implements DBManager {
 		}
 
 	}
+	public void addMatIntoProd(Product p, Material m) {
+		try {
+			Statement st = c.createStatement();
+			String sql = "INSERT INTO products_materials (product_id,material_id) " + " VALUES ('" + m.getId() + "','"
+					+ p.getId() + "')'";
+			st.executeUpdate(sql);
+			st.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public void addCharacteristic(Characteristic ch, Product pr) {
 		try {
@@ -146,17 +157,6 @@ public class JDBCManager implements DBManager {
 		}
 	}
 
-	public void addMatIntoProd(Product p, Material m) {
-		try {
-			Statement st = c.createStatement();
-			String sql = "INSERT INTO products_materials (product_id,material_id) " + " VALUES ('" + m.getId() + "','"
-					+ p.getId() + "')'";
-			st.executeUpdate(sql);
-			st.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
 
 	public void addCustomer(Customer cust) {
 		try {
@@ -216,7 +216,7 @@ public class JDBCManager implements DBManager {
 		order.addProduct(product);
 
 	}
-
+	//METHODS FOR THE MENU
 	@Override
 	public List<String> viewBodyparts() {
 		List<String> bodyPart = new ArrayList<String>();
@@ -290,7 +290,6 @@ public class JDBCManager implements DBManager {
 	}
 
 	// LIKE ADDTOCART- THE SAME FUNCTION
-
 	public List<String> viewCart(Order o) {
 		List<String> p_names = new ArrayList<String>();
 		try {
@@ -437,6 +436,33 @@ public class JDBCManager implements DBManager {
 		}
 		return products;
 
+	}
+	//UPDATE PRODUCT
+	public void updateProduct(Product p, float newPrice) {
+		try {
+			String sql= "UPDATE products SET price=? WHERE id=?";
+			PreparedStatement stmt=c.prepareStatement(sql);
+			stmt.setFloat(1, newPrice);
+			stmt.setInt(2, p.getId());
+			stmt.executeUpdate();
+			stmt.close();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	//UPDATE CHARACTERISTIC
+	public void updateCharact(Characteristic ch, String newDimentions) {
+		try {
+			String sql="UPDATE characteristics SET dimentions=? WHERE id=?";
+			PreparedStatement stmt=c.prepareStatement(sql);
+			stmt.setString(1, "%"+newDimentions+"%");
+			stmt.setInt(2, ch.getId());
+			stmt.executeUpdate();
+			stmt.close();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }
