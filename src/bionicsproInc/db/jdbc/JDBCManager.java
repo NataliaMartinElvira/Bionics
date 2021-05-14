@@ -32,7 +32,7 @@ public class JDBCManager implements DBManager {
 		try {
 			Statement stmt1 = c.createStatement();
 			String sql1 = "CREATE TABLE products " + "(id INTEGER  PRIMARY KEY AUTOINCREMENT," + " name TEXT NOT NULL, "
-					+ " bodypart  TEXT UNIQUE NOT NULL," + " price REAL NOT NULL," + " date_creation DATE NOT NULL)";
+					+ " bodypart  TEXT NOT NULL," + " price REAL NOT NULL," + " date_creation DATE NOT NULL)";
 			stmt1.executeUpdate(sql1);
 			stmt1.close();
 
@@ -122,11 +122,13 @@ public class JDBCManager implements DBManager {
 
 	public void addMaterial(Material m) {
 		try {
-			Statement st = c.createStatement();
-			String sql = "INSERT INTO material (name,price,amount) " + " VALUES ('" + m.getName() + "','" + m.getPrice()
-					+ "','" + m.getAmount() + "')'";
-			st.executeUpdate(sql);
-			st.close();
+			String sql = "INSERT INTO material (name,price,amount) " + " VALUES(?,?,?)";
+			PreparedStatement prep = c.prepareStatement(sql);
+			prep.setString(1, m.getName());
+			prep.setFloat(2, m.getPrice());
+			prep.setInt(3, m.getAmount());
+			prep.executeUpdate();
+			prep.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -134,11 +136,12 @@ public class JDBCManager implements DBManager {
 	}
 	public void addMatIntoProd(Product p, Material m) {
 		try {
-			Statement st = c.createStatement();
-			String sql = "INSERT INTO products_materials (product_id,material_id) " + " VALUES ('" + m.getId() + "','"
-					+ p.getId() + "')'";
-			st.executeUpdate(sql);
-			st.close();
+			String sql = "INSERT INTO products_materials (product_id,material_id) " + "VALUES(?,?)";
+			PreparedStatement prep = c.prepareStatement(sql);
+			prep.setInt(1, p.getId());
+			prep.setInt(2, m.getId());
+			prep.executeUpdate(sql);
+			prep.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -146,12 +149,16 @@ public class JDBCManager implements DBManager {
 
 	public void addCharacteristic(Characteristic ch, Product pr) {
 		try {
-			Statement st = c.createStatement();
 			String sql = "INSERT INTO characteristics (product_id, dimentions,weight,joints_numb,flexibility_scale) "
-					+ " VALUES ('" + pr.getId() + "','" + ch.getDimentions() + "','" + ch.getWeight() + "','"
-					+ ch.getJoints_numb() + ch.getFlexibilty_scale() + "')'";
-			st.executeUpdate(sql);
-			st.close();
+					+ "VALUES(?,?,?,?,?)";
+			PreparedStatement prep = c.prepareStatement(sql);
+			prep.setInt(1, pr.getId());
+			prep.setString(2, ch.getDimentions());
+			prep.setFloat(3, ch.getWeight());
+			prep.setInt(4, ch.getJoints_numb());
+			prep.setInt(5, ch.getFlexibilty_scale());
+			prep.executeUpdate(sql);
+			prep.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -173,7 +173,7 @@ public class Menu {
 		}
 		System.out.println("Choose a product: ");
 		int id = Integer.parseInt(reader.readLine());
-		//dbman.viewCharacteristicsFromProduct(id);
+		dbman.viewCharacteristicsFromProduct(id);
 		dbman.viewMaterialsFromProduct(id);
 	}
 
@@ -191,9 +191,10 @@ public class Menu {
 			LocalDate creation_date=LocalDate.parse(reader.readLine(),formatter);
 			Product np=new Product(name,bodypart,price,Date.valueOf(creation_date));
 			dbman.addProduct(np);
-			System.out.println("Now you need to list the materials - Press X to finish: ");
-			String cont=reader.readLine();
-			while(!cont.equalsIgnoreCase("X")) {
+			System.out.println("Now you need to list the materials\n");
+			System.out.println("How many materials does the p ");
+			int cont=Integer.parseInt(reader.readLine());
+			while(cont>0){
 				System.out.println("Name: ");
 				String nameMat=reader.readLine();
 				System.out.println("Price:");
