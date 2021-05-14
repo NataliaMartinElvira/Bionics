@@ -25,6 +25,13 @@ public class Order implements Serializable {
 		this.date_order = date_order;
 		this.products = products;
 	}
+	
+
+	public Order(int id, Date date_order) {
+		super();
+		this.id = id;
+		this.date_order = date_order;
+	}
 
 	public int getOrder_id() {
 		return id;

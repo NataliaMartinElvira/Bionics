@@ -50,23 +50,26 @@ public class JDBCManager implements DBManager {
 			stmt3.close();
 
 			Statement stmt4 = c.createStatement();
-			String sql4 = "CREATE TABLE engineer " + "(id INTEGER  PRIMARY KEY AUTOINCREMENT," + "product_id INTEGER NOT NULL,"
-					+ " name_surname     TEXT     NOT NULL UNIQUE, " + " contract_starting_date DATE NOT NULL UNIQUE,"
-					+ " contract_ending_date DATE NOT NULL," + " salary REAL NOT NULL," + " bonus REAL NOT NULL,"
-					+ " experience_in_years INTEGER NOT NULL," + " date_of_birth DATE NOT NULL," +" FOREIGN KEY (product_id) REFERENCES products(id))";
+			String sql4 = "CREATE TABLE engineer " + "(id INTEGER  PRIMARY KEY AUTOINCREMENT,"
+					+ "product_id INTEGER NOT NULL," + " name_surname     TEXT     NOT NULL UNIQUE, "
+					+ " contract_starting_date DATE NOT NULL UNIQUE," + " contract_ending_date DATE NOT NULL,"
+					+ " salary REAL NOT NULL," + " bonus REAL NOT NULL," + " experience_in_years INTEGER NOT NULL,"
+					+ " date_of_birth DATE NOT NULL," + " FOREIGN KEY (product_id) REFERENCES products(id))";
 			stmt4.executeUpdate(sql4);
 			stmt4.close();
 
 			Statement stmt5 = c.createStatement();
-			String sql5 = "CREATE TABLE characteristics " + "(id INTEGER PRIMARY KEY AUTOINCREMENT," + " product_id INTEGER NOT NULL,"
-					+ " dimentions TEXT NOT NULL," + " weight REAL NOT NULL," + " joint_numb INTEGER NOT NULL,"
-					+ " flexibility_scale INTEGER NOT NULL," + " FOREIGN KEY (product_id) REFERENCES products(id))";
+			String sql5 = "CREATE TABLE characteristics " + "(id INTEGER PRIMARY KEY AUTOINCREMENT,"
+					+ " product_id INTEGER NOT NULL," + " dimentions TEXT NOT NULL," + " weight REAL NOT NULL,"
+					+ " joint_numb INTEGER NOT NULL," + " flexibility_scale INTEGER NOT NULL,"
+					+ " FOREIGN KEY (product_id) REFERENCES products(id))";
 			stmt5.executeUpdate(sql5);
 			stmt5.close();
 
 			Statement stmt6 = c.createStatement();
-			String sql6 = "CREATE TABLE orders " + "(id INTEGER PRIMARY KEY AUTOINCREMENT," + " customer_id INTEGER NOT NULL,"
-					+ " date_order DATE NOT NULL," +" FOREIGN KEY (customer_id) REFERENCES customer(id))";
+			String sql6 = "CREATE TABLE orders " + "(id INTEGER PRIMARY KEY AUTOINCREMENT,"
+					+ " customer_id INTEGER NOT NULL," + " date_order DATE NOT NULL,"
+					+ " FOREIGN KEY (customer_id) REFERENCES customer(id))";
 			stmt6.executeUpdate(sql6);
 			stmt6.close();
 
@@ -77,7 +80,7 @@ public class JDBCManager implements DBManager {
 					+ " material_id INTEGER REFERENCES material(id))";
 			stmt7.executeUpdate(sql7);
 			stmt7.close();
-			
+
 			Statement stmt8 = c.createStatement();
 			String sql8 = "CREATE TABLE products_orders " + "(product_id INTEGER REFERENCES products(id),"
 					+ " order_id INTEGER REFERENCES orders(id))";
@@ -133,16 +136,15 @@ public class JDBCManager implements DBManager {
 	public void addCharacteristic(Characteristic ch, Product pr) {
 		try {
 			Statement st = c.createStatement();
-			String sql = "INSERT INTO characteristics (product_id, dimentions,weight,joints_numb,flexibility_scale) " + " VALUES ('"
-					+ pr.getId() + "','" + ch.getDimentions() + "','" + ch.getWeight() + "','" + ch.getJoints_numb()
-					+ ch.getFlexibilty_scale() + "')'";
+			String sql = "INSERT INTO characteristics (product_id, dimentions,weight,joints_numb,flexibility_scale) "
+					+ " VALUES ('" + pr.getId() + "','" + ch.getDimentions() + "','" + ch.getWeight() + "','"
+					+ ch.getJoints_numb() + ch.getFlexibilty_scale() + "')'";
 			st.executeUpdate(sql);
 			st.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
 
 	public void addMatIntoProd(Product p, Material m) {
 		try {
@@ -155,7 +157,6 @@ public class JDBCManager implements DBManager {
 			e.printStackTrace();
 		}
 	}
-
 
 	public void addCustomer(Customer cust) {
 		try {
@@ -176,10 +177,10 @@ public class JDBCManager implements DBManager {
 
 			Statement stmt = c.createStatement();
 			String sql = " INSERT INTO Engineer (product_id, name_surname, contract_starting_date, contract_ending_date,salary, bonus,"
-					+ " experience_in_years, date_of_birth) " + " VALUES ('" + pr.getId()+ "','" + eng.getName_surname() + "','"
-					+ eng.getContract_strating_date() + "','" + eng.getContract_ending_date() + "','" + eng.getSalary()
-					+ "','" + eng.getBonus() + "','" + eng.getExperience_in_years() + "','" + eng.getDate_of_birth()
-					+ "')'";
+					+ " experience_in_years, date_of_birth) " + " VALUES ('" + pr.getId() + "','"
+					+ eng.getName_surname() + "','" + eng.getContract_strating_date() + "','"
+					+ eng.getContract_ending_date() + "','" + eng.getSalary() + "','" + eng.getBonus() + "','"
+					+ eng.getExperience_in_years() + "','" + eng.getDate_of_birth() + "')'";
 			stmt.executeUpdate(sql);
 			stmt.close();
 		} catch (Exception e) {
@@ -191,7 +192,8 @@ public class JDBCManager implements DBManager {
 	public void addOrder(Customer cust, Order o) {
 		try {
 			Statement stmt = c.createStatement();
-			String sql = "INSERT INTO orders (date_order,customer_id) VALUES ('" + o.getDate_order() + "','" + cust.getId() + "')'";
+			String sql = "INSERT INTO orders (date_order,customer_id) VALUES ('" + o.getDate_order() + "','"
+					+ cust.getId() + "')'";
 			stmt.executeUpdate(sql);
 			stmt.close();
 
@@ -204,8 +206,8 @@ public class JDBCManager implements DBManager {
 
 		try {
 			Statement stmt = c.createStatement();
-			String sql = "INSERT INTO products_orders (product_id,order_id) " + " VALUES ('" + order.getOrder_id() +"','"
-					+ product.getId() + "')";
+			String sql = "INSERT INTO products_orders (product_id,order_id) " + " VALUES ('" + order.getOrder_id()
+					+ "','" + product.getId() + "')";
 			stmt.executeUpdate(sql);
 			stmt.close();
 		} catch (Exception e) {
@@ -272,7 +274,7 @@ public class JDBCManager implements DBManager {
 	@Override
 	public Engineer viewBonus(int engId) {
 		try {
-			String sql = "SELECT id,bonus FROM Engineer WHERE id= ?";
+			String sql = "SELECT bonus FROM Engineer WHERE id= ?";
 			PreparedStatement stmt = c.prepareStatement(sql);
 			stmt.setInt(1, engId);
 			ResultSet rs = stmt.executeQuery();
@@ -289,30 +291,51 @@ public class JDBCManager implements DBManager {
 
 	// LIKE ADDTOCART- THE SAME FUNCTION
 
-	/*
-	 * public List<String> viewCart(Order o) { List<String> p_names = new
-	 * ArrayList<String>(); try { String sql =
-	 * " SELECT p.name FROM products AS p JOIN order AS or ON or.product_id=p.id WHERE or.order_id= ? "
-	 * ; PreparedStatement stmt = c.prepareStatement(sql); stmt.setInt(1,
-	 * o.getOrder_id()); ResultSet rs = stmt.executeQuery(); while (rs.next()) {
-	 * String productName = rs.getString("name"); p_names.add(productName); }
-	 * rs.close(); stmt.close(); } catch (Exception e) { e.printStackTrace(); }
-	 * return p_names; }
-	 */
+	public List<String> viewCart(Order o) {
+		List<String> p_names = new ArrayList<String>();
+		try {
+			String sql = " SELECT p.name FROM products AS p JOIN order AS or ON or.product_id=p.id WHERE or.order_id= ? ";
+			PreparedStatement stmt = c.prepareStatement(sql);
+			stmt.setInt(1, o.getOrder_id());
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				String productName = rs.getString("name");
+				p_names.add(productName);
+			}
+			rs.close();
+			stmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return p_names;
+	}
+
 	@Override
-	/*
-	 * public List<Integer> viewOtherOrders(int id) { List<Integer> Ids = new
-	 * ArrayList<Integer>(); try { String sql =
-	 * " SELECT c.order_id FROM costumer_order AS c WHERE c.costumer_id= ? ";
-	 * PreparedStatement stmt = c.prepareStatement(sql); stmt.setInt(1, id);
-	 * ResultSet rs = stmt.executeQuery(); while (rs.next()) { int ids =
-	 * rs.getInt(id); Ids.add(ids); } rs.close(); stmt.close(); } catch (Exception
-	 * e) { e.printStackTrace(); } return Ids; }
-	 */
+	public List<Order> viewOtherOrders(int id) {
+		List<Order> orders = new ArrayList<Order>();
+		try {
+			String sql = " SELECT id,date_order FROM orders WHERE customer_id= ? ";
+			PreparedStatement stmt = c.prepareStatement(sql);
+			stmt.setInt(1, id);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				int ids = rs.getInt("id");
+				Date dateO=rs.getDate("date_order");
+				Order o=new Order(ids,dateO);
+				orders.add(o);
+			}
+			rs.close();
+			stmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return orders;
+	}
+
 	public List<String> viewProjectAchieved(int engId) {
 		List<String> prodname = new ArrayList<String>();
 		try {
-			String sql = "SELECT e.id, p.name FROM Engineer as e JOIN product as p ON p.id=e.product_id WHERE id= ?";
+			String sql = "SELECT p.name FROM Engineer as e JOIN product as p ON p.id=e.product_id WHERE id= ?";
 			PreparedStatement stmt = c.prepareStatement(sql);
 			stmt.setInt(1, engId);
 			ResultSet rs = stmt.executeQuery();

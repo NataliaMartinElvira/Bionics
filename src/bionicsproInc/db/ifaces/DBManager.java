@@ -34,15 +34,13 @@ public interface DBManager {
 
 	public Engineer viewBonus(int engId);
 
-	/*public void addToOrder(Product product, Order order);*/
+	public List<String> viewCart(Order o);
 
-	/*public List<String> viewCart(Order o);*/
-
-	/*public List<Integer> viewOtherOrders(int id);*/
+	public List<Order> viewOtherOrders(int id);
 
 	public List<String> viewProjectAchieved(int engId);
 
-	/*public void deleteProdFromCart(String name, Order o);*/
+	public void deleteProdFromCart(String name, Order o);
 
 	public List<Characteristic> viewCharacteristicsFromProduct(int prodId);
 
