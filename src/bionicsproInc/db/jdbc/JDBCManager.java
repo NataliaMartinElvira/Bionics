@@ -31,7 +31,7 @@ public class JDBCManager implements DBManager {
 
 		try {
 			Statement stmt1 = c.createStatement();
-			String sql1 = "CREATE TABLE products " + "(id INTEGER  PRIMARY KEY AUTOINCREMENT," + " name TEXT NOT NULL, "
+			String sql1 = "CREATE TABLE products " + "(id INTEGER  PRIMARY KEY AUTOINCREMENT," + " name TEXT NOT NULL UNIQUE, "
 					+ " bodypart  TEXT NOT NULL," + " price REAL NOT NULL," + " date_creation DATE NOT NULL)";
 			stmt1.executeUpdate(sql1);
 			stmt1.close();
@@ -118,6 +118,28 @@ public class JDBCManager implements DBManager {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	public Product getProduct (String nameP) {
+		try {
+			String sql="SELECT * FROM products WHERE name=?";
+			PreparedStatement prep= c.prepareStatement(sql);
+			prep.setString(1,"%"+nameP+"%");
+			ResultSet rs=prep.executeQuery();
+			while(rs.next()) {
+				int id=rs.getInt("id");
+				String name=rs.getString("name");
+				String bodypart=rs.getString("bodypart");
+				float price=rs.getFloat("price");
+				Date date_creation=rs.getDate("date_creation");
+				Product p=new Product(id,name,bodypart,price,date_creation);
+				return p;
+			}
+			prep.close();
+			rs.close();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public void addMaterial(Material m) {
