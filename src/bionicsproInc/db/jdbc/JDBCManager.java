@@ -130,11 +130,11 @@ public class JDBCManager implements DBManager {
 
 	}
 
-	public void addCharacteristic(Characteristic ch) {
+	public void addCharacteristic(Characteristic ch, Product pr) {
 		try {
 			Statement st = c.createStatement();
-			String sql = "INSERT INTO characteristics (dimentions,weight,joints_numb,flexibility_scale) " + " VALUES ('"
-					+ ch.getDimentions() + "','" + ch.getWeight() + "','" + ch.getJoints_numb()
+			String sql = "INSERT INTO characteristics (product_id, dimentions,weight,joints_numb,flexibility_scale) " + " VALUES ('"
+					+ pr.getId() + "','" + ch.getDimentions() + "','" + ch.getWeight() + "','" + ch.getJoints_numb()
 					+ ch.getFlexibilty_scale() + "')'";
 			st.executeUpdate(sql);
 			st.close();
@@ -143,16 +143,6 @@ public class JDBCManager implements DBManager {
 		}
 	}
 	
-	public void addProductsIntoEngineers(Engineer eng, Product p) {
-		try {
-			Statement stm= c.createStatement();
-			String sql="INSERT INTO engineers_products (engineer_id,product_id) VALUES ('" + eng.getId() + "','" + p.getId() + "')'";
-			stm.executeUpdate(sql);
-			stm.close();
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	public void addMatIntoProd(Product p, Material m) {
 		try {
@@ -166,17 +156,6 @@ public class JDBCManager implements DBManager {
 		}
 	}
 
-	public void addCharIntoProd(Product p, Characteristic ch) {
-		try {
-			Statement st = c.createStatement();
-			String sql = "INSERT INTO characteristics_product (characteristics_id,products_id) " + " VALUES ('"
-					+ ch.getId() + "', '" + p.getId() + "')'";
-			st.executeUpdate(sql);
-			st.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
 
 	public void addCustomer(Customer cust) {
 		try {
@@ -192,12 +171,12 @@ public class JDBCManager implements DBManager {
 
 	}
 
-	public void addEngineer(Engineer eng) {
+	public void addEngineer(Engineer eng, Product pr) {
 		try {
 
 			Statement stmt = c.createStatement();
-			String sql = " INSERT INTO Engineer (name_surname, contract_starting_date, contract_ending_date,salary, bonus,"
-					+ " experience_in_years, date_of_birth) " + " VALUES ('" + eng.getName_surname() + "','"
+			String sql = " INSERT INTO Engineer (product_id, name_surname, contract_starting_date, contract_ending_date,salary, bonus,"
+					+ " experience_in_years, date_of_birth) " + " VALUES ('" + pr.getId()+ "','" + eng.getName_surname() + "','"
 					+ eng.getContract_strating_date() + "','" + eng.getContract_ending_date() + "','" + eng.getSalary()
 					+ "','" + eng.getBonus() + "','" + eng.getExperience_in_years() + "','" + eng.getDate_of_birth()
 					+ "')'";

@@ -18,9 +18,9 @@ public interface DBManager {
 
 	public void addCustomer(Customer cust);
 
-	public void addEngineer(Engineer eng);
+	public void addEngineer(Engineer eng, Product pr);
 	
-	public void addCharacteristic(Characteristic ch);
+	public void addCharacteristic(Characteristic ch, Product pr);
 	
 	public void addOrder(Customer cust, Order o);
 	

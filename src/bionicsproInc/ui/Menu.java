@@ -215,7 +215,7 @@ public class Menu {
 			System.out.println("Flexibility Scale: ");
 			int fScale=Integer.parseInt(reader.readLine());
 			Characteristic cha=new Characteristic(dimentions,weight,nJoints,fScale);
-			dbman.addCharacteristic(cha);
+			dbman.addCharacteristic(cha,np);
 			//missing addchar into product or addprod into char
 
 		} catch (Exception e) {
