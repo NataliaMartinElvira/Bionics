@@ -141,6 +141,24 @@ public class JDBCManager implements DBManager {
 		}
 		return p;
 	}
+	
+	public int getProductId (String nameP) {
+		int id=0;
+		try {
+			String sql="SELECT id FROM products WHERE name=?";
+			PreparedStatement prep= c.prepareStatement(sql);
+			prep.setString(1,"%"+nameP+"%");
+			ResultSet rs=prep.executeQuery();
+			while(rs.next()) {
+				 id=rs.getInt("id");
+				}
+			prep.close();
+			rs.close();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return id;
+	}
 
 	public void addMaterial(Material m) {
 		try {
@@ -156,34 +174,30 @@ public class JDBCManager implements DBManager {
 		}
 
 	}
-	public Material getMaterial (String nameM) {
-		Material m= new Material();
+	public int getMaterial_id (String nameM) {
+		int id=0;
 		try {
-			String sql="SELECT * FROM material WHERE name=?";
+			String sql="SELECT id FROM material WHERE name=?";
 			PreparedStatement prep= c.prepareStatement(sql);
 			prep.setString(1,"%"+nameM+"%");
 			ResultSet rs=prep.executeQuery();
 			while(rs.next()) {
-				int id=rs.getInt("id");
-				String name=rs.getString("name");
-				float price=rs.getFloat("price");
-				int amount=rs.getInt("amount");
-				m=new Material(id,name,price,amount);
+				id=rs.getInt("id");
 			}
 			prep.close();
 			rs.close();
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		return m;
+		return id;
 	}
-	public void addMatIntoProd(Product p, Material m) {
+	public void addMatIntoProd(int prod_id, int mat_id) {
 		try {
 			String sql = "INSERT INTO products_materials (product_id,material_id) " + "VALUES(?,?)";
 			PreparedStatement prep = c.prepareStatement(sql);
-			prep.setInt(1, p.getId());
-			prep.setInt(2, m.getId());
-			prep.executeUpdate(sql);
+			prep.setInt(1, prod_id);
+			prep.setInt(2, mat_id);
+			prep.executeUpdate();
 			prep.close();
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -191,12 +191,10 @@ public class Menu {
 			LocalDate creation_date=LocalDate.parse(reader.readLine(),formatter);
 			Product np=new Product(name,bodypart,price,Date.valueOf(creation_date));
 			dbman.addProduct(np);
-			int id= dbman.getProduct(np.getName()).getId();
-			np.setId(id);
 			System.out.println("Now you need to list the materials\n");
 			System.out.println("How many materials does the p ");
 			int cont=Integer.parseInt(reader.readLine());
-			while(cont>0){
+			for(int i=0;i<cont;i++){
 				System.out.println("Name: ");
 				String nameMat=reader.readLine();
 				System.out.println("Price:");
@@ -205,13 +203,11 @@ public class Menu {
 				int amount=Integer.parseInt(reader.readLine());
 				Material m=new Material(nameMat,pMat,amount);
 				dbman.addMaterial(m);
-				int mat_id=dbman.getMaterial(nameMat).getId();
-				m.setId(mat_id);
+				dbman.addMatIntoProd(dbman.getProductId(name), dbman.getMaterial_id(nameMat));
 				//dbman.addMatIntoProd(np,m);
-				cont--;
 			}
 			/*check this*/
-			System.out.println("Describe characteristics: ");
+			/*System.out.println("Describe characteristics: ");
 			System.out.println("Dimensions (cm X cm X cm): ");
 			String dimentions=reader.readLine();
 			System.out.println("Weight:");
@@ -222,7 +218,7 @@ public class Menu {
 			int fScale=Integer.parseInt(reader.readLine());
 			Characteristic cha=new Characteristic(dimentions,weight,nJoints,fScale);
 			dbman.addCharacteristic(cha,np);
-			//missing addchar into product or addprod into char
+			//missing addchar into product or addprod into char*/
 
 		} catch (Exception e) {
 			e.printStackTrace();
