@@ -76,14 +76,16 @@ public class JDBCManager implements DBManager {
 			// now we create the table that references the N-N relationships
 
 			Statement stmt7 = c.createStatement();
-			String sql7 = "CREATE TABLE products_materials " + "(product_id  INTEGER REFERENCES products(id),"
-					+ " material_id INTEGER REFERENCES material(id))";
+			String sql7 = "CREATE TABLE products_materials " + "(product_id  INTEGER NOT NULL,"
+					+ " material_id INTEGER NOT NULL,"+" FOREIGN KEY (product_id) REFERENCES products(id),"
+					+ "FOREIGN KEY (material_id) REFERENCES material(id)," + " UNIQUE (product_id, material_id))";
 			stmt7.executeUpdate(sql7);
 			stmt7.close();
 
 			Statement stmt8 = c.createStatement();
-			String sql8 = "CREATE TABLE products_orders " + "(product_id INTEGER REFERENCES products(id),"
-					+ " order_id INTEGER REFERENCES orders(id))";
+			String sql8 = "CREATE TABLE products_orders " + "(product_id INTEGER NOT NULL,"
+					+ " order_id INTEGER NOT NULL," + " FOREIGN KEY (product_id) REFERENCES products(id),"
+					+ " FOREIGN KEY (order_id) REFERENCES orders(id)," + " UNIQUE (product_id, order_id))";
 			stmt8.executeUpdate(sql8);
 			stmt8.close();
 
@@ -193,7 +195,8 @@ public class JDBCManager implements DBManager {
 	}
 	public void addMatIntoProd(int prod_id, int mat_id) {
 		try {
-			String sql = "INSERT INTO products_materials (product_id,material_id) " + "VALUES(?,?)";
+			String sql = "INSERT INTO products_materials (product_id,material_id) "
+		    + "SELECT p.id, m.id FROM products AS p JOIN material AS m ON p.id=? AND m.id=?";
 			PreparedStatement prep = c.prepareStatement(sql);
 			prep.setInt(1, prod_id);
 			prep.setInt(2, mat_id);
