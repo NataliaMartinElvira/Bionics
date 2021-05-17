@@ -137,7 +137,7 @@ public class Menu {
 			int choice = Integer.parseInt(reader.readLine());
 			switch (choice) {
 			case 1:
-				/*viewProductC();*/
+				//viewProductC();
 				break;
 
 			case 2:
@@ -145,11 +145,11 @@ public class Menu {
 				break;
 
 			case 3:
-				/*changeProduct();*/
+				changeProduct();
 				break;
 
 			case 4:
-				/*seeOtherPurchases();*/
+				seeOtherPurchases();
 				break;
 
 			case 0:
@@ -203,11 +203,11 @@ public class Menu {
 				int amount=Integer.parseInt(reader.readLine());
 				Material m=new Material(nameMat,pMat,amount);
 				dbman.addMaterial(m);
-				dbman.addMatIntoProd(dbman.getProductId(name), dbman.getMaterial_id(nameMat));
+				dbman.addMatIntoProd(dbman.getProduct(name), dbman.getMaterial(nameMat));
 				//dbman.addMatIntoProd(np,m);
 			}
 			/*check this*/
-			/*System.out.println("Describe characteristics: ");
+			System.out.println("Describe characteristics: ");
 			System.out.println("Dimensions (cm X cm X cm): ");
 			String dimentions=reader.readLine();
 			System.out.println("Weight:");
@@ -218,7 +218,7 @@ public class Menu {
 			int fScale=Integer.parseInt(reader.readLine());
 			Characteristic cha=new Characteristic(dimentions,weight,nJoints,fScale);
 			dbman.addCharacteristic(cha,np);
-			//missing addchar into product or addprod into char*/
+			//missing addchar into product or addprod into char
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -272,7 +272,7 @@ public class Menu {
 				for(int i=1;i<p.size(); i++) {
 					if (p.get(i).getId()==id) {
 						Product pr=p.get(i);
-						dbman.addToOrder(pr, temporaryOrder);
+						dbman.addProducts_orders(pr, temporaryOrder);
 					}
 				}
 			}
@@ -299,7 +299,7 @@ public class Menu {
 			e.printStackTrace();
 		}
 	}
-
+*/
 	// Customer OPTION 3
 	private static void changeProduct() throws Exception {
 		try {
@@ -319,7 +319,7 @@ public class Menu {
 	}
 
 	// CUSTOMER OPTION 4
-	/*private static void seeOtherPurchases() throws Exception {
+	private static void seeOtherPurchases() throws Exception {
 		try {
 			System.out.println("Confirm your ID: ");
 			int id = Integer.parseInt(reader.readLine());
@@ -338,5 +338,4 @@ public class Menu {
 			e.printStackTrace();
 		}
 	}
-*/
 }

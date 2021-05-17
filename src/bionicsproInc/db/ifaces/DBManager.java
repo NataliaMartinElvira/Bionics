@@ -12,13 +12,13 @@ public interface DBManager {
 
 	public void addProduct(Product p);
 	
-	public int getProductId (String nameP);
+	public Product getProduct (String name);
 
 	public void addMaterial(Material m);
 	
-	public int getMaterial_id (String nameM);
+	public Material getMaterial(String name);
 
-	public void addMatIntoProd(int prod_id, int mat_id);
+	public void addMatIntoProd(Product p, Material m);
 
 	public void addCustomer(Customer cust);
 

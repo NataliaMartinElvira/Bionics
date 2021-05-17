@@ -38,7 +38,7 @@ public class JDBCManager implements DBManager {
 
 			Statement stmt2 = c.createStatement();
 			String sql2 = "CREATE TABLE material " + "(id INTEGER  PRIMARY KEY AUTOINCREMENT,"
-					+ " name     TEXT     NOT NULL UNIQUE, " + " price REAL NOT NULL," + " amount   INTEGER	 NOT NULL)";
+					+ " name     TEXT     NOT NULL, " + " price REAL NOT NULL," + " amount   INTEGER	 NOT NULL)";
 			stmt2.executeUpdate(sql2);
 			stmt2.close();
 
@@ -75,10 +75,16 @@ public class JDBCManager implements DBManager {
 
 			// now we create the table that references the N-N relationships
 
-			Statement stmt7 = c.createStatement();
+			/*Statement stmt7 = c.createStatement();
 			String sql7 = "CREATE TABLE products_materials " + "(product_id  INTEGER NOT NULL,"
 					+ " material_id INTEGER NOT NULL,"+" FOREIGN KEY (product_id) REFERENCES products(id),"
 					+ "FOREIGN KEY (material_id) REFERENCES material(id)," + " UNIQUE (product_id, material_id))";
+			stmt7.executeUpdate(sql7);
+			stmt7.close();*/
+			
+			Statement stmt7 = c.createStatement();
+			String sql7 = "CREATE TABLE products_materials " + "(product_id  INTEGER REFERENCES products(id),"
+					+ " material_id INTEGER REFERENCES material(id)," + " PRIMARY KEY (product_id,material_id))";
 			stmt7.executeUpdate(sql7);
 			stmt7.close();
 
@@ -121,27 +127,25 @@ public class JDBCManager implements DBManager {
 			e.printStackTrace();
 		}
 	}
-	public Product getProduct (String nameP) {
-		Product p=new Product();
+	public Product getProduct (String name) {
 		try {
 			String sql="SELECT * FROM products WHERE name=?";
 			PreparedStatement prep= c.prepareStatement(sql);
-			prep.setString(1,"%"+nameP+"%");
+			prep.setString(1, name);
 			ResultSet rs=prep.executeQuery();
 			while(rs.next()) {
 				int id=rs.getInt("id");
-				String name=rs.getString("name");
 				String bodypart=rs.getString("bodypart");
 				float price=rs.getFloat("price");
 				Date date_creation=rs.getDate("date_creation");
-				p=new Product(id,name,bodypart,price,date_creation);
+				return new Product(id,name,bodypart,price,date_creation);
 			}
 			prep.close();
 			rs.close();
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		return p;
+		return null;
 	}
 	
 	public int getProductId (String nameP) {
@@ -176,30 +180,32 @@ public class JDBCManager implements DBManager {
 		}
 
 	}
-	public int getMaterial_id (String nameM) {
-		int id=0;
+	public Material getMaterial(String name) {
 		try {
-			String sql="SELECT id FROM material WHERE name=?";
+			String sql="SELECT * FROM material WHERE name=?";
 			PreparedStatement prep= c.prepareStatement(sql);
-			prep.setString(1,"%"+nameM+"%");
+			prep.setString(1, name);
 			ResultSet rs=prep.executeQuery();
 			while(rs.next()) {
-				id=rs.getInt("id");
+				int id=rs.getInt("id");
+				float price=rs.getFloat("price");
+				int amount=rs.getInt("amount");
+				return new Material(name,price,amount);
 			}
 			prep.close();
 			rs.close();
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		return id;
+		return null;
 	}
-	public void addMatIntoProd(int prod_id, int mat_id) {
+	public void addMatIntoProd(Product p, Material m) {
 		try {
 			String sql = "INSERT INTO products_materials (product_id,material_id) "
-		    + "SELECT p.id, m.id FROM products AS p JOIN material AS m ON p.id=? AND m.id=?";
+				    + "SELECT p.id, m.id FROM products AS p JOIN material AS m ON p.id=? AND m.id=?";
 			PreparedStatement prep = c.prepareStatement(sql);
-			prep.setInt(1, prod_id);
-			prep.setInt(2, mat_id);
+			prep.setInt(1, p.getId());
+			prep.setInt(2, m.getId());
 			prep.executeUpdate();
 			prep.close();
 		} catch (SQLException e) {
@@ -217,7 +223,7 @@ public class JDBCManager implements DBManager {
 			prep.setFloat(3, ch.getWeight());
 			prep.setInt(4, ch.getJoints_numb());
 			prep.setInt(5, ch.getFlexibilty_scale());
-			prep.executeUpdate(sql);
+			prep.executeUpdate();
 			prep.close();
 		} catch (Exception e) {
 			e.printStackTrace();
