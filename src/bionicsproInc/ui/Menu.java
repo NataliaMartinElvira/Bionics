@@ -65,6 +65,8 @@ public class Menu {
 		md.update(password.getBytes());
 		byte[] hash = md.digest();
 		User user = new User(email, hash, role);
+		//TODO ADD ENGINEER OR COSTUMER WITH FUNCION ADD ENGINNER OR CUSTOMER AND IN THOSE FUNCIONT VINCULATE IT WITH ANOTHER FUNCTION 
+		//ETC
 		userman.newUser(user);
 	}
 
@@ -192,9 +194,10 @@ public class Menu {
 			Product np=new Product(name,bodypart,price,Date.valueOf(creation_date));
 			dbman.addProduct(np);
 			System.out.println("Now you need to list the materials\n");
-			System.out.println("How many materials does the p ");
+			System.out.println("How many materials does the product have? ");
 			int cont=Integer.parseInt(reader.readLine());
 			for(int i=0;i<cont;i++){
+				
 				System.out.println("Name: ");
 				String nameMat=reader.readLine();
 				System.out.println("Price:");
@@ -204,7 +207,6 @@ public class Menu {
 				Material m=new Material(nameMat,pMat,amount);
 				dbman.addMaterial(m);
 				dbman.addMatIntoProd(dbman.getProduct(name).getId(), dbman.getMaterial(nameMat).getId());
-				System.out.println("id prod"+dbman.getProduct(name).getId()+"id mnat"+dbman.getMaterial(nameMat).getId());
 			}
 			/*check this*/
 			System.out.println("Describe characteristics: ");
