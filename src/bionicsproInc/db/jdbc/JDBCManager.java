@@ -31,8 +31,9 @@ public class JDBCManager implements DBManager {
 
 		try {
 			Statement stmt1 = c.createStatement();
-			String sql1 = "CREATE TABLE products " + "(id INTEGER  PRIMARY KEY AUTOINCREMENT," + " name TEXT NOT NULL UNIQUE, "
-					+ " bodypart  TEXT NOT NULL," + " price REAL NOT NULL," + " date_creation DATE NOT NULL)";
+			String sql1 = "CREATE TABLE products " + "(id INTEGER  PRIMARY KEY AUTOINCREMENT,"
+					+ " name TEXT NOT NULL UNIQUE, " + " bodypart  TEXT NOT NULL," + " price REAL NOT NULL,"
+					+ " date_creation DATE NOT NULL)";
 			stmt1.executeUpdate(sql1);
 			stmt1.close();
 
@@ -51,7 +52,7 @@ public class JDBCManager implements DBManager {
 
 			Statement stmt4 = c.createStatement();
 			String sql4 = "CREATE TABLE engineer " + "(id INTEGER  PRIMARY KEY AUTOINCREMENT,"
-					+ "product_id INTEGER NOT NULL," + " name_surname     TEXT     NOT NULL UNIQUE, "
+					+ " product_id INTEGER NOT NULL," + " name_surname     TEXT     NOT NULL UNIQUE, "
 					+ " contract_starting_date DATE NOT NULL UNIQUE," + " contract_ending_date DATE NOT NULL,"
 					+ " salary REAL NOT NULL," + " bonus REAL NOT NULL," + " experience_in_years INTEGER NOT NULL,"
 					+ " date_of_birth DATE NOT NULL," + " FOREIGN KEY (product_id) REFERENCES products(id))";
@@ -75,13 +76,16 @@ public class JDBCManager implements DBManager {
 
 			// now we create the table that references the N-N relationships
 
-			/*Statement stmt7 = c.createStatement();
-			String sql7 = "CREATE TABLE products_materials " + "(product_id  INTEGER NOT NULL,"
-					+ " material_id INTEGER NOT NULL,"+" FOREIGN KEY (product_id) REFERENCES products(id),"
-					+ "FOREIGN KEY (material_id) REFERENCES material(id)," + " UNIQUE (product_id, material_id))";
-			stmt7.executeUpdate(sql7);
-			stmt7.close();*/
-			
+			/*
+			 * Statement stmt7 = c.createStatement(); String sql7 =
+			 * "CREATE TABLE products_materials " + "(product_id  INTEGER NOT NULL," +
+			 * " material_id INTEGER NOT NULL,"
+			 * +" FOREIGN KEY (product_id) REFERENCES products(id)," +
+			 * "FOREIGN KEY (material_id) REFERENCES material(id)," +
+			 * " UNIQUE (product_id, material_id))"; stmt7.executeUpdate(sql7);
+			 * stmt7.close();
+			 */
+
 			Statement stmt7 = c.createStatement();
 			String sql7 = "CREATE TABLE products_materials " + "(product_id  INTEGER REFERENCES products(id),"
 					+ " material_id INTEGER REFERENCES material(id)," + " PRIMARY KEY (product_id,material_id))";
@@ -127,40 +131,41 @@ public class JDBCManager implements DBManager {
 			e.printStackTrace();
 		}
 	}
-	public Product getProduct (String name) {
+
+	public Product getProduct(String name) {
 		try {
-			String sql="SELECT * FROM products WHERE name=?";
-			PreparedStatement prep= c.prepareStatement(sql);
+			String sql = "SELECT * FROM products WHERE name=?";
+			PreparedStatement prep = c.prepareStatement(sql);
 			prep.setString(1, name);
-			ResultSet rs=prep.executeQuery();
-			while(rs.next()) {
-				int id=rs.getInt("id");
-				String bodypart=rs.getString("bodypart");
-				float price=rs.getFloat("price");
-				Date date_creation=rs.getDate("date_creation");
-				return new Product(id,name,bodypart,price,date_creation);
+			ResultSet rs = prep.executeQuery();
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String bodypart = rs.getString("bodypart");
+				float price = rs.getFloat("price");
+				Date date_creation = rs.getDate("date_creation");
+				return new Product(id, name, bodypart, price, date_creation);
 			}
 			prep.close();
 			rs.close();
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
-	
-	public int getProductId (String nameP) {
-		int id=0;
+
+	public int getProductId(String nameP) {
+		int id = 0;
 		try {
-			String sql="SELECT id FROM products WHERE name=?";
-			PreparedStatement prep= c.prepareStatement(sql);
-			prep.setString(1,"%"+nameP+"%");
-			ResultSet rs=prep.executeQuery();
-			while(rs.next()) {
-				 id=rs.getInt("id");
-				}
+			String sql = "SELECT id FROM products WHERE name=?";
+			PreparedStatement prep = c.prepareStatement(sql);
+			prep.setString(1, "%" + nameP + "%");
+			ResultSet rs = prep.executeQuery();
+			while (rs.next()) {
+				id = rs.getInt("id");
+			}
 			prep.close();
 			rs.close();
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return id;
@@ -180,45 +185,49 @@ public class JDBCManager implements DBManager {
 		}
 
 	}
+
 	public Material getMaterial(String name) {
 		try {
-			String sql="SELECT * FROM material WHERE name=?";
-			PreparedStatement prep= c.prepareStatement(sql);
+			String sql = "SELECT * FROM material WHERE name= ?";
+			PreparedStatement prep = c.prepareStatement(sql);
 			prep.setString(1, name);
-			ResultSet rs=prep.executeQuery();
-			while(rs.next()) {
-				int id=rs.getInt("id");
-				float price=rs.getFloat("price");
-				int amount=rs.getInt("amount");
-				return new Material(name,price,amount);
+			ResultSet rs = prep.executeQuery();
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				float price = rs.getFloat("price");
+				int amount = rs.getInt("amount");
+
+				return new Material(id, name, price, amount);
 			}
 			prep.close();
 			rs.close();
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
-	public void addMatIntoProd(Product p, Material m) {
+
+	public void addMatIntoProd(int prod_id, int mat_id) {
 		try {
-			String sql = "INSERT INTO products_materials (product_id,material_id) "
-				    + "SELECT p.id, m.id FROM products AS p JOIN material AS m ON p.id=? AND m.id=?";
+			String sql = "INSERT INTO products_materials (product_id, material_id) VALUES (?, ?)";
 			PreparedStatement prep = c.prepareStatement(sql);
-			prep.setInt(1, p.getId());
-			prep.setInt(2, m.getId());
+			prep.setInt(1, prod_id);
+			prep.setInt(2, mat_id);
 			prep.executeUpdate();
+			System.out.println("holaaaaaa");
+
 			prep.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void addCharacteristic(Characteristic ch, Product pr) {
+	public void addCharacteristic(Characteristic ch, int prod_id) {
 		try {
 			String sql = "INSERT INTO characteristics (product_id, dimentions,weight,joint_numb,flexibility_scale) "
 					+ "VALUES(?,?,?,?,?)";
 			PreparedStatement prep = c.prepareStatement(sql);
-			prep.setInt(1, pr.getId());
+			prep.setInt(1, prod_id);
 			prep.setString(2, ch.getDimentions());
 			prep.setFloat(3, ch.getWeight());
 			prep.setInt(4, ch.getJoints_numb());
@@ -229,7 +238,6 @@ public class JDBCManager implements DBManager {
 			e.printStackTrace();
 		}
 	}
-
 
 	public void addCustomer(Customer cust) {
 		try {
@@ -289,7 +297,8 @@ public class JDBCManager implements DBManager {
 		order.addProduct(product);
 
 	}
-	//METHODS FOR THE MENU
+
+	// METHODS FOR THE MENU
 	@Override
 	public List<String> viewBodyparts() {
 		List<String> bodyPart = new ArrayList<String>();
@@ -392,8 +401,8 @@ public class JDBCManager implements DBManager {
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				int ids = rs.getInt("id");
-				Date dateO=rs.getDate("date_order");
-				Order o=new Order(ids,dateO);
+				Date dateO = rs.getDate("date_order");
+				Order o = new Order(ids, dateO);
 				orders.add(o);
 			}
 			rs.close();
@@ -510,30 +519,31 @@ public class JDBCManager implements DBManager {
 		return products;
 
 	}
-	//UPDATE PRODUCT
+
+	// UPDATE PRODUCT
 	public void updateProduct(Product p, float newPrice) {
 		try {
-			String sql= "UPDATE products SET price=? WHERE id=?";
-			PreparedStatement stmt=c.prepareStatement(sql);
+			String sql = "UPDATE products SET price=? WHERE id=?";
+			PreparedStatement stmt = c.prepareStatement(sql);
 			stmt.setFloat(1, newPrice);
 			stmt.setInt(2, p.getId());
 			stmt.executeUpdate();
 			stmt.close();
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
-	//UPDATE CHARACTERISTIC
+
+	// UPDATE CHARACTERISTIC
 	public void updateCharact(Characteristic ch, String newDimentions) {
 		try {
-			String sql="UPDATE characteristics SET dimentions=? WHERE id=?";
-			PreparedStatement stmt=c.prepareStatement(sql);
-			stmt.setString(1, "%"+newDimentions+"%");
+			String sql = "UPDATE characteristics SET dimentions=? WHERE id=?";
+			PreparedStatement stmt = c.prepareStatement(sql);
+			stmt.setString(1, "%" + newDimentions + "%");
 			stmt.setInt(2, ch.getId());
 			stmt.executeUpdate();
 			stmt.close();
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

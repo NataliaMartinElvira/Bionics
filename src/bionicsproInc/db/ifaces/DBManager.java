@@ -18,13 +18,13 @@ public interface DBManager {
 	
 	public Material getMaterial(String name);
 
-	public void addMatIntoProd(Product p, Material m);
+	public void addMatIntoProd(int prod_id, int mat_id);
 
 	public void addCustomer(Customer cust);
 
 	public void addEngineer(Engineer eng, Product pr);
 	
-	public void addCharacteristic(Characteristic ch, Product pr);
+	public void addCharacteristic(Characteristic ch, int prod_id);
 	
 	public void addOrder(Customer cust, Order o);
 	

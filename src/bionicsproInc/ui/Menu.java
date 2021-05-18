@@ -203,8 +203,8 @@ public class Menu {
 				int amount=Integer.parseInt(reader.readLine());
 				Material m=new Material(nameMat,pMat,amount);
 				dbman.addMaterial(m);
-				dbman.addMatIntoProd(dbman.getProduct(name), dbman.getMaterial(nameMat));
-				//dbman.addMatIntoProd(np,m);
+				dbman.addMatIntoProd(dbman.getProduct(name).getId(), dbman.getMaterial(nameMat).getId());
+				System.out.println("id prod"+dbman.getProduct(name).getId()+"id mnat"+dbman.getMaterial(nameMat).getId());
 			}
 			/*check this*/
 			System.out.println("Describe characteristics: ");
@@ -217,7 +217,7 @@ public class Menu {
 			System.out.println("Flexibility Scale: ");
 			int fScale=Integer.parseInt(reader.readLine());
 			Characteristic cha=new Characteristic(dimentions,weight,nJoints,fScale);
-			dbman.addCharacteristic(cha,np);
+			dbman.addCharacteristic(cha,dbman.getProduct(name).getId());
 			//missing addchar into product or addprod into char
 
 		} catch (Exception e) {
