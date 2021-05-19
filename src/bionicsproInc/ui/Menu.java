@@ -95,6 +95,7 @@ public class Menu {
 			System.out.println("4. Remove product");
 			System.out.println("5. See existing projects");
 			System.out.println("6. View bonus");
+			System.out.println("7. Update a product's price");
 			System.out.println("0. Exit");
 			int choice = Integer.parseInt(reader.readLine());
 			switch (choice) {
@@ -120,6 +121,10 @@ public class Menu {
 
 			case 6:
 				viewBonus();
+				break;
+				
+			case 7: 
+				updateProd();
 				break;
 
 			case 0:
@@ -171,16 +176,27 @@ public class Menu {
 	// Engineer OPTION 1
 	private static void viewProduct() throws Exception {
 		System.out.println("Choose a bodypart:");
-		dbman.viewBodyparts();
+		List <String> bodyparts=dbman.viewBodyparts();
+		for (int j=0; j<bodyparts.size(); j++) {
+			System.out.println(bodyparts.get(j));
+		}
 		String name = reader.readLine();
 		List <Product> prods=dbman.searchProductByBody(name);
-		for (int i=0; i<prods.size(); i++) {
-			System.out.println(prods.get(i).getId() +"." + prods.get(i).getName());
+		for (Product product : prods) {
+			System.out.println("Id: "+product.getId() +". " + product.getName());
 		}
-		System.out.println("Choose a product: ");
+		System.out.println("Introduce id of the product: ");
 		int id = Integer.parseInt(reader.readLine());
-		dbman.viewCharacteristicsFromProduct(id);
-		dbman.viewMaterialsFromProduct(id);
+		float price=dbman.getProductById(id);
+		System.out.println("Price: "+price);
+		Characteristic ch=dbman.viewCharacteristicsFromProduct(id);
+		System.out.println("Dimensions: "+ch.getDimentions()+"; Weight: "+ch.getWeight()+";Number of joints: "+ch.getJoints_numb()
+		+";Flexibility Scale: "+ch.getFlexibilty_scale());	
+		List <Material> mats=dbman.viewMaterialsFromProduct(id);
+		for (Material material : mats) {
+			System.out.println("Material id: "+material.getId() +";Name of material: " + material.getName() +";Price: " 
+					+ material.getPrice() +";Amount: " + material.getAmount());
+		}
 	}
 	
 	// Engineer OPTION 2
@@ -219,9 +235,9 @@ public class Menu {
 			int cont=Integer.parseInt(reader.readLine());
 			for(int i=0;i<cont;i++){
 				List <Material> mats=dbman.ListMaterials();
-				for (int j=0; j<mats.size(); j++) {
-					System.out.println(mats.get(j).getId() +"." + mats.get(j).getName() +"." + mats.get(j).getPrice() 
-							+"." + mats.get(j).getAmount());
+				for (Material material : mats) {
+					System.out.println("Material id: "+material.getId() +";Name of material: " + material.getName() +";Price: " 
+							+ material.getPrice() +";Amount: " + material.getAmount());
 				}
 				System.out.println("Choose a material: ");
 				System.out.println("CHECK THE AMOUNT ");
@@ -248,7 +264,7 @@ public class Menu {
 	}
 	
 
-	// Engineer OPTION 4
+	// Engineer OPTION 5
 	private static void seeProject() throws Exception {
 		try {
 			System.out.println("Introduce your ID: ");
@@ -259,9 +275,14 @@ public class Menu {
 		}
 	}
 
-	// Engineer OPTION 5
+	// Engineer OPTION 4
+	
 	private static void removeProduct() throws Exception {
 		try {
+			List <Product> prods=dbman.ListProd();
+			for (Product product : prods) {
+				System.out.println("Id: "+product.getId() +". " + product.getName());
+			}
 			System.out.println("Introduce the product ID: ");
 			int id = Integer.parseInt(reader.readLine());
 			dbman.removeProd(id);
@@ -275,6 +296,20 @@ public class Menu {
 		System.out.println("Introduce your ID:");
 		int id = Integer.parseInt(reader.readLine());
 		dbman.viewBonus(id);
+	}
+	
+	//Engineer OPTION 7
+	
+	private static void updateProd() throws Exception{
+		List <Product> prods=dbman.ListProd();
+		for (Product product : prods) {
+			System.out.println("Id: "+product.getId() +". " + product.getName());
+		}
+		System.out.println("Choose name of the product you want to update the price");
+		String name = reader.readLine();
+		System.out.println("Give me the new price");
+		float price=Float.parseFloat(reader.readLine());
+		dbman.updateProduct(dbman.getProduct(name),price);
 	}
 
 	// CUSTOMER OPTION 1

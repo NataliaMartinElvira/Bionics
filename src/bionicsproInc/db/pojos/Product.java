@@ -74,6 +74,12 @@ public class Product implements Serializable {
 		this.price = price;
 		this.date_creation = date_creation;
 	}
+	
+	
+	public Product(String name) {
+		super();
+		this.name = name;
+	}
 
 
 	public Product(int id, String name) {

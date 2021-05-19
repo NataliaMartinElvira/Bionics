@@ -29,6 +29,8 @@ public interface DBManager {
 	
 	public Product getProduct(String name);
 	
+	public float getProductById(int id);
+	
 	public int getProductId(String nameP);
 	
 	public Material getMaterial(String name);
@@ -49,7 +51,7 @@ public interface DBManager {
 	
 	public List<String> viewProjectAchieved(int engId);
 	
-	public ArrayList<Characteristic> viewCharacteristicsFromProduct(int prodId);
+	public Characteristic viewCharacteristicsFromProduct(int prodId);
 	
 	public ArrayList<Material> viewMaterialsFromProduct(int prodId);
 	
@@ -57,7 +59,8 @@ public interface DBManager {
 	
 	public List<Product> viewProductsFromOrder(int orderId);
 	
-	public void updateProduct(Product p, float newPrice);
+	public List<Product> ListProd();
 	
-	public void updateCharact(Characteristic ch, String newDimentions);
+	public void updateProduct(Product p, float newPrice);
+
 }

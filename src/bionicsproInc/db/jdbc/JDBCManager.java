@@ -63,7 +63,7 @@ public class JDBCManager implements DBManager {
 			String sql5 = "CREATE TABLE characteristics " + "(id INTEGER PRIMARY KEY AUTOINCREMENT,"
 					+ " product_id INTEGER NOT NULL," + " dimentions TEXT NOT NULL," + " weight REAL NOT NULL,"
 					+ " joint_numb INTEGER NOT NULL," + " flexibility_scale INTEGER NOT NULL,"
-					+ " FOREIGN KEY (product_id) REFERENCES products(id))";
+					+ " FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE)";
 			stmt5.executeUpdate(sql5);
 			stmt5.close();
 
@@ -77,7 +77,7 @@ public class JDBCManager implements DBManager {
 			// now we create the table that references the N-N relationships
 
 			Statement stmt7 = c.createStatement();
-			String sql7 = "CREATE TABLE products_materials " + "(product_id  INTEGER REFERENCES products(id),"
+			String sql7 = "CREATE TABLE products_materials " + "(product_id  INTEGER REFERENCES products(id) ON DELETE CASCADE,"
 					+ " material_id INTEGER REFERENCES material(id)," + " PRIMARY KEY (product_id,material_id))";
 			stmt7.executeUpdate(sql7);
 			stmt7.close();
@@ -267,6 +267,24 @@ public class JDBCManager implements DBManager {
 		}
 		return id;
 	}
+	
+	public float getProductById(int id) {
+		float price=0;
+		try {
+			String sql = "SELECT price FROM products WHERE id=?";
+			PreparedStatement prep = c.prepareStatement(sql);
+			prep.setInt(1,id);
+			ResultSet rs = prep.executeQuery();
+			while (rs.next()) {
+				price = rs.getFloat("price");
+			}
+			prep.close();
+			rs.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return price;
+	}
 
 	public Material getMaterial(String name) {
 		try {
@@ -451,44 +469,42 @@ public class JDBCManager implements DBManager {
 	}
 
 	// METHOD USE TO SEE THE CHARACTERISTIC IN CERTAIN PRODUCT
-	public ArrayList<Characteristic> viewCharacteristicsFromProduct(int prodId) {
-		ArrayList<Characteristic> characteristics = new ArrayList<Characteristic>();
+	public Characteristic viewCharacteristicsFromProduct(int prodId) {
 		try {
-			String sql = "SELECT c.* FROM characteristics_product as cp JOIN characteristics as c "
-					+ "ON cp.characteristic_id = c.id JOIN products as p ON cp.products_id = p.id WHERE p.id = ?";
+			String sql = "SELECT * FROM characteristics WHERE product_id = ?";
 			PreparedStatement stmt = c.prepareStatement(sql);
 			stmt.setInt(1, prodId);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				String dimentions = rs.getString("dimentions");
 				float weight = rs.getFloat("weight");
-				int joints_numb = rs.getInt("joints_numb");
-				int flexibilty_scale = rs.getInt("flexibilty_scale");
-				Characteristic ch = new Characteristic(dimentions, weight, joints_numb, flexibilty_scale);
-				characteristics.add(ch);
+				int joints_numb = rs.getInt("joint_numb");
+				int flexibilty_scale = rs.getInt("flexibility_scale");
+				return new Characteristic(dimentions, weight, joints_numb, flexibilty_scale);
 			}
 			rs.close();
 			stmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return characteristics;
+		return null;
 	}
 
 	// METHOD USE TO SEE THE MATERIALS IN CERTAIN PRODUCT
 	public ArrayList<Material> viewMaterialsFromProduct(int prodId) {
 		ArrayList<Material> materials = new ArrayList<Material>();
 		try {
-			String sql = "SELECT m.* FROM products_materials as pm JOIN materials as m "
-					+ "ON pm.material_id = m.id JOIN products as p ON pm.products_id = p.id WHERE p.id = ?";
+			String sql = "SELECT m.* FROM products_materials as pm JOIN material as m "
+					+ "ON pm.material_id = m.id JOIN products as p ON pm.product_id = p.id WHERE p.id = ?";
 			PreparedStatement stmt = c.prepareStatement(sql);
 			stmt.setInt(1, prodId);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
+				int mat_id=rs.getInt("id");
 				String name = rs.getString("name");
 				float price = rs.getFloat("price");
 				int amount = rs.getInt("amount");
-				Material m = new Material(name, price, amount);
+				Material m = new Material(mat_id,name, price, amount);
 
 				materials.add(m);
 			}
@@ -545,28 +561,34 @@ public class JDBCManager implements DBManager {
 		return products;
 
 	}
-
-	// UPDATE PRODUCT
-	public void updateProduct(Product p, float newPrice) {
+	
+	//List of all products in database
+	public List<Product> ListProd() {
+		List<Product> products = new ArrayList<Product>();
 		try {
-			String sql = "UPDATE products SET price=? WHERE id=?";
-			PreparedStatement stmt = c.prepareStatement(sql);
-			stmt.setFloat(1, newPrice);
-			stmt.setInt(2, p.getId());
-			stmt.executeUpdate();
-			stmt.close();
+			String sql = "SELECT id,name FROM products";
+			PreparedStatement stm = c.prepareStatement(sql);
+			ResultSet rs = stm.executeQuery();
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String productname = rs.getString("name");
+				Product p = new Product(id, productname);
+				products.add(p);
+			}
+			rs.close();
+			stm.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return products;
 	}
-
-	// UPDATE CHARACTERISTIC
-	public void updateCharact(Characteristic ch, String newDimentions) {
+	// UPDATE PRODUCT
+	public void updateProduct(Product p, float newPrice) {
 		try {
-			String sql = "UPDATE characteristics SET dimentions=? WHERE id=?";
+			String sql = "UPDATE products SET price=? WHERE name=?";
 			PreparedStatement stmt = c.prepareStatement(sql);
-			stmt.setString(1, "%" + newDimentions + "%");
-			stmt.setInt(2, ch.getId());
+			stmt.setFloat(1, newPrice);
+			stmt.setString(2, p.getName());
 			stmt.executeUpdate();
 			stmt.close();
 		} catch (Exception e) {
