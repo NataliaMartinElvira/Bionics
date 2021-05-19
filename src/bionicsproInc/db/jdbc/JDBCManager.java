@@ -76,16 +76,6 @@ public class JDBCManager implements DBManager {
 
 			// now we create the table that references the N-N relationships
 
-			/*
-			 * Statement stmt7 = c.createStatement(); String sql7 =
-			 * "CREATE TABLE products_materials " + "(product_id  INTEGER NOT NULL," +
-			 * " material_id INTEGER NOT NULL,"
-			 * +" FOREIGN KEY (product_id) REFERENCES products(id)," +
-			 * "FOREIGN KEY (material_id) REFERENCES material(id)," +
-			 * " UNIQUE (product_id, material_id))"; stmt7.executeUpdate(sql7);
-			 * stmt7.close();
-			 */
-
 			Statement stmt7 = c.createStatement();
 			String sql7 = "CREATE TABLE products_materials " + "(product_id  INTEGER REFERENCES products(id),"
 					+ " material_id INTEGER REFERENCES material(id)," + " PRIMARY KEY (product_id,material_id))";
@@ -117,6 +107,8 @@ public class JDBCManager implements DBManager {
 		}
 	}
 
+	// ADD NEW THINGS IN DATABASE
+
 	public void addProduct(Product p) {
 		try {
 			String sql = "INSERT INTO products (name,bodypart,price,date_creation) " + " VALUES(?,?,?,?)";
@@ -130,45 +122,6 @@ public class JDBCManager implements DBManager {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	public Product getProduct(String name) {
-		try {
-			String sql = "SELECT * FROM products WHERE name=?";
-			PreparedStatement prep = c.prepareStatement(sql);
-			prep.setString(1, name);
-			ResultSet rs = prep.executeQuery();
-			while (rs.next()) {
-				int id = rs.getInt("id");
-				String bodypart = rs.getString("bodypart");
-				float price = rs.getFloat("price");
-				Date date_creation = rs.getDate("date_creation");
-				return new Product(id, name, bodypart, price, date_creation);
-			}
-			prep.close();
-			rs.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	public int getProductId(String nameP) {
-		int id = 0;
-		try {
-			String sql = "SELECT id FROM products WHERE name=?";
-			PreparedStatement prep = c.prepareStatement(sql);
-			prep.setString(1, "%" + nameP + "%");
-			ResultSet rs = prep.executeQuery();
-			while (rs.next()) {
-				id = rs.getInt("id");
-			}
-			prep.close();
-			rs.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return id;
 	}
 
 	public void addMaterial(Material m) {
@@ -186,27 +139,6 @@ public class JDBCManager implements DBManager {
 
 	}
 
-	public Material getMaterial(String name) {
-		try {
-			String sql = "SELECT * FROM material WHERE name= ?";
-			PreparedStatement prep = c.prepareStatement(sql);
-			prep.setString(1, name);
-			ResultSet rs = prep.executeQuery();
-			while (rs.next()) {
-				int id = rs.getInt("id");
-				float price = rs.getFloat("price");
-				int amount = rs.getInt("amount");
-
-				return new Material(id, name, price, amount);
-			}
-			prep.close();
-			rs.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
 	public void addMatIntoProd(int prod_id, int mat_id) {
 		try {
 			String sql = "INSERT INTO products_materials (product_id, material_id) VALUES (?, ?)";
@@ -214,8 +146,6 @@ public class JDBCManager implements DBManager {
 			prep.setInt(1, prod_id);
 			prep.setInt(2, mat_id);
 			prep.executeUpdate();
-			System.out.println("holaaaaaa");
-
 			prep.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -298,7 +228,104 @@ public class JDBCManager implements DBManager {
 
 	}
 
+	// GETS
+	public Product getProduct(String name) {
+		try {
+			String sql = "SELECT * FROM products WHERE name=?";
+			PreparedStatement prep = c.prepareStatement(sql);
+			prep.setString(1, name);
+			ResultSet rs = prep.executeQuery();
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String bodypart = rs.getString("bodypart");
+				float price = rs.getFloat("price");
+				Date date_creation = rs.getDate("date_creation");
+				return new Product(id, name, bodypart, price, date_creation);
+			}
+			prep.close();
+			rs.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public int getProductId(String nameP) {
+		int id = 0;
+		try {
+			String sql = "SELECT id FROM products WHERE name=?";
+			PreparedStatement prep = c.prepareStatement(sql);
+			prep.setString(1, "%" + nameP + "%");
+			ResultSet rs = prep.executeQuery();
+			while (rs.next()) {
+				id = rs.getInt("id");
+			}
+			prep.close();
+			rs.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return id;
+	}
+
+	public Material getMaterial(String name) {
+		try {
+			String sql = "SELECT * FROM material WHERE name= ?";
+			PreparedStatement prep = c.prepareStatement(sql);
+			prep.setString(1, name);
+			ResultSet rs = prep.executeQuery();
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				float price = rs.getFloat("price");
+				int amount = rs.getInt("amount");
+
+				return new Material(id, name, price, amount);
+			}
+			prep.close();
+			rs.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	// METHODS FOR THE MENU
+
+	// DELETES
+	// REMOVES THE PRODUCT FROM THE DATABASE
+	@Override
+	public void removeProd(int prodId) {
+		try {
+			String sql = "DELETE FROM products WHERE id = ? ";
+			PreparedStatement stmt = c.prepareStatement(sql);
+			stmt.setInt(1, prodId);
+			stmt.executeUpdate();
+			stmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	// DELETES A PRODUCT FROM THE CART
+	public void deleteProdFromCart(String name, Order o) {
+		try {
+			String sql = "SELECT id FROM products WHERE name = ? ";
+			PreparedStatement stmt = c.prepareStatement(sql);
+			stmt.setString(1, "%" + name + "%");
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				int id = rs.getInt("product_id");
+				o.removeProduct(id);
+			}
+			rs.close();
+			stmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	// LISTS AND VIEW
+	// LISTS BODYPARTS
 	@Override
 	public List<String> viewBodyparts() {
 		List<String> bodyPart = new ArrayList<String>();
@@ -318,6 +345,7 @@ public class JDBCManager implements DBManager {
 		return bodyPart;
 	}
 
+	// LIST PRODUCTS WHICH BODYPART IS THE ONE CHOSEN BY THE USER
 	@Override
 	public List<Product> searchProductByBody(String bodypart) {
 		List<Product> products = new ArrayList<Product>();
@@ -340,19 +368,7 @@ public class JDBCManager implements DBManager {
 		return products;
 	}
 
-	@Override
-	public void removeProd(int prodId) {
-		try {
-			String sql = "DELETE FROM products WHERE id = ? ";
-			PreparedStatement stmt = c.prepareStatement(sql);
-			stmt.setInt(1, prodId);
-			stmt.executeUpdate();
-			stmt.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
+	// METHOD THAT SHOWS US THE BONUS OF THE ENGINEER
 	@Override
 	public Engineer viewBonus(int engId) {
 		try {
@@ -371,7 +387,7 @@ public class JDBCManager implements DBManager {
 		return null;
 	}
 
-	// LIKE ADDTOCART- THE SAME FUNCTION
+	// METHOD THAT SHOWS US THE CART
 	public List<String> viewCart(Order o) {
 		List<String> p_names = new ArrayList<String>();
 		try {
@@ -391,6 +407,7 @@ public class JDBCManager implements DBManager {
 		return p_names;
 	}
 
+	// METHOD THAT LET THE CUSTOMER SEE ORDERS THAT HE ALREDY DONE
 	@Override
 	public List<Order> viewOtherOrders(int id) {
 		List<Order> orders = new ArrayList<Order>();
@@ -413,6 +430,7 @@ public class JDBCManager implements DBManager {
 		return orders;
 	}
 
+	// METHOD USE TO SEE THE PRODUCTS CREATED BY THAT ENGINEER
 	public List<String> viewProjectAchieved(int engId) {
 		List<String> prodname = new ArrayList<String>();
 		try {
@@ -432,23 +450,7 @@ public class JDBCManager implements DBManager {
 		return prodname;
 	}
 
-	public void deleteProdFromCart(String name, Order o) {
-		try {
-			String sql = "SELECT id FROM products WHERE name = ? ";
-			PreparedStatement stmt = c.prepareStatement(sql);
-			stmt.setString(1, "%" + name + "%");
-			ResultSet rs = stmt.executeQuery();
-			while (rs.next()) {
-				int id = rs.getInt("product_id");
-				o.removeProduct(id);
-			}
-			rs.close();
-			stmt.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
+	// METHOD USE TO SEE THE CHARACTERISTIC IN CERTAIN PRODUCT
 	public ArrayList<Characteristic> viewCharacteristicsFromProduct(int prodId) {
 		ArrayList<Characteristic> characteristics = new ArrayList<Characteristic>();
 		try {
@@ -473,6 +475,7 @@ public class JDBCManager implements DBManager {
 		return characteristics;
 	}
 
+	// METHOD USE TO SEE THE MATERIALS IN CERTAIN PRODUCT
 	public ArrayList<Material> viewMaterialsFromProduct(int prodId) {
 		ArrayList<Material> materials = new ArrayList<Material>();
 		try {
@@ -487,6 +490,29 @@ public class JDBCManager implements DBManager {
 				int amount = rs.getInt("amount");
 				Material m = new Material(name, price, amount);
 
+				materials.add(m);
+			}
+			rs.close();
+			stmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return materials;
+	}
+
+	// METHOD USE TO GET THE MATERIALS SAVE IN THE DATABASE
+	public ArrayList<Material> ListMaterials() {
+		ArrayList<Material> materials = new ArrayList<Material>();
+		try {
+			String sql = "SELECT * FROM material";
+			PreparedStatement stmt = c.prepareStatement(sql);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String name = rs.getString("name");
+				float price = rs.getFloat("price");
+				int amount = rs.getInt("amount");
+				Material m = new Material(id, name, price, amount);
 				materials.add(m);
 			}
 			rs.close();

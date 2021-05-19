@@ -90,31 +90,35 @@ public class Menu {
 		do {
 			System.out.println("\n Choose an option:");
 			System.out.println("1. View product");
-			System.out.println("2. Add new product");
-			System.out.println("3. Remove product");
-			System.out.println("4. See existing projects");
-			System.out.println("5. View bonus");
+			System.out.println("2. Add new material");
+			System.out.println("3. Add new product");
+			System.out.println("4. Remove product");
+			System.out.println("5. See existing projects");
+			System.out.println("6. View bonus");
 			System.out.println("0. Exit");
 			int choice = Integer.parseInt(reader.readLine());
 			switch (choice) {
 			case 1:
 				viewProduct();
 				break;
-
 			case 2:
-				addProduct();
+				addMaterial();
 				break;
 
 			case 3:
-				removeProduct();
+				addProduct();
 				break;
 
 			case 4:
+				removeProduct();
+				break;
+
+			case 5:
 
 				seeProject();
 				break;
 
-			case 5:
+			case 6:
 				viewBonus();
 				break;
 
@@ -178,8 +182,25 @@ public class Menu {
 		dbman.viewCharacteristicsFromProduct(id);
 		dbman.viewMaterialsFromProduct(id);
 	}
-
+	
 	// Engineer OPTION 2
+	private static void addMaterial() throws Exception{
+		try {
+			System.out.println("Name of material: ");
+			String nameMat=reader.readLine();
+			System.out.println("Price:");
+			float pMat=Float.parseFloat(reader.readLine());
+			System.out.println("Amount: ");
+			int amount=Integer.parseInt(reader.readLine());
+			Material m=new Material(nameMat,pMat,amount);
+			dbman.addMaterial(m);		
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	// Engineer OPTION 3
 	// NEED TO SPEAK ABOUT HOW TO ADD PHOTO ATTRIBUTE FROM A STRING ...
 	private static void addProduct() throws Exception {
 		try {
@@ -197,20 +218,19 @@ public class Menu {
 			System.out.println("How many materials does the product have? ");
 			int cont=Integer.parseInt(reader.readLine());
 			for(int i=0;i<cont;i++){
-				
-				System.out.println("Name: ");
-				String nameMat=reader.readLine();
-				System.out.println("Price:");
-				float pMat=Float.parseFloat(reader.readLine());
-				System.out.println("Amount: ");
-				int amount=Integer.parseInt(reader.readLine());
-				Material m=new Material(nameMat,pMat,amount);
-				dbman.addMaterial(m);
-				dbman.addMatIntoProd(dbman.getProduct(name).getId(), dbman.getMaterial(nameMat).getId());
+				List <Material> mats=dbman.ListMaterials();
+				for (int j=0; j<mats.size(); j++) {
+					System.out.println(mats.get(j).getId() +"." + mats.get(j).getName() +"." + mats.get(j).getPrice() 
+							+"." + mats.get(j).getAmount());
+				}
+				System.out.println("Choose a material: ");
+				System.out.println("CHECK THE AMOUNT ");
+				int mater_id = Integer.parseInt(reader.readLine());
+				dbman.addMatIntoProd(dbman.getProduct(name).getId(), mater_id);
 			}
 			/*check this*/
 			System.out.println("Describe characteristics: ");
-			System.out.println("Dimensions (cm X cm X cm): ");
+			System.out.println("Dimensions (Length x Width x Height ): ");
 			String dimentions=reader.readLine();
 			System.out.println("Weight:");
 			float weight=Float.parseFloat(reader.readLine());
@@ -220,15 +240,15 @@ public class Menu {
 			int fScale=Integer.parseInt(reader.readLine());
 			Characteristic cha=new Characteristic(dimentions,weight,nJoints,fScale);
 			dbman.addCharacteristic(cha,dbman.getProduct(name).getId());
-			//missing addchar into product or addprod into char
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 	}
+	
 
-	// Engineer OPTION 3
+	// Engineer OPTION 4
 	private static void seeProject() throws Exception {
 		try {
 			System.out.println("Introduce your ID: ");
@@ -239,7 +259,7 @@ public class Menu {
 		}
 	}
 
-	// Engineer OPTION 4
+	// Engineer OPTION 5
 	private static void removeProduct() throws Exception {
 		try {
 			System.out.println("Introduce the product ID: ");
@@ -250,7 +270,7 @@ public class Menu {
 		}
 	}
 
-	// Engineer OPTION 5
+	// Engineer OPTION 6
 	private static void viewBonus() throws Exception {
 		System.out.println("Introduce your ID:");
 		int id = Integer.parseInt(reader.readLine());
