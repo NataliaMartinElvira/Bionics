@@ -55,7 +55,8 @@ public class JDBCManager implements DBManager {
 					+ " product_id INTEGER NOT NULL," + " name_surname     TEXT     NOT NULL UNIQUE, "
 					+ " contract_starting_date DATE NOT NULL UNIQUE," + " contract_ending_date DATE NOT NULL,"
 					+ " salary REAL NOT NULL," + " bonus REAL NOT NULL," + " experience_in_years INTEGER NOT NULL,"
-					+ " date_of_birth DATE NOT NULL," + " FOREIGN KEY (product_id) REFERENCES products(id))";
+					+ " date_of_birth DATE NOT NULL," + " role_id INTEGER NOT NULL,"
+					+ " FOREIGN KEY (product_id) REFERENCES products(id))";
 			stmt4.executeUpdate(sql4);
 			stmt4.close();
 
@@ -77,7 +78,8 @@ public class JDBCManager implements DBManager {
 			// now we create the table that references the N-N relationships
 
 			Statement stmt7 = c.createStatement();
-			String sql7 = "CREATE TABLE products_materials " + "(product_id  INTEGER REFERENCES products(id) ON DELETE CASCADE,"
+			String sql7 = "CREATE TABLE products_materials "
+					+ "(product_id  INTEGER REFERENCES products(id) ON DELETE CASCADE,"
 					+ " material_id INTEGER REFERENCES material(id)," + " PRIMARY KEY (product_id,material_id))";
 			stmt7.executeUpdate(sql7);
 			stmt7.close();
@@ -171,12 +173,17 @@ public class JDBCManager implements DBManager {
 
 	public void addCustomer(Customer cust) {
 		try {
-			Statement st = c.createStatement();
-			String sql = "INSERT INTO customer (name, phone, email, street, city, postal_code) " + " VALUES ('"
-					+ cust.getName() + "', '" + cust.getPhone() + "', '" + cust.getEmail() + "','" + cust.getStreet()
-					+ "','" + cust.getCity() + "','" + cust.getPostal_code() + "')'";
-			st.executeUpdate(sql);
-			st.close();
+			String sql = "INSERT INTO customer (name, phone, email, street, city, postal_code) "
+					+ " VALUES (?,?,?,?,?,?)";
+			PreparedStatement prep = c.prepareStatement(sql);
+			prep.setString(1, cust.getName());
+			prep.setInt(2, cust.getPhone());
+			prep.setString(3, cust.getEmail());
+			prep.setString(4, cust.getStreet());
+			prep.setString(5, cust.getCity());
+			prep.setInt(6, cust.getPostal_code());
+			prep.executeUpdate();
+			prep.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -185,15 +192,20 @@ public class JDBCManager implements DBManager {
 
 	public void addEngineer(Engineer eng, Product pr) {
 		try {
-
-			Statement stmt = c.createStatement();
 			String sql = " INSERT INTO Engineer (product_id, name_surname, contract_starting_date, contract_ending_date,salary, bonus,"
-					+ " experience_in_years, date_of_birth) " + " VALUES ('" + pr.getId() + "','"
-					+ eng.getName_surname() + "','" + eng.getContract_strating_date() + "','"
-					+ eng.getContract_ending_date() + "','" + eng.getSalary() + "','" + eng.getBonus() + "','"
-					+ eng.getExperience_in_years() + "','" + eng.getDate_of_birth() + "')'";
-			stmt.executeUpdate(sql);
-			stmt.close();
+					+ " experience_in_years, date_of_birth, role_id) " + " VALUES (?,?,?,?,?,?,?,?,?)";
+			PreparedStatement prep = c.prepareStatement(sql);
+			prep.setInt(1, pr.getId());
+			prep.setString(2, eng.getName_surname());
+			prep.setDate(3, eng.getContract_strating_date());
+			prep.setDate(4, eng.getContract_ending_date());
+			prep.setFloat(5, eng.getSalary());
+			prep.setFloat(6, eng.getBonus());
+			prep.setInt(7, eng.getExperience_in_years());
+			prep.setDate(8, eng.getDate_of_birth());
+			prep.setInt(9, eng.getRole_id());
+			prep.executeUpdate();
+			prep.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -267,13 +279,13 @@ public class JDBCManager implements DBManager {
 		}
 		return id;
 	}
-	
+
 	public float getProductById(int id) {
-		float price=0;
+		float price = 0;
 		try {
 			String sql = "SELECT price FROM products WHERE id=?";
 			PreparedStatement prep = c.prepareStatement(sql);
-			prep.setInt(1,id);
+			prep.setInt(1, id);
 			ResultSet rs = prep.executeQuery();
 			while (rs.next()) {
 				price = rs.getFloat("price");
@@ -500,11 +512,11 @@ public class JDBCManager implements DBManager {
 			stmt.setInt(1, prodId);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
-				int mat_id=rs.getInt("id");
+				int mat_id = rs.getInt("id");
 				String name = rs.getString("name");
 				float price = rs.getFloat("price");
 				int amount = rs.getInt("amount");
-				Material m = new Material(mat_id,name, price, amount);
+				Material m = new Material(mat_id, name, price, amount);
 
 				materials.add(m);
 			}
@@ -561,8 +573,8 @@ public class JDBCManager implements DBManager {
 		return products;
 
 	}
-	
-	//List of all products in database
+
+	// List of all products in database
 	public List<Product> ListProd() {
 		List<Product> products = new ArrayList<Product>();
 		try {
@@ -582,6 +594,7 @@ public class JDBCManager implements DBManager {
 		}
 		return products;
 	}
+
 	// UPDATE PRODUCT
 	public void updateProduct(Product p, float newPrice) {
 		try {

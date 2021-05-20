@@ -53,14 +53,39 @@ public class Menu {
 	}
 
 	private static void register() throws Exception {
-		System.out.println("Please, write your email address:");
-		String email = reader.readLine();
-		System.out.println("Please, write your password:");
-		String password = reader.readLine();
 		System.out.println(userman.getRoles());
 		System.out.println("Type the chosen role ID:");
 		int id = Integer.parseInt(reader.readLine());
 		Role role = userman.getRole(id);
+		switch(id) {
+		case 1: 
+			System.out.println("Introduce your data: \n");
+			System.out.println("Enter your name: ");
+			String name=reader.readLine();
+			System.out.println("Contract starting date: ");
+			LocalDate startingDate=LocalDate.parse(reader.readLine(), formatter);
+			Date startDate=Date.valueOf(startingDate);
+			System.out.println("Contract ending date: ");
+			LocalDate endingDate=LocalDate.parse(reader.readLine(), formatter);
+			Date endDate=Date.valueOf(endingDate);
+			System.out.println("Salary: ");
+			float salary=Float.parseFloat(reader.readLine());
+			System.out.println("Bonus: ");
+			float bonus=Float.parseFloat(reader.readLine());
+			System.out.println("Experience in years: ");
+			int experience=Integer.parseInt(reader.readLine());
+			System.out.println("Date of birth: ");
+			LocalDate birthDate=LocalDate.parse(reader.readLine(), formatter);
+			Date birth_Date=Date.valueOf(birthDate);
+			Engineer eng=new Engineer(name,startDate,endDate,salary,bonus,experience,birth_Date,id);
+			//necesitamos pasar un product a engineer
+			break;
+			//TODO case 2
+		}
+		System.out.println("Please, write your email address:");
+		String email = reader.readLine();
+		System.out.println("Please, write your password:");
+		String password = reader.readLine();
 		MessageDigest md = MessageDigest.getInstance("MD5");
 		md.update(password.getBytes());
 		byte[] hash = md.digest();

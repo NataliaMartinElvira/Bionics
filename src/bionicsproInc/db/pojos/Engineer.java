@@ -17,6 +17,7 @@ public class Engineer implements Serializable {
 	private float salary;
 	private float bonus;
 	private int experience_in_years;
+	private int role_id;
 	private ArrayList<Product> products;
 	
 	//Constructors
@@ -41,11 +42,26 @@ public class Engineer implements Serializable {
 		this.bonus = bonus;
 	}
 	
+	
+	public Engineer(String name_surname, Date contract_strating_date, Date contract_ending_date,
+			float salary, float bonus, int experience_in_years, Date date_of_birth, int role_id) {
+		super();
+		this.name_surname = name_surname;
+		this.contract_strating_date = contract_strating_date;
+		this.contract_ending_date = contract_ending_date;
+		this.salary = salary;
+		this.bonus = bonus;
+		this.experience_in_years = experience_in_years;
+		this.date_of_birth = date_of_birth;
+		this.role_id = role_id;
+	}
+
 	public Engineer() {
 		super();
 	}
 	
 	//Getters and Setters
+	
 
 	public int getId() {
 		return id;
@@ -110,6 +126,14 @@ public class Engineer implements Serializable {
 	public void setDate_of_birth(Date date_of_birth) {
 		this.date_of_birth = date_of_birth;
 	}
+	
+	public int getRole_id() {
+		return role_id;
+	}
+
+	public void setRole_id(int role_id) {
+		this.role_id = role_id;
+	}
 
 	public ArrayList<Product> getProducts() {
 		return products;
@@ -133,6 +157,7 @@ public class Engineer implements Serializable {
 		result = prime * result + id;
 		result = prime * result + ((name_surname == null) ? 0 : name_surname.hashCode());
 		result = prime * result + ((products == null) ? 0 : products.hashCode());
+		result = prime * result + role_id;
 		result = prime * result + Float.floatToIntBits(salary);
 		return result;
 	}
@@ -177,13 +202,11 @@ public class Engineer implements Serializable {
 				return false;
 		} else if (!products.equals(other.products))
 			return false;
+		if (role_id != other.role_id)
+			return false;
 		if (Float.floatToIntBits(salary) != Float.floatToIntBits(other.salary))
 			return false;
 		return true;
 	}
-
 	
-	
-
-
 }
