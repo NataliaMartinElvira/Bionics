@@ -46,7 +46,8 @@ public class JDBCManager implements DBManager {
 			Statement stmt3 = c.createStatement();
 			String sql3 = "CREATE TABLE customer " + "(id INTEGER  PRIMARY KEY AUTOINCREMENT,"
 					+ " name     TEXT     NOT NULL, " + " phone INTEGER NOT NULL," + " email TEXT NOT NULL,"
-					+ " street TEXT NOT NULL," + " city TEXT NOT NULL," + " postal_code INTEGER NOT NULL)";
+					+ " street TEXT NOT NULL," + " city TEXT NOT NULL," + " postal_code INTEGER NOT NULL)"
+					+ " role_id INTEGER NOT NULL";
 			stmt3.executeUpdate(sql3);
 			stmt3.close();
 
@@ -173,8 +174,8 @@ public class JDBCManager implements DBManager {
 
 	public void addCustomer(Customer cust) {
 		try {
-			String sql = "INSERT INTO customer (name, phone, email, street, city, postal_code) "
-					+ " VALUES (?,?,?,?,?,?)";
+			String sql = "INSERT INTO customer (name, phone, email, street, city, postal_code, role_id) "
+					+ " VALUES (?,?,?,?,?,?,?)";
 			PreparedStatement prep = c.prepareStatement(sql);
 			prep.setString(1, cust.getName());
 			prep.setInt(2, cust.getPhone());
@@ -182,6 +183,7 @@ public class JDBCManager implements DBManager {
 			prep.setString(4, cust.getStreet());
 			prep.setString(5, cust.getCity());
 			prep.setInt(6, cust.getPostal_code());
+			prep.setInt(7, cust.getRole_id());
 			prep.executeUpdate();
 			prep.close();
 		} catch (Exception e) {

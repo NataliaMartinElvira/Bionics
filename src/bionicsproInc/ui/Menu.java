@@ -79,20 +79,42 @@ public class Menu {
 			Date birth_Date=Date.valueOf(birthDate);
 			Engineer eng=new Engineer(name,startDate,endDate,salary,bonus,experience,birth_Date,id);
 			//necesitamos pasar un product a engineer
+			System.out.println("Please, write your email address: ");
+			String emailEng = reader.readLine();
+			System.out.println("Please, write your password:");
+			String passwordEng = reader.readLine();
+			MessageDigest md1 = MessageDigest.getInstance("MD5");
+			md1.update(passwordEng.getBytes());
+			byte[] hash1 = md1.digest();
+			User userE= new User(emailEng,hash1,role);
+			userman.newUser(userE);
 			break;
-			//TODO case 2
+		case 2:
+			System.out.println("Introduce your data: \n");
+			System.out.println("Enter your name: ");
+			String custName= reader.readLine();
+			System.out.println("Enter your phone number: ");
+			int phone=Integer.parseInt(reader.readLine());
+			System.out.println("Please, write your email address: ");
+			String emailCust = reader.readLine();
+			System.out.println("Street: ");
+			String street=reader.readLine();
+			System.out.println("City: ");
+			String city=reader.readLine();
+			System.out.println("Postal code: ");
+			int postalCode=Integer.parseInt(reader.readLine());
+			System.out.println("Please, write your password:");
+			String passwordCust = reader.readLine();
+			MessageDigest md2 = MessageDigest.getInstance("MD5");
+			md2.update(passwordCust.getBytes());
+			byte[] hash2 = md2.digest();
+			User userC= new User(emailCust,hash2,role);
+			Customer cust=new Customer(custName,phone,emailCust,street,city,postalCode,id);
+			dbman.addCustomer(cust);
+			userman.newUser(userC);
+			break;
 		}
-		System.out.println("Please, write your email address:");
-		String email = reader.readLine();
-		System.out.println("Please, write your password:");
-		String password = reader.readLine();
-		MessageDigest md = MessageDigest.getInstance("MD5");
-		md.update(password.getBytes());
-		byte[] hash = md.digest();
-		User user = new User(email, hash, role);
-		//TODO ADD ENGINEER OR COSTUMER WITH FUNCION ADD ENGINNER OR CUSTOMER AND IN THOSE FUNCIONT VINCULATE IT WITH ANOTHER FUNCTION 
-		//ETC
-		userman.newUser(user);
+		System.out.println("You have registered properly \n");
 	}
 
 	private static void login() throws Exception {

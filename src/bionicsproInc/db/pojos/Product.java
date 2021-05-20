@@ -20,7 +20,6 @@ public class Product implements Serializable {
 	private ArrayList<Material> mats;
 	private ArrayList<Characteristic> characteristic;
 	private ArrayList<Customer> customers;
-	private ArrayList<Engineer> engineer;
 
 	
 	public Product() {
@@ -28,7 +27,7 @@ public class Product implements Serializable {
 	}
 	
 
-	public Product(int id, String name, String bodypart, Float price, Date date_creation, byte[] photo,ArrayList<Material> mats, ArrayList<Characteristic> characteristic, ArrayList<Customer> customers,ArrayList<Engineer> engineer) {
+	public Product(int id, String name, String bodypart, Float price, Date date_creation, byte[] photo,ArrayList<Material> mats, ArrayList<Characteristic> characteristic, ArrayList<Customer> customers) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -39,13 +38,11 @@ public class Product implements Serializable {
 		this.mats = mats;
 		this.characteristic = characteristic;
 		this.customers = customers;
-		this.engineer = engineer;
 	}
 	
 
 	public Product(String name, String bodypart, Float price, Date date_creation, byte[] photo,
-			ArrayList<Material> mats, ArrayList<Characteristic> characteristic, ArrayList<Customer> customers,
-			ArrayList<Engineer> engineer) {
+			ArrayList<Material> mats, ArrayList<Characteristic> characteristic, ArrayList<Customer> customers) {
 		super();
 		this.name = name;
 		this.bodypart = bodypart;
@@ -55,7 +52,6 @@ public class Product implements Serializable {
 		this.mats = mats;
 		this.characteristic = characteristic;
 		this.customers = customers;
-		this.engineer = engineer;
 	}
 
 	public Product(String name, String bodypart, Float price, Date date_creation) {
@@ -160,13 +156,6 @@ public class Product implements Serializable {
 		this.customers = customers;
 	}
 
-	public ArrayList<Engineer> getEngineer() {
-		return engineer;
-	}
-
-	public void setEngineer(ArrayList<Engineer> engineer) {
-		this.engineer = engineer;
-	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
@@ -180,7 +169,6 @@ public class Product implements Serializable {
 		result = prime * result + ((characteristic == null) ? 0 : characteristic.hashCode());
 		result = prime * result + ((customers == null) ? 0 : customers.hashCode());
 		result = prime * result + ((date_creation == null) ? 0 : date_creation.hashCode());
-		result = prime * result + ((engineer == null) ? 0 : engineer.hashCode());
 		result = prime * result + id;
 		result = prime * result + ((mats == null) ? 0 : mats.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
@@ -218,11 +206,6 @@ public class Product implements Serializable {
 				return false;
 		} else if (!date_creation.equals(other.date_creation))
 			return false;
-		if (engineer == null) {
-			if (other.engineer != null)
-				return false;
-		} else if (!engineer.equals(other.engineer))
-			return false;
 		if (id != other.id)
 			return false;
 		if (mats == null) {
@@ -250,7 +233,7 @@ public class Product implements Serializable {
 	public String toString() {
 		return "Product [id=" + id + ", name=" + name + ", bodypart=" + bodypart + ", price=" + price
 				+ ", date_creation=" + date_creation + ", photo=" + Arrays.toString(photo) + ", mats=" + mats
-				+ ", characteristic=" + characteristic + ", customers=" + customers + ", engineer=" + engineer + "]";
+				+ ", characteristic=" + characteristic + ", customers=" + customers + "]";
 	}
 
 }

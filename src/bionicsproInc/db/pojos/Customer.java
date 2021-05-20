@@ -16,6 +16,7 @@ public class Customer implements Serializable {
 	private String street;
 	private String city;
 	private int postal_code;
+	private int role_id;
 	private ArrayList<Order> orders;
 
 	
@@ -27,6 +28,18 @@ public class Customer implements Serializable {
 		super();
 		this.id = id;
 		this.orders = orders;
+	}
+	
+
+	public Customer(String name, int phone, String email, String street, String city, int postal_code, int role_id) {
+		super();
+		this.name = name;
+		this.phone = phone;
+		this.email = email;
+		this.street = street;
+		this.city = city;
+		this.postal_code = postal_code;
+		this.role_id = role_id;
 	}
 
 	public int getId() {
@@ -86,6 +99,12 @@ public class Customer implements Serializable {
 	public void setPostal_code(int postal_code) {
 		this.postal_code = postal_code;
 	}
+	public int getRole_id() {
+		return role_id;
+	}
+	public void setRole_id(int role_id) {
+		this.role_id=role_id;
+	}
 
 	public ArrayList<Order> getOrders() {
 		return orders;
@@ -94,6 +113,8 @@ public class Customer implements Serializable {
 	public void setOrders(ArrayList<Order> orders) {
 		this.orders = orders;
 	}
+
+	
 
 	@Override
 	public int hashCode() {
@@ -106,6 +127,7 @@ public class Customer implements Serializable {
 		result = prime * result + ((orders == null) ? 0 : orders.hashCode());
 		result = prime * result + phone;
 		result = prime * result + postal_code;
+		result = prime * result + role_id;
 		result = prime * result + ((street == null) ? 0 : street.hashCode());
 		return result;
 	}
@@ -144,6 +166,8 @@ public class Customer implements Serializable {
 		if (phone != other.phone)
 			return false;
 		if (postal_code != other.postal_code)
+			return false;
+		if (role_id != other.role_id)
 			return false;
 		if (street == null) {
 			if (other.street != null)

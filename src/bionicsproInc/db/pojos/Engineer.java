@@ -3,7 +3,6 @@ package bionicsproInc.db.pojos;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.ArrayList;
-import java.sql.*;
 public class Engineer implements Serializable {
 	/**
 	 * 
