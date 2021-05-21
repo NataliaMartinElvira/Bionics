@@ -33,7 +33,8 @@ public class JDBCManager implements DBManager {
 			Statement stmt1 = c.createStatement();
 			String sql1 = "CREATE TABLE products " + "(id INTEGER  PRIMARY KEY AUTOINCREMENT,"
 					+ " name TEXT NOT NULL UNIQUE, " + " bodypart  TEXT NOT NULL," + " price REAL NOT NULL,"
-					+ " date_creation DATE NOT NULL)";
+					+ " date_creation DATE NOT NULL,"+ " engineer_id INTEGER NOT NULL,"
+					+ " FOREIGN KEY (engineer_id) REFERENCES engineer(id))";
 			stmt1.executeUpdate(sql1);
 			stmt1.close();
 
@@ -53,11 +54,9 @@ public class JDBCManager implements DBManager {
 
 			Statement stmt4 = c.createStatement();
 			String sql4 = "CREATE TABLE engineer " + "(id INTEGER  PRIMARY KEY AUTOINCREMENT,"
-					+ " product_id INTEGER NOT NULL," + " name_surname     TEXT     NOT NULL UNIQUE, "
-					+ " contract_starting_date DATE NOT NULL UNIQUE," + " contract_ending_date DATE NOT NULL,"
-					+ " salary REAL NOT NULL," + " bonus REAL NOT NULL," + " experience_in_years INTEGER NOT NULL,"
-					+ " date_of_birth DATE NOT NULL," + " role_id INTEGER NOT NULL,"
-					+ " FOREIGN KEY (product_id) REFERENCES products(id))";
+					+ " name_surname     TEXT     NOT NULL UNIQUE, " + " contract_starting_date DATE NOT NULL UNIQUE," 
+					+ " contract_ending_date DATE NOT NULL," + " salary REAL NOT NULL," + " bonus REAL NOT NULL," 
+					+ " experience_in_years INTEGER NOT NULL," + " date_of_birth DATE NOT NULL," + " role_id INTEGER NOT NULL)";
 			stmt4.executeUpdate(sql4);
 			stmt4.close();
 
@@ -112,14 +111,15 @@ public class JDBCManager implements DBManager {
 
 	// ADD NEW THINGS IN DATABASE
 
-	public void addProduct(Product p) {
+	public void addProduct(Product p, int engId) {
 		try {
-			String sql = "INSERT INTO products (name,bodypart,price,date_creation) " + " VALUES(?,?,?,?)";
+			String sql = "INSERT INTO products (name,bodypart,price,date_creation,engineer_id) " + " VALUES(?,?,?,?,?)";
 			PreparedStatement prep = c.prepareStatement(sql);
 			prep.setString(1, p.getName());
 			prep.setString(2, p.getBodypart());
 			prep.setFloat(3, p.getPrice());
 			prep.setDate(4, p.getDate_creation());
+			prep.setInt(5, engId);
 			prep.executeUpdate();
 			prep.close();
 		} catch (Exception e) {
@@ -190,35 +190,12 @@ public class JDBCManager implements DBManager {
 		}
 
 	}
-
-	public void addEngineer(Engineer eng, Product pr) {
-		try {
-			String sql = " INSERT INTO Engineer (product_id, name_surname, contract_starting_date, contract_ending_date,salary, bonus,"
-					+ " experience_in_years, date_of_birth, role_id) " + " VALUES (?,?,?,?,?,?,?,?,?)";
-			PreparedStatement prep = c.prepareStatement(sql);
-			prep.setInt(1, pr.getId());
-			prep.setString(2, eng.getName_surname());
-			prep.setDate(3, eng.getContract_strating_date());
-			prep.setDate(4, eng.getContract_ending_date());
-			prep.setFloat(5, eng.getSalary());
-			prep.setFloat(6, eng.getBonus());
-			prep.setInt(7, eng.getExperience_in_years());
-			prep.setDate(8, eng.getDate_of_birth());
-			prep.setInt(9, eng.getRole_id());
-			prep.executeUpdate();
-			prep.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-	}
 	
-	public void addEngineerWhithoutProd(Engineer eng) {
+	public void addEngineer(Engineer eng) {
 		try {
-			String sql = " INSERT INTO Engineer (name_surname, contract_starting_date, contract_ending_date,salary, bonus,"
+			String sql = " INSERT INTO engineer (name_surname, contract_starting_date, contract_ending_date,salary, bonus,"
 					+ " experience_in_years, date_of_birth, role_id) " + " VALUES (?,?,?,?,?,?,?,?)";
 			PreparedStatement prep = c.prepareStatement(sql);
-			//prep.setInt(1, pr.getId());
 			prep.setString(1, eng.getName_surname());
 			prep.setDate(2, eng.getContract_strating_date());
 			prep.setDate(3, eng.getContract_ending_date());
@@ -392,6 +369,19 @@ public class JDBCManager implements DBManager {
 			rs.close();
 			stmt.close();
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	//DELETE ENGINEER
+	public void deleteEngineer(int engId) {
+		try {
+			String sql = "DELETE FROM engineer WHERE id = ? ";
+			PreparedStatement stmt = c.prepareStatement(sql);
+			stmt.setInt(1, engId);
+			stmt.executeUpdate();
+			stmt.close();
+		}catch(Exception e) {
 			e.printStackTrace();
 		}
 	}

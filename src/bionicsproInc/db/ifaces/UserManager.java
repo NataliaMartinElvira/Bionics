@@ -21,6 +21,6 @@ public interface UserManager {
 
 	public User checkPassword(String email, String password);
 	
-	public void quitEngineer(int id);
+	public void quitEngineer(String email);
 
 }

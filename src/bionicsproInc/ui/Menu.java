@@ -82,8 +82,7 @@ public class Menu {
 			LocalDate birthDate=LocalDate.parse(reader.readLine(), formatter);
 			Date birth_Date=Date.valueOf(birthDate);
 			Engineer eng=new Engineer(name,startDate,endDate,salary,bonus,experience,birth_Date,id);
-			Product p= new Product();
-			dbman.addEngineerWhithoutProd(eng);
+			dbman.addEngineer(eng);
 			//necesitamos pasar un product a engineer
 			MessageDigest md1 = MessageDigest.getInstance("MD5");
 			md1.update(passwordEng.getBytes());
@@ -182,6 +181,7 @@ public class Menu {
 				break;
 			case 9: 
 				becomeNini();
+				System.exit(0);
 				break;
 
 			case 0:
@@ -286,7 +286,9 @@ public class Menu {
 			System.out.println("Introduce date of creation (yyyy-MM-dd): ");
 			LocalDate creation_date=LocalDate.parse(reader.readLine(),formatter);
 			Product np=new Product(name,bodypart,price,Date.valueOf(creation_date));
-			dbman.addProduct(np);
+			System.out.println("Introduce your id: ");
+			int engId=Integer.parseInt(reader.readLine());
+			dbman.addProduct(np, engId);
 			System.out.println("Now you need to list the materials\n");
 			System.out.println("How many materials does the product have? ");
 			int cont=Integer.parseInt(reader.readLine());
@@ -382,9 +384,12 @@ public class Menu {
 	//Engineer OPTION 9
 	private static void becomeNini() {
 		try {
-			System.out.println("Confirm your id for freedom: ");
-			int id=Integer.parseInt(reader.readLine());
-			userman.quitEngineer(id);
+			System.out.println("Confirm your email and id for freedom: (intro)");
+			String email =reader.readLine();
+			int engId=Integer.parseInt(reader.readLine());
+			userman.quitEngineer(email);
+			dbman.deleteEngineer(engId);
+			System.out.println("YOU HAVE BECOME UNEMPLOYED!");
 		}catch(Exception e) {
 			e.printStackTrace();
 		}

@@ -1,6 +1,7 @@
 package bionicsproInc.db.jpa;
 
 import java.security.MessageDigest;
+
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
@@ -13,7 +14,6 @@ import bionicsproInc.db.ifaces.UserManager;
 import bionicsproInc.db.pojos.Engineer;
 import bionicsproInc.db.pojos.users.Role;
 import bionicsproInc.db.pojos.users.User;
-
 public class JPAUserManager implements UserManager {
 
 	private EntityManager em;
@@ -85,14 +85,13 @@ public class JPAUserManager implements UserManager {
 	}
 
 	
-	public void quitEngineer(int id) {
-		Query q=em.createNamedQuery("SELECT * FROM engineer WHERE id=?", Engineer.class);
-		q.setParameter(1, id);
-		Engineer nini=(Engineer) q.getSingleResult();
+	public void quitEngineer(String email) {
+		Query q=em.createNativeQuery(" SELECT * FROM users WHERE email = ?", User.class);
+		q.setParameter(1, email);
+		User nini=(User) q.getSingleResult();
 		em.getTransaction().begin();
 		em.remove(nini);
 		em.getTransaction().commit();
-		em.close();
 	}
 	
 	

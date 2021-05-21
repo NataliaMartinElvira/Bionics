@@ -84,5 +84,11 @@ public class Role implements Serializable {
 	public String toString() {
 		return "Role [id=" + id + ", name=" + name + "]";
 	}
+	
+	public void deleteUser(User user) {
+		if(users.contains(user)) {
+			users.remove(user);
+		}
+	}
 
 }

@@ -12,7 +12,7 @@ public interface DBManager {
 
 	public void disconnect();
 
-	public void addProduct(Product p);
+	public void addProduct(Product p, int engId);
 	
 	public void addMaterial(Material m);
 	
@@ -22,10 +22,8 @@ public interface DBManager {
 	
 	public void addCustomer(Customer cust);
 	
-	public void addEngineer(Engineer eng, Product pr);
-	
-	public void addEngineerWhithoutProd(Engineer eng);
-	
+	public void addEngineer(Engineer eng);
+		
 	public void addOrder(Customer cust, Order o);
 	
 	public void addProducts_orders(Product product, Order order);
@@ -43,6 +41,8 @@ public interface DBManager {
 	public void removeProd(int prodId);
 	
 	public void deleteProdFromCart(String name, Order o);
+	
+	public void deleteEngineer(int engId);
 	
 	public List<String> viewBodyparts();
 	
