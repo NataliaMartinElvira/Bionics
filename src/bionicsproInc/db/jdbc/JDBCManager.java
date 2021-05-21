@@ -45,9 +45,9 @@ public class JDBCManager implements DBManager {
 
 			Statement stmt3 = c.createStatement();
 			String sql3 = "CREATE TABLE customer " + "(id INTEGER  PRIMARY KEY AUTOINCREMENT,"
-					+ " name     TEXT     NOT NULL, " + " phone INTEGER NOT NULL," + " email TEXT NOT NULL,"
-					+ " street TEXT NOT NULL," + " city TEXT NOT NULL," + " postal_code INTEGER NOT NULL)"
-					+ " role_id INTEGER NOT NULL";
+					+ " name     TEXT     NOT NULL, " + " phone INTEGER NOT NULL," + " street TEXT NOT NULL," 
+					+ " city TEXT NOT NULL," + " postal_code INTEGER NOT NULL,"
+					+ " role_id INTEGER NOT NULL)";
 			stmt3.executeUpdate(sql3);
 			stmt3.close();
 
@@ -174,16 +174,15 @@ public class JDBCManager implements DBManager {
 
 	public void addCustomer(Customer cust) {
 		try {
-			String sql = "INSERT INTO customer (name, phone, email, street, city, postal_code, role_id) "
+			String sql = "INSERT INTO customer (name, phone, street, city, postal_code, role_id) "
 					+ " VALUES (?,?,?,?,?,?,?)";
 			PreparedStatement prep = c.prepareStatement(sql);
 			prep.setString(1, cust.getName());
 			prep.setInt(2, cust.getPhone());
-			prep.setString(3, cust.getEmail());
-			prep.setString(4, cust.getStreet());
-			prep.setString(5, cust.getCity());
-			prep.setInt(6, cust.getPostal_code());
-			prep.setInt(7, cust.getRole_id());
+			prep.setString(3, cust.getStreet());
+			prep.setString(4, cust.getCity());
+			prep.setInt(5, cust.getPostal_code());
+			prep.setInt(6, cust.getRole_id());
 			prep.executeUpdate();
 			prep.close();
 		} catch (Exception e) {
@@ -206,6 +205,28 @@ public class JDBCManager implements DBManager {
 			prep.setInt(7, eng.getExperience_in_years());
 			prep.setDate(8, eng.getDate_of_birth());
 			prep.setInt(9, eng.getRole_id());
+			prep.executeUpdate();
+			prep.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	public void addEngineerWhithoutProd(Engineer eng) {
+		try {
+			String sql = " INSERT INTO Engineer (name_surname, contract_starting_date, contract_ending_date,salary, bonus,"
+					+ " experience_in_years, date_of_birth, role_id) " + " VALUES (?,?,?,?,?,?,?,?)";
+			PreparedStatement prep = c.prepareStatement(sql);
+			//prep.setInt(1, pr.getId());
+			prep.setString(1, eng.getName_surname());
+			prep.setDate(2, eng.getContract_strating_date());
+			prep.setDate(3, eng.getContract_ending_date());
+			prep.setFloat(4, eng.getSalary());
+			prep.setFloat(5, eng.getBonus());
+			prep.setInt(6, eng.getExperience_in_years());
+			prep.setDate(7, eng.getDate_of_birth());
+			prep.setInt(8, eng.getRole_id());
 			prep.executeUpdate();
 			prep.close();
 		} catch (Exception e) {
@@ -320,6 +341,25 @@ public class JDBCManager implements DBManager {
 		}
 		return null;
 	}
+	public Engineer getEngineerById(int id) {
+		try {
+			String sql = "SELECT name_surname,contract_ending_date FROM engineer WHERE id=?";
+			PreparedStatement prep = c.prepareStatement(sql);
+			prep.setInt(1, id);
+			ResultSet rs = prep.executeQuery();
+			while (rs.next()) {
+				String name=rs.getString("name_surname");
+				Date contract_end_date= rs.getDate("contract_ending_date d");
+				return new Engineer(name,contract_end_date);
+			}
+			prep.close();
+			rs.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 
 	// METHODS FOR THE MENU
 
@@ -607,6 +647,19 @@ public class JDBCManager implements DBManager {
 			stmt.executeUpdate();
 			stmt.close();
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void updateEngineerContractDate(Engineer en, Date last_date) {
+		try {
+			String sql = "UPDATE engineer SET contract_ending_date=? WHERE name=?";
+			PreparedStatement stmt = c.prepareStatement(sql);
+			stmt.setDate(1, last_date);
+			stmt.setString(2, en.getName_surname());
+			stmt.executeUpdate();
+			stmt.close();
+		}catch(Exception e) {
 			e.printStackTrace();
 		}
 	}

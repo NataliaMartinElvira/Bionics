@@ -12,7 +12,6 @@ public class Customer implements Serializable {
 	private int id;
 	private String name;
 	private int phone;
-	private String email;
 	private String street;
 	private String city;
 	private int postal_code;
@@ -31,11 +30,10 @@ public class Customer implements Serializable {
 	}
 	
 
-	public Customer(String name, int phone, String email, String street, String city, int postal_code, int role_id) {
+	public Customer(String name, int phone, String street, String city, int postal_code, int role_id) {
 		super();
 		this.name = name;
 		this.phone = phone;
-		this.email = email;
 		this.street = street;
 		this.city = city;
 		this.postal_code = postal_code;
@@ -66,14 +64,6 @@ public class Customer implements Serializable {
 
 	public void setPhone(int phone) {
 		this.phone = phone;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
 	}
 
 	public String getStreet() {
@@ -121,7 +111,6 @@ public class Customer implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((city == null) ? 0 : city.hashCode());
-		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + id;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((orders == null) ? 0 : orders.hashCode());
@@ -145,11 +134,6 @@ public class Customer implements Serializable {
 			if (other.city != null)
 				return false;
 		} else if (!city.equals(other.city))
-			return false;
-		if (email == null) {
-			if (other.email != null)
-				return false;
-		} else if (!email.equals(other.email))
 			return false;
 		if (id != other.id)
 			return false;
@@ -179,13 +163,9 @@ public class Customer implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Customer [id=" + id + ", name=" + name + ", phone=" + phone + ", email=" + email + ", street=" + street
-				+ ", city=" + city + ", postal_code=" + postal_code + ", orders=" + orders + "]";
+		return "Customer [id=" + id + ", name=" + name + ", phone=" + phone + ", street=" + street + ", city=" + city
+				+ ", postal_code=" + postal_code + ", role_id=" + role_id + ", orders=" + orders + "]";
 	}
 	
-	
-	
-	
-
 	
 }

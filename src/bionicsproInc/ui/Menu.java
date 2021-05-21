@@ -59,13 +59,17 @@ public class Menu {
 		Role role = userman.getRole(id);
 		switch(id) {
 		case 1: 
+			System.out.println("Please, write your email address: ");
+			String emailEng = reader.readLine();
+			System.out.println("Please, write your password:");
+			String passwordEng = reader.readLine();
 			System.out.println("Introduce your data: \n");
 			System.out.println("Enter your name: ");
 			String name=reader.readLine();
-			System.out.println("Contract starting date: ");
+			System.out.println("Contract starting date (yyyy-MM-dd): ");
 			LocalDate startingDate=LocalDate.parse(reader.readLine(), formatter);
 			Date startDate=Date.valueOf(startingDate);
-			System.out.println("Contract ending date: ");
+			System.out.println("Contract ending date (yyyy-MM-dd): ");
 			LocalDate endingDate=LocalDate.parse(reader.readLine(), formatter);
 			Date endDate=Date.valueOf(endingDate);
 			System.out.println("Salary: ");
@@ -74,15 +78,13 @@ public class Menu {
 			float bonus=Float.parseFloat(reader.readLine());
 			System.out.println("Experience in years: ");
 			int experience=Integer.parseInt(reader.readLine());
-			System.out.println("Date of birth: ");
+			System.out.println("Date of birth(yyyy-MM-dd): ");
 			LocalDate birthDate=LocalDate.parse(reader.readLine(), formatter);
 			Date birth_Date=Date.valueOf(birthDate);
 			Engineer eng=new Engineer(name,startDate,endDate,salary,bonus,experience,birth_Date,id);
+			Product p= new Product();
+			dbman.addEngineerWhithoutProd(eng);
 			//necesitamos pasar un product a engineer
-			System.out.println("Please, write your email address: ");
-			String emailEng = reader.readLine();
-			System.out.println("Please, write your password:");
-			String passwordEng = reader.readLine();
 			MessageDigest md1 = MessageDigest.getInstance("MD5");
 			md1.update(passwordEng.getBytes());
 			byte[] hash1 = md1.digest();
@@ -90,26 +92,26 @@ public class Menu {
 			userman.newUser(userE);
 			break;
 		case 2:
+			System.out.println("Please, write your email address: ");
+			String emailCust = reader.readLine();
+			System.out.println("Please, write your password:");
+			String passwordCust = reader.readLine();
 			System.out.println("Introduce your data: \n");
 			System.out.println("Enter your name: ");
 			String custName= reader.readLine();
 			System.out.println("Enter your phone number: ");
 			int phone=Integer.parseInt(reader.readLine());
-			System.out.println("Please, write your email address: ");
-			String emailCust = reader.readLine();
 			System.out.println("Street: ");
 			String street=reader.readLine();
 			System.out.println("City: ");
 			String city=reader.readLine();
 			System.out.println("Postal code: ");
 			int postalCode=Integer.parseInt(reader.readLine());
-			System.out.println("Please, write your password:");
-			String passwordCust = reader.readLine();
 			MessageDigest md2 = MessageDigest.getInstance("MD5");
 			md2.update(passwordCust.getBytes());
 			byte[] hash2 = md2.digest();
 			User userC= new User(emailCust,hash2,role);
-			Customer cust=new Customer(custName,phone,emailCust,street,city,postalCode,id);
+			Customer cust=new Customer(custName,phone,street,city,postalCode,id);
 			dbman.addCustomer(cust);
 			userman.newUser(userC);
 			break;
@@ -143,6 +145,8 @@ public class Menu {
 			System.out.println("5. See existing projects");
 			System.out.println("6. View bonus");
 			System.out.println("7. Update a product's price");
+			System.out.println("8. Update contract ending date");
+			System.out.println("9. Quit job :) ");
 			System.out.println("0. Exit");
 			int choice = Integer.parseInt(reader.readLine());
 			switch (choice) {
@@ -172,6 +176,12 @@ public class Menu {
 				
 			case 7: 
 				updateProd();
+				break;
+			case 8: 
+				updateContract();
+				break;
+			case 9: 
+				becomeNini();
 				break;
 
 			case 0:
@@ -357,6 +367,27 @@ public class Menu {
 		System.out.println("Give me the new price");
 		float price=Float.parseFloat(reader.readLine());
 		dbman.updateProduct(dbman.getProduct(name),price);
+	}
+	
+	//Engineer OPTION 8
+	private static void updateContract()throws Exception{
+		System.out.println("Renew Contract date: ");
+		LocalDate contractEndingDate=LocalDate.parse(reader.readLine(), formatter);
+		Date contract_end=Date.valueOf(contractEndingDate);
+		System.out.println("Confirm your id: ");
+		int e_id=Integer.parseInt(reader.readLine());
+		dbman.updateEngineerContractDate(dbman.getEngineerById(e_id),contract_end);
+	}
+	
+	//Engineer OPTION 9
+	private static void becomeNini() {
+		try {
+			System.out.println("Confirm your id for freedom: ");
+			int id=Integer.parseInt(reader.readLine());
+			userman.quitEngineer(id);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	// CUSTOMER OPTION 1

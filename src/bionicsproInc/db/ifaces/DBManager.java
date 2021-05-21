@@ -1,5 +1,6 @@
 package bionicsproInc.db.ifaces;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +24,8 @@ public interface DBManager {
 	
 	public void addEngineer(Engineer eng, Product pr);
 	
+	public void addEngineerWhithoutProd(Engineer eng);
+	
 	public void addOrder(Customer cust, Order o);
 	
 	public void addProducts_orders(Product product, Order order);
@@ -34,6 +37,8 @@ public interface DBManager {
 	public int getProductId(String nameP);
 	
 	public Material getMaterial(String name);
+	
+	public Engineer getEngineerById(int id);
 	
 	public void removeProd(int prodId);
 	
@@ -62,5 +67,7 @@ public interface DBManager {
 	public List<Product> ListProd();
 	
 	public void updateProduct(Product p, float newPrice);
+	
+	public void updateEngineerContractDate(Engineer e, Date last_date);
 
 }

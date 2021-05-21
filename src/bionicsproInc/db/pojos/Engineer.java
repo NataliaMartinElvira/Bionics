@@ -42,6 +42,14 @@ public class Engineer implements Serializable {
 	}
 	
 	
+	
+	
+	public Engineer(String name_surname, Date contract_ending_date) {
+		super();
+		this.name_surname = name_surname;
+		this.contract_ending_date = contract_ending_date;
+	}
+
 	public Engineer(String name_surname, Date contract_strating_date, Date contract_ending_date,
 			float salary, float bonus, int experience_in_years, Date date_of_birth, int role_id) {
 		super();

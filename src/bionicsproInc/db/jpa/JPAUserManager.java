@@ -10,6 +10,7 @@ import javax.persistence.Persistence;
 import javax.persistence.Query;
 
 import bionicsproInc.db.ifaces.UserManager;
+import bionicsproInc.db.pojos.Engineer;
 import bionicsproInc.db.pojos.users.Role;
 import bionicsproInc.db.pojos.users.User;
 
@@ -83,4 +84,16 @@ public class JPAUserManager implements UserManager {
 		return null;
 	}
 
+	
+	public void quitEngineer(int id) {
+		Query q=em.createNamedQuery("SELECT * FROM engineer WHERE id=?", Engineer.class);
+		q.setParameter(1, id);
+		Engineer nini=(Engineer) q.getSingleResult();
+		em.getTransaction().begin();
+		em.remove(nini);
+		em.getTransaction().commit();
+		em.close();
+	}
+	
+	
 }

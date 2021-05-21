@@ -20,5 +20,7 @@ public interface UserManager {
 	public List<Role> getRoles();
 
 	public User checkPassword(String email, String password);
+	
+	public void quitEngineer(int id);
 
 }
