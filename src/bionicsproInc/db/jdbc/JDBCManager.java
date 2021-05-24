@@ -279,8 +279,28 @@ public class JDBCManager implements DBManager {
 		}
 		return id;
 	}
+	public Product getProductbyId(int id) {
+		try {
+			String sql = "SELECT * FROM products WHERE id=?";
+			PreparedStatement prep = c.prepareStatement(sql);
+			prep.setInt(1, id);
+			ResultSet rs = prep.executeQuery();
+			while (rs.next()) {
+				String name=rs.getString("name");
+				String bodypart = rs.getString("bodypart");
+				float price = rs.getFloat("price");
+				Date date_creation = rs.getDate("date_creation");
+				return new Product(id, name, bodypart, price, date_creation);
+			}
+			prep.close();
+			rs.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
-	public float getProductById(int id) {
+	public float getProductByIdPrice(int id) {
 		float price = 0;
 		try {
 			String sql = "SELECT price FROM products WHERE id=?";
@@ -432,21 +452,23 @@ public class JDBCManager implements DBManager {
 
 	// METHOD THAT SHOWS US THE BONUS OF THE ENGINEER
 	@Override
-	public Engineer viewBonus(int engId) {
+	public float viewBonus(int engId) {
+		float bonus=0;
 		try {
-			String sql = "SELECT bonus FROM Engineer WHERE id= ?";
+			String sql = "SELECT bonus FROM engineer WHERE id= ?";
 			PreparedStatement stmt = c.prepareStatement(sql);
 			stmt.setInt(1, engId);
 			ResultSet rs = stmt.executeQuery();
-			if (rs.next()) {
-				return new Engineer(engId, rs.getFloat("bonus"));
+			while (rs.next()) {
+				bonus=rs.getFloat("bonus");
+				return bonus;
 			}
 			rs.close();
 			stmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return null;
+		return bonus;
 	}
 
 	// METHOD THAT SHOWS US THE CART
@@ -496,7 +518,7 @@ public class JDBCManager implements DBManager {
 	public List<String> viewProjectAchieved(int engId) {
 		List<String> prodname = new ArrayList<String>();
 		try {
-			String sql = "SELECT p.name FROM Engineer as e JOIN product as p ON p.id=e.product_id WHERE id= ?";
+			String sql = "SELECT name FROM products WHERE engineer_id= ?";
 			PreparedStatement stmt = c.prepareStatement(sql);
 			stmt.setInt(1, engId);
 			ResultSet rs = stmt.executeQuery();
@@ -641,12 +663,12 @@ public class JDBCManager implements DBManager {
 		}
 	}
 	
-	public void updateEngineerContractDate(Engineer en, Date last_date) {
+	public void updateEngineerContractDate(int id, Date last_date) {
 		try {
-			String sql = "UPDATE engineer SET contract_ending_date=? WHERE name=?";
+			String sql = "UPDATE engineer SET contract_ending_date=? WHERE id=?";
 			PreparedStatement stmt = c.prepareStatement(sql);
 			stmt.setDate(1, last_date);
-			stmt.setString(2, en.getName_surname());
+			stmt.setInt(2, id);
 			stmt.executeUpdate();
 			stmt.close();
 		}catch(Exception e) {

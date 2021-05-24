@@ -30,7 +30,9 @@ public interface DBManager {
 	
 	public Product getProduct(String name);
 	
-	public float getProductById(int id);
+	public Product getProductbyId(int id);
+	
+	public float getProductByIdPrice(int id);
 	
 	public int getProductId(String nameP);
 	
@@ -48,7 +50,7 @@ public interface DBManager {
 	
 	public List<Product> searchProductByBody(String bodypart);
 	
-	public Engineer viewBonus(int engId);
+	public float viewBonus(int engId);
 	
 	public List<String> viewCart(Order o);
 	
@@ -68,6 +70,6 @@ public interface DBManager {
 	
 	public void updateProduct(Product p, float newPrice);
 	
-	public void updateEngineerContractDate(Engineer e, Date last_date);
+	public void updateEngineerContractDate(int id, Date last_date);
 
 }

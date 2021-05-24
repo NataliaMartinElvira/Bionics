@@ -1,4 +1,5 @@
 package bionicsproInc.ui;
+
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.io.BufferedReader;
@@ -19,7 +20,7 @@ public class Menu {
 	private static UserManager userman = new JPAUserManager();
 	private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 	private static Order temporaryOrder = new Order();
-	private static DateTimeFormatter formatter=DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	private static JDBCManager JDBCmethod = new JDBCManager();
 	private static List<Product> p;
 
@@ -57,37 +58,37 @@ public class Menu {
 		System.out.println("Type the chosen role ID:");
 		int id = Integer.parseInt(reader.readLine());
 		Role role = userman.getRole(id);
-		switch(id) {
-		case 1: 
+		switch (id) {
+		case 1:
 			System.out.println("Please, write your email address: ");
 			String emailEng = reader.readLine();
 			System.out.println("Please, write your password:");
 			String passwordEng = reader.readLine();
 			System.out.println("Introduce your data: \n");
 			System.out.println("Enter your name: ");
-			String name=reader.readLine();
+			String name = reader.readLine();
 			System.out.println("Contract starting date (yyyy-MM-dd): ");
-			LocalDate startingDate=LocalDate.parse(reader.readLine(), formatter);
-			Date startDate=Date.valueOf(startingDate);
+			LocalDate startingDate = LocalDate.parse(reader.readLine(), formatter);
+			Date startDate = Date.valueOf(startingDate);
 			System.out.println("Contract ending date (yyyy-MM-dd): ");
-			LocalDate endingDate=LocalDate.parse(reader.readLine(), formatter);
-			Date endDate=Date.valueOf(endingDate);
+			LocalDate endingDate = LocalDate.parse(reader.readLine(), formatter);
+			Date endDate = Date.valueOf(endingDate);
 			System.out.println("Salary: ");
-			float salary=Float.parseFloat(reader.readLine());
+			float salary = Float.parseFloat(reader.readLine());
 			System.out.println("Bonus: ");
-			float bonus=Float.parseFloat(reader.readLine());
+			float bonus = Float.parseFloat(reader.readLine());
 			System.out.println("Experience in years: ");
-			int experience=Integer.parseInt(reader.readLine());
+			int experience = Integer.parseInt(reader.readLine());
 			System.out.println("Date of birth(yyyy-MM-dd): ");
-			LocalDate birthDate=LocalDate.parse(reader.readLine(), formatter);
-			Date birth_Date=Date.valueOf(birthDate);
-			Engineer eng=new Engineer(name,startDate,endDate,salary,bonus,experience,birth_Date,id);
+			LocalDate birthDate = LocalDate.parse(reader.readLine(), formatter);
+			Date birth_Date = Date.valueOf(birthDate);
+			Engineer eng = new Engineer(name, startDate, endDate, salary, bonus, experience, birth_Date, id);
 			dbman.addEngineer(eng);
-			//necesitamos pasar un product a engineer
+			// necesitamos pasar un product a engineer
 			MessageDigest md1 = MessageDigest.getInstance("MD5");
 			md1.update(passwordEng.getBytes());
 			byte[] hash1 = md1.digest();
-			User userE= new User(emailEng,hash1,role);
+			User userE = new User(emailEng, hash1, role);
 			userman.newUser(userE);
 			break;
 		case 2:
@@ -97,20 +98,20 @@ public class Menu {
 			String passwordCust = reader.readLine();
 			System.out.println("Introduce your data: \n");
 			System.out.println("Enter your name: ");
-			String custName= reader.readLine();
+			String custName = reader.readLine();
 			System.out.println("Enter your phone number: ");
-			int phone=Integer.parseInt(reader.readLine());
+			int phone = Integer.parseInt(reader.readLine());
 			System.out.println("Street: ");
-			String street=reader.readLine();
+			String street = reader.readLine();
 			System.out.println("City: ");
-			String city=reader.readLine();
+			String city = reader.readLine();
 			System.out.println("Postal code: ");
-			int postalCode=Integer.parseInt(reader.readLine());
+			int postalCode = Integer.parseInt(reader.readLine());
 			MessageDigest md2 = MessageDigest.getInstance("MD5");
 			md2.update(passwordCust.getBytes());
 			byte[] hash2 = md2.digest();
-			User userC= new User(emailCust,hash2,role);
-			Customer cust=new Customer(custName,phone,street,city,postalCode,id);
+			User userC = new User(emailCust, hash2, role);
+			Customer cust = new Customer(custName, phone, street, city, postalCode, id);
 			dbman.addCustomer(cust);
 			userman.newUser(userC);
 			break;
@@ -127,7 +128,7 @@ public class Menu {
 		if (user == null) {
 			System.out.println("Wrong email or password");
 			return;
-		} else if (user.getRole().getName().equalsIgnoreCase("engineer") ) {
+		} else if (user.getRole().getName().equalsIgnoreCase("engineer")) {
 			engineerMenu();
 		} else if (user.getRole().getName().equalsIgnoreCase("customer")) {
 			customerMenu();
@@ -172,14 +173,14 @@ public class Menu {
 			case 6:
 				viewBonus();
 				break;
-				
-			case 7: 
+
+			case 7:
 				updateProd();
 				break;
-			case 8: 
+			case 8:
 				updateContract();
 				break;
-			case 9: 
+			case 9:
 				becomeNini();
 				System.exit(0);
 				break;
@@ -205,11 +206,11 @@ public class Menu {
 			int choice = Integer.parseInt(reader.readLine());
 			switch (choice) {
 			case 1:
-				//viewProductC();
+				viewProductC();
 				break;
 
 			case 2:
-				/*makePurchase();*/
+				//makePurchase();
 				break;
 
 			case 3:
@@ -231,46 +232,47 @@ public class Menu {
 	}
 
 	// Engineer OPTION 1
-	private static void viewProduct() throws Exception {
+	private static int viewProduct() throws Exception {
 		System.out.println("Choose a bodypart:");
-		List <String> bodyparts=dbman.viewBodyparts();
-		for (int j=0; j<bodyparts.size(); j++) {
+		List<String> bodyparts = dbman.viewBodyparts();
+		for (int j = 0; j < bodyparts.size(); j++) {
 			System.out.println(bodyparts.get(j));
 		}
 		String name = reader.readLine();
-		List <Product> prods=dbman.searchProductByBody(name);
+		List<Product> prods = dbman.searchProductByBody(name);
 		for (Product product : prods) {
-			System.out.println("Id: "+product.getId() +". " + product.getName());
+			System.out.println("Id: " + product.getId() + ". " + product.getName());
 		}
 		System.out.println("Introduce id of the product: ");
 		int id = Integer.parseInt(reader.readLine());
-		float price=dbman.getProductById(id);
-		System.out.println("Price: "+price);
-		Characteristic ch=dbman.viewCharacteristicsFromProduct(id);
-		System.out.println("Dimensions: "+ch.getDimentions()+"; Weight: "+ch.getWeight()+";Number of joints: "+ch.getJoints_numb()
-		+";Flexibility Scale: "+ch.getFlexibilty_scale());	
-		List <Material> mats=dbman.viewMaterialsFromProduct(id);
+		float price = dbman.getProductByIdPrice(id);
+		System.out.println("Price: " + price);
+		Characteristic ch = dbman.viewCharacteristicsFromProduct(id);
+		System.out.println("Dimensions: " + ch.getDimentions() + "; Weight: " + ch.getWeight() + ";Number of joints: "
+				+ ch.getJoints_numb() + ";Flexibility Scale: " + ch.getFlexibilty_scale());
+		List<Material> mats = dbman.viewMaterialsFromProduct(id);
 		for (Material material : mats) {
-			System.out.println("Material id: "+material.getId() +";Name of material: " + material.getName() +";Price: " 
-					+ material.getPrice() +";Amount: " + material.getAmount());
+			System.out.println("Material id: " + material.getId() + ";Name of material: " + material.getName()
+					+ ";Price: " + material.getPrice() + ";Amount: " + material.getAmount());
 		}
+		return id;
 	}
-	
+
 	// Engineer OPTION 2
-	private static void addMaterial() throws Exception{
+	private static void addMaterial() throws Exception {
 		try {
 			System.out.println("Name of material: ");
-			String nameMat=reader.readLine();
+			String nameMat = reader.readLine();
 			System.out.println("Price:");
-			float pMat=Float.parseFloat(reader.readLine());
+			float pMat = Float.parseFloat(reader.readLine());
 			System.out.println("Amount: ");
-			int amount=Integer.parseInt(reader.readLine());
-			Material m=new Material(nameMat,pMat,amount);
-			dbman.addMaterial(m);		
-		}catch(Exception e) {
+			int amount = Integer.parseInt(reader.readLine());
+			Material m = new Material(nameMat, pMat, amount);
+			dbman.addMaterial(m);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	// Engineer OPTION 3
@@ -278,69 +280,71 @@ public class Menu {
 	private static void addProduct() throws Exception {
 		try {
 			System.out.println("Introduce product name: ");
-			String name=reader.readLine();
+			String name = reader.readLine();
 			System.out.println("Introduce bodypart: ");
-			String bodypart=reader.readLine();
+			String bodypart = reader.readLine();
 			System.out.println("Introduce price: ");
-			float price=Float.parseFloat(reader.readLine());
+			float price = Float.parseFloat(reader.readLine());
 			System.out.println("Introduce date of creation (yyyy-MM-dd): ");
-			LocalDate creation_date=LocalDate.parse(reader.readLine(),formatter);
-			Product np=new Product(name,bodypart,price,Date.valueOf(creation_date));
+			LocalDate creation_date = LocalDate.parse(reader.readLine(), formatter);
+			Product np = new Product(name, bodypart, price, Date.valueOf(creation_date));
 			System.out.println("Introduce your id: ");
-			int engId=Integer.parseInt(reader.readLine());
+			int engId = Integer.parseInt(reader.readLine());
 			dbman.addProduct(np, engId);
 			System.out.println("Now you need to list the materials\n");
 			System.out.println("How many materials does the product have? ");
-			int cont=Integer.parseInt(reader.readLine());
-			for(int i=0;i<cont;i++){
-				List <Material> mats=dbman.ListMaterials();
+			int cont = Integer.parseInt(reader.readLine());
+			for (int i = 0; i < cont; i++) {
+				List<Material> mats = dbman.ListMaterials();
 				for (Material material : mats) {
-					System.out.println("Material id: "+material.getId() +";Name of material: " + material.getName() +";Price: " 
-							+ material.getPrice() +";Amount: " + material.getAmount());
+					System.out.println("Material id: " + material.getId() + ";Name of material: " + material.getName()
+							+ ";Price: " + material.getPrice() + ";Amount: " + material.getAmount());
 				}
 				System.out.println("Choose a material: ");
 				System.out.println("CHECK THE AMOUNT ");
 				int mater_id = Integer.parseInt(reader.readLine());
 				dbman.addMatIntoProd(dbman.getProduct(name).getId(), mater_id);
 			}
-			/*check this*/
+			/* check this */
 			System.out.println("Describe characteristics: ");
 			System.out.println("Dimensions (Length x Width x Height ): ");
-			String dimentions=reader.readLine();
+			String dimentions = reader.readLine();
 			System.out.println("Weight:");
-			float weight=Float.parseFloat(reader.readLine());
+			float weight = Float.parseFloat(reader.readLine());
 			System.out.println("Number of joints: ");
-			int nJoints=Integer.parseInt(reader.readLine());
+			int nJoints = Integer.parseInt(reader.readLine());
 			System.out.println("Flexibility Scale: ");
-			int fScale=Integer.parseInt(reader.readLine());
-			Characteristic cha=new Characteristic(dimentions,weight,nJoints,fScale);
-			dbman.addCharacteristic(cha,dbman.getProduct(name).getId());
+			int fScale = Integer.parseInt(reader.readLine());
+			Characteristic cha = new Characteristic(dimentions, weight, nJoints, fScale);
+			dbman.addCharacteristic(cha, dbman.getProduct(name).getId());
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 	}
-	
 
 	// Engineer OPTION 5
 	private static void seeProject() throws Exception {
 		try {
 			System.out.println("Introduce your ID: ");
 			int id = Integer.parseInt(reader.readLine());
-			dbman.viewProjectAchieved(id);
+			List<String> prods = dbman.viewProjectAchieved(id);
+			for (String name : prods) {
+				System.out.println("Name: " + name);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	// Engineer OPTION 4
-	
+
 	private static void removeProduct() throws Exception {
 		try {
-			List <Product> prods=dbman.ListProd();
+			List<Product> prods = dbman.ListProd();
 			for (Product product : prods) {
-				System.out.println("Id: "+product.getId() +". " + product.getName());
+				System.out.println("Id: " + product.getId() + ". " + product.getName());
 			}
 			System.out.println("Introduce the product ID: ");
 			int id = Integer.parseInt(reader.readLine());
@@ -354,75 +358,64 @@ public class Menu {
 	private static void viewBonus() throws Exception {
 		System.out.println("Introduce your ID:");
 		int id = Integer.parseInt(reader.readLine());
-		dbman.viewBonus(id);
+		System.out.println("Bonus: " + dbman.viewBonus(id));
 	}
-	
-	//Engineer OPTION 7
-	
-	private static void updateProd() throws Exception{
-		List <Product> prods=dbman.ListProd();
+
+	// Engineer OPTION 7
+
+	private static void updateProd() throws Exception {
+		List<Product> prods = dbman.ListProd();
 		for (Product product : prods) {
-			System.out.println("Id: "+product.getId() +". " + product.getName());
+			System.out.println("Id: " + product.getId() + ". " + product.getName());
 		}
 		System.out.println("Choose name of the product you want to update the price");
 		String name = reader.readLine();
 		System.out.println("Give me the new price");
-		float price=Float.parseFloat(reader.readLine());
-		dbman.updateProduct(dbman.getProduct(name),price);
+		float price = Float.parseFloat(reader.readLine());
+		dbman.updateProduct(dbman.getProduct(name), price);
 	}
-	
-	//Engineer OPTION 8
-	private static void updateContract()throws Exception{
+
+	// Engineer OPTION 8
+	private static void updateContract() throws Exception {
 		System.out.println("Renew Contract date: ");
-		LocalDate contractEndingDate=LocalDate.parse(reader.readLine(), formatter);
-		Date contract_end=Date.valueOf(contractEndingDate);
+		LocalDate contractEndingDate = LocalDate.parse(reader.readLine(), formatter);
+		Date contract_end = Date.valueOf(contractEndingDate);
 		System.out.println("Confirm your id: ");
-		int e_id=Integer.parseInt(reader.readLine());
-		dbman.updateEngineerContractDate(dbman.getEngineerById(e_id),contract_end);
+		int e_id = Integer.parseInt(reader.readLine());
+		dbman.updateEngineerContractDate(e_id, contract_end);
 	}
-	
-	//Engineer OPTION 9
+
+	// Engineer OPTION 9
 	private static void becomeNini() {
 		try {
 			System.out.println("Confirm your email and id for freedom: (intro)");
-			String email =reader.readLine();
-			int engId=Integer.parseInt(reader.readLine());
+			String email = reader.readLine();
+			int engId = Integer.parseInt(reader.readLine());
 			userman.quitEngineer(email);
 			dbman.deleteEngineer(engId);
 			System.out.println("YOU HAVE BECOME UNEMPLOYED!");
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	// CUSTOMER OPTION 1
-	/*private static void viewProductC() throws Exception {
+	private static void viewProductC() throws Exception {
 		try {
-			System.out.println("Choose a bodypart:");
-			dbman.viewBodyparts();
-			String name = reader.readLine();
-			dbman.searchProductByBody(name);
-			System.out.println("Choose a product: ");
-			int id = Integer.parseInt(reader.readLine());
-			dbman.viewCharacteristicsFromProduct(id);
-			dbman.viewMaterialsFromProduct(id);
+			int id = viewProduct();
 			System.out.println("Do you want to add it to your cart? 1->YES 0->NO");
-			int op=Integer.parseInt(reader.readLine());
-			if(op==1) {
-				for(int i=1;i<p.size(); i++) {
-					if (p.get(i).getId()==id) {
-						Product pr=p.get(i);
-						dbman.addProducts_orders(pr, temporaryOrder);
-					}
-				}
-			}
-			else {
+			int op = Integer.parseInt(reader.readLine());
+			if (op == 1) {
+				Product pr = dbman.getProductbyId(id);
+				temporaryOrder.addProduct(pr);
+
+			} else {
 				return;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}*/
+	}
 
 	// Customer OPTION 2
 	/*private static void makePurchase() throws Exception {
@@ -438,8 +431,8 @@ public class Menu {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-*/
+	}*/
+
 	// Customer OPTION 3
 	private static void changeProduct() throws Exception {
 		try {
