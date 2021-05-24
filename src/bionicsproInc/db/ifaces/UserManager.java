@@ -22,5 +22,7 @@ public interface UserManager {
 	public User checkPassword(String email, String password);
 	
 	public void quitEngineer(String email);
+	
+	public User updateEngineerPassword(String email, byte[] newPass);
 
 }

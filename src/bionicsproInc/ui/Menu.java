@@ -31,6 +31,7 @@ public class Menu {
 			System.out.println("\n Choose an option:");
 			System.out.println("1. Register");
 			System.out.println("2. Login");
+			System.out.println("3. Have you forgotten your password?");
 			System.out.println("0. Exit");
 			int choice = Integer.parseInt(reader.readLine());
 			switch (choice) {
@@ -39,6 +40,9 @@ public class Menu {
 				break;
 			case 2:
 				login();
+				break;
+			case 3:
+				renewPassword();
 				break;
 			case 0:
 				dbman.disconnect();
@@ -84,7 +88,6 @@ public class Menu {
 			Date birth_Date = Date.valueOf(birthDate);
 			Engineer eng = new Engineer(name, startDate, endDate, salary, bonus, experience, birth_Date, id);
 			dbman.addEngineer(eng);
-			// necesitamos pasar un product a engineer
 			MessageDigest md1 = MessageDigest.getInstance("MD5");
 			md1.update(passwordEng.getBytes());
 			byte[] hash1 = md1.digest();
@@ -133,6 +136,19 @@ public class Menu {
 		} else if (user.getRole().getName().equalsIgnoreCase("customer")) {
 			customerMenu();
 		}
+	}
+	
+	private static void renewPassword()throws Exception{
+		System.out.println("Don't worry everybody makes mistakes");
+		System.out.println("Please, write your email address");
+		String email = reader.readLine();
+		System.out.println("Please, write your NEW password:");
+		String password = reader.readLine();
+		MessageDigest md2 = MessageDigest.getInstance("MD5");
+		md2.update(password.getBytes());
+		byte[] hash2 = md2.digest();
+		User us=userman.updateEngineerPassword(email, hash2);
+		System.out.println("Password change succesfully :)");
 	}
 
 	private static void engineerMenu() throws Exception {

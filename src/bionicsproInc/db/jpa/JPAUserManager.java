@@ -14,6 +14,7 @@ import bionicsproInc.db.ifaces.UserManager;
 import bionicsproInc.db.pojos.Engineer;
 import bionicsproInc.db.pojos.users.Role;
 import bionicsproInc.db.pojos.users.User;
+
 public class JPAUserManager implements UserManager {
 
 	private EntityManager em;
@@ -25,10 +26,10 @@ public class JPAUserManager implements UserManager {
 		em.createNativeQuery("PRAGMA foreign_keys=ON").executeUpdate();
 		em.getTransaction().commit();
 		List<Role> existingRoles = this.getRoles();
-		if (existingRoles.size()<2) {
+		if (existingRoles.size() < 2) {
 
 			this.newRole(new Role("engineer"));
-			this.newRole(new Role("customer")); 
+			this.newRole(new Role("customer"));
 
 		}
 	}
@@ -84,15 +85,25 @@ public class JPAUserManager implements UserManager {
 		return null;
 	}
 
-	
 	public void quitEngineer(String email) {
-		Query q=em.createNativeQuery(" SELECT * FROM users WHERE email = ?", User.class);
+		Query q = em.createNativeQuery(" SELECT * FROM users WHERE email = ?", User.class);
 		q.setParameter(1, email);
-		User nini=(User) q.getSingleResult();
+		User nini = (User) q.getSingleResult();
 		em.getTransaction().begin();
 		em.remove(nini);
 		em.getTransaction().commit();
 	}
-	
-	
+
+	public User updateEngineerPassword(String email, byte[] newPass) {
+		Query q = em.createNativeQuery(" SELECT * FROM users WHERE email = ?", User.class);
+		q.setParameter(1, email);
+		q.setParameter(2, newPass);
+		User us = (User) q.getSingleResult();
+		em.getTransaction().begin();
+		us.setPassword(newPass);
+		em.getTransaction().commit();
+		return (User) q.getSingleResult();
+
+	}
+
 }
