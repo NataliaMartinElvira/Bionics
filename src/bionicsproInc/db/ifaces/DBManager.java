@@ -24,7 +24,7 @@ public interface DBManager {
 	
 	public void addEngineer(Engineer eng);
 		
-	public void addOrder(Customer cust, Order o);
+	public void addOrder(int id, Order o);
 	
 	public void addProducts_orders(Product product, Order order);
 	
@@ -37,6 +37,8 @@ public interface DBManager {
 	public int getProductId(String nameP);
 	
 	public Material getMaterial(String name);
+	
+	public int getOrderId(int c_id, Date d_order);
 	
 	public Engineer getEngineerById(int id);
 	

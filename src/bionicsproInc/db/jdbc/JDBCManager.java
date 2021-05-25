@@ -85,9 +85,8 @@ public class JDBCManager implements DBManager {
 			stmt7.close();
 
 			Statement stmt8 = c.createStatement();
-			String sql8 = "CREATE TABLE products_orders " + "(product_id INTEGER NOT NULL,"
-					+ " order_id INTEGER NOT NULL," + " FOREIGN KEY (product_id) REFERENCES products(id),"
-					+ " FOREIGN KEY (order_id) REFERENCES orders(id)," + " UNIQUE (product_id, order_id))";
+			String sql8 = "CREATE TABLE products_orders " + "(product_id INTEGER REFERENCES products(id),"
+					+ " order_id INTEGER REFERENCES orders(id)," + " PRIMARY KEY (product_id, order_id))";
 			stmt8.executeUpdate(sql8);
 			stmt8.close();
 
@@ -175,7 +174,7 @@ public class JDBCManager implements DBManager {
 	public void addCustomer(Customer cust) {
 		try {
 			String sql = "INSERT INTO customer (name, phone, street, city, postal_code, role_id) "
-					+ " VALUES (?,?,?,?,?,?,?)";
+					+ " VALUES (?,?,?,?,?,?)";
 			PreparedStatement prep = c.prepareStatement(sql);
 			prep.setString(1, cust.getName());
 			prep.setInt(2, cust.getPhone());
@@ -212,14 +211,14 @@ public class JDBCManager implements DBManager {
 
 	}
 
-	public void addOrder(Customer cust, Order o) {
+	public void addOrder(int c_id, Order o) {
 		try {
-			Statement stmt = c.createStatement();
-			String sql = "INSERT INTO orders (date_order,customer_id) VALUES ('" + o.getDate_order() + "','"
-					+ cust.getId() + "')'";
-			stmt.executeUpdate(sql);
-			stmt.close();
-
+			String sql = "INSERT INTO orders (date_order,customer_id) VALUES (?,?)";
+			PreparedStatement prep = c.prepareStatement(sql);
+			prep.setDate(1, o.getDate_order());
+			prep.setInt(2, c_id);
+			prep.executeUpdate();
+			prep.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -228,16 +227,15 @@ public class JDBCManager implements DBManager {
 	public void addProducts_orders(Product product, Order order) {
 
 		try {
-			Statement stmt = c.createStatement();
-			String sql = "INSERT INTO products_orders (product_id,order_id) " + " VALUES ('" + order.getOrder_id()
-					+ "','" + product.getId() + "')";
-			stmt.executeUpdate(sql);
-			stmt.close();
+			String sql = "INSERT INTO products_orders (product_id,order_id) " + " VALUES (?,?)";
+			PreparedStatement prep = c.prepareStatement(sql);
+			prep.setInt(1, product.getId());
+			prep.setInt(2, order.getOrder_id());
+			prep.executeUpdate();
+			prep.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		order.addProduct(product);
-
 	}
 
 	// GETS
@@ -279,7 +277,9 @@ public class JDBCManager implements DBManager {
 		}
 		return id;
 	}
+	//VIEW PRODUCTS FOR CUSTOMER
 	public Product getProductbyId(int id) {
+		Product p= new Product();
 		try {
 			String sql = "SELECT * FROM products WHERE id=?";
 			PreparedStatement prep = c.prepareStatement(sql);
@@ -290,14 +290,14 @@ public class JDBCManager implements DBManager {
 				String bodypart = rs.getString("bodypart");
 				float price = rs.getFloat("price");
 				Date date_creation = rs.getDate("date_creation");
-				return new Product(id, name, bodypart, price, date_creation);
+				p=new Product(id, name, bodypart, price, date_creation);
 			}
 			prep.close();
 			rs.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return null;
+		return p;
 	}
 
 	public float getProductByIdPrice(int id) {
@@ -338,6 +338,23 @@ public class JDBCManager implements DBManager {
 		}
 		return null;
 	}
+	public int getOrderId(int c_id, Date d_order) {
+		int id=0;
+		try {
+			String sql=" SELECT id FROM orders WHERE customer_id=? AND date_order=? ";
+			PreparedStatement stm=c.prepareStatement(sql);
+			stm.setInt(1, c_id);
+			stm.setDate(2, d_order);
+			ResultSet rs= stm.executeQuery();
+			while(rs.next()) {
+				id=rs.getInt("id");
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return id;
+	}
+	
 	public Engineer getEngineerById(int id) {
 		try {
 			String sql = "SELECT name_surname,contract_ending_date FROM engineer WHERE id=?";
