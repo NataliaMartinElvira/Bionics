@@ -3,6 +3,7 @@ package bionicsproInc.db.pojos;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Order implements Serializable {
 
@@ -17,6 +18,7 @@ public class Order implements Serializable {
 
 	public Order() {
 		super();
+		this.products= new ArrayList<Product>();
 	}
 
 	public Order(int id, Date date_order, ArrayList<Product> products) {
@@ -62,12 +64,19 @@ public class Order implements Serializable {
 	}
 
 	public void removeProduct(int id) {
-		for (int i = 1; i <= this.products.size() - 1; i++) {
+		for (int i = 0; i < this.products.size(); i++) {
 			int pId = this.products.get(i).getId();
 			if (pId == id) {
 				this.products.remove(i);
 			}
 		}
+	}
+	public List<String> getProductNames(){
+		List<String> p_names= new ArrayList<String>();
+		for (int i=0; i<products.size(); i++) {
+			p_names.add(products.get(i).getName());
+		}
+		return p_names;
 	}
 
 	@Override

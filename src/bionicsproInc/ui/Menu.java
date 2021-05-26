@@ -226,7 +226,7 @@ public class Menu {
 				break;
 
 			case 2:
-				//makePurchase();
+				makePurchase();
 				break;
 
 			case 3:
@@ -434,26 +434,43 @@ public class Menu {
 	}
 
 	// Customer OPTION 2
-	/*private static void makePurchase() throws Exception {
+	private static void makePurchase() throws Exception {
 		try {
+			List <String> prods=temporaryOrder.getProductNames();
 			System.out.println("These are the products: \n");
-			dbman.viewCart(temporaryOrder);
-			System.out.println("Are you sure? " + " 1->YES 0->NO");
+			for(String p_name: prods) {
+				System.out.println(p_name);
+			}
+			System.out.println("Are you sure you want to make the purchase? " + " 1->YES 0->NO");
 			int option = Integer.parseInt(reader.readLine());
 			if (option == 1) {
-				dbman.addOrder(temporaryOrder);
+				System.out.println("Confirm your id: ");
+				int c_id=Integer.parseInt(reader.readLine());
+				Date order_date= Date.valueOf(LocalDate.now());
+				temporaryOrder.setDate_order(order_date);
+				dbman.addOrder(c_id,temporaryOrder);
+				temporaryOrder.setOrder_id(dbman.getOrderId(c_id, order_date));
+				List<Product> products=temporaryOrder.getProducts();
+				for(Product p:products) {
+					dbman.addProducts_orders(p, temporaryOrder);
+				}
 			} else {
+				return;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}*/
+	}
 
 	// Customer OPTION 3
 	private static void changeProduct() throws Exception {
 		try {
-			System.out.println("Choose the product you want to remove from cart:");
-			dbman.viewCart(temporaryOrder);
+			List <String> prods=dbman.viewCart(temporaryOrder);
+			System.out.println("These are the products: \n");
+			for(String p_name: prods) {
+				System.out.println(p_name);
+			}
+			System.out.println("Choose the name for deleting: ");
 			String pName = reader.readLine();
 			System.out.println("Are you sure you want to delete that product? " + " 1->YES 0->NO");
 			int option = Integer.parseInt(reader.readLine());
