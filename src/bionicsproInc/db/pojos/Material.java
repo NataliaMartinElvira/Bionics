@@ -3,6 +3,14 @@ package bionicsproInc.db.pojos;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+
+@Entity
+@Table(name = "material")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Material implements Serializable {
 	/**
 	 * 

@@ -3,7 +3,11 @@ package bionicsproInc.db.pojos;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "customer")
 public class Customer implements Serializable {
 	/**
 	 * 

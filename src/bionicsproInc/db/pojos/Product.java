@@ -5,7 +5,14 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 
+@Entity
+@Table(name = "products")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Product implements Serializable {
 	/**
 	 * 
