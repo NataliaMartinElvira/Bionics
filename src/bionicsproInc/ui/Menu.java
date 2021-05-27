@@ -489,14 +489,27 @@ public class Menu {
 		try {
 			System.out.println("Confirm your ID: ");
 			int id = Integer.parseInt(reader.readLine());
-			dbman.viewOtherOrders(id);
+			List<Order> orders=dbman.viewOtherOrders(id);
+			for(Order ord: orders) {
+				System.out.println("Id:"+ord.getOrder_id()+"\nDate: "+ord.getDate_order());
+				List<Integer> idP=dbman.viewProdIdsFromOrder(id);
+				for(int pId: idP) {
+					System.out.println("Id: "+pId);
+				}
+			}
 			System.out.println("Do you want to select a product? 1->YES 0->NO");
 			int option = Integer.parseInt(reader.readLine());
 			if (option == 1) {
 				System.out.println("Select id of product: ");
 				int p_id = Integer.parseInt(reader.readLine());
-				dbman.viewCharacteristicsFromProduct(p_id);
-				dbman.viewMaterialsFromProduct(p_id);
+				Characteristic ch = dbman.viewCharacteristicsFromProduct(p_id);
+				System.out.println("Dimensions: " + ch.getDimentions() + "; Weight: " + ch.getWeight() + ";Number of joints: "
+						+ ch.getJoints_numb() + ";Flexibility Scale: " + ch.getFlexibilty_scale());
+				List<Material> mats = dbman.viewMaterialsFromProduct(p_id);
+				for (Material material : mats) {
+					System.out.println("Material id: " + material.getId() + ";Name of material: " + material.getName()
+							+ ";Price: " + material.getPrice() + ";Amount: " + material.getAmount());
+				}
 			} else {
 				return;
 			}

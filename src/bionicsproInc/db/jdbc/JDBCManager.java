@@ -530,6 +530,24 @@ public class JDBCManager implements DBManager {
 		}
 		return orders;
 	}
+	public List<Integer> viewProdIdsFromOrder(int id){
+		List<Integer> ids= new ArrayList<Integer>();
+		try {
+			String sql= "SELECT product_id FROM products_order WHERE order_id=? ";
+			PreparedStatement stmt= c.prepareStatement(sql);
+			stmt.setInt(1, id);
+			ResultSet rs=stmt.executeQuery();
+			while(rs.next()) {
+				int p_id=rs.getInt("id");
+				ids.add(p_id);
+			}
+			rs.close();
+			stmt.close();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return ids;
+	}
 
 	// METHOD USE TO SEE THE PRODUCTS CREATED BY THAT ENGINEER
 	public List<String> viewProjectAchieved(int engId) {

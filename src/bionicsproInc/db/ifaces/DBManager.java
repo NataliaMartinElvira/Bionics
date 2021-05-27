@@ -66,6 +66,8 @@ public interface DBManager {
 	
 	public ArrayList<Material> ListMaterials();
 	
+	public List<Integer> viewProdIdsFromOrder(int id);
+	
 	public List<Product> viewProductsFromOrder(int orderId);
 	
 	public List<Product> ListProd();
