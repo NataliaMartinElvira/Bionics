@@ -316,7 +316,7 @@ public class Menu {
 					System.out.println("Material id: " + material.getId() + ";Name of material: " + material.getName()
 							+ ";Price: " + material.getPrice() + ";Amount: " + material.getAmount());
 				}
-				System.out.println("Choose a material: ");
+				System.out.println("Choose a material id: ");
 				System.out.println("CHECK THE AMOUNT ");
 				int mater_id = Integer.parseInt(reader.readLine());
 				dbman.addMatIntoProd(dbman.getProduct(name).getId(), mater_id);
@@ -491,10 +491,10 @@ public class Menu {
 			int id = Integer.parseInt(reader.readLine());
 			List<Order> orders=dbman.viewOtherOrders(id);
 			for(Order ord: orders) {
-				System.out.println("Id:"+ord.getOrder_id()+"\nDate: "+ord.getDate_order());
-				List<Integer> idP=dbman.viewProdIdsFromOrder(id);
+				System.out.println("Order id:"+ord.getOrder_id()+"\nDate: "+ord.getDate_order());
+				List<Integer> idP=dbman.viewProdIdsFromOrder(ord.getOrder_id());
 				for(int pId: idP) {
-					System.out.println("Id: "+pId);
+					System.out.println("Products Id: "+pId);
 				}
 			}
 			System.out.println("Do you want to select a product? 1->YES 0->NO");

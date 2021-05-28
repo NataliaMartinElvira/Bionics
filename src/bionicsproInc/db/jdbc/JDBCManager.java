@@ -492,7 +492,7 @@ public class JDBCManager implements DBManager {
 	public List<String> viewCart(Order o) {
 		List<String> p_names = new ArrayList<String>();
 		try {
-			String sql = " SELECT p.name FROM products AS p JOIN order AS or ON or.product_id=p.id WHERE or.order_id= ? ";
+			String sql = " SELECT p.name FROM products AS p JOIN products_orders AS por ON por.product_id=p.id WHERE por.order_id= ? ";
 			PreparedStatement stmt = c.prepareStatement(sql);
 			stmt.setInt(1, o.getOrder_id());
 			ResultSet rs = stmt.executeQuery();
@@ -533,12 +533,12 @@ public class JDBCManager implements DBManager {
 	public List<Integer> viewProdIdsFromOrder(int id){
 		List<Integer> ids= new ArrayList<Integer>();
 		try {
-			String sql= "SELECT product_id FROM products_order WHERE order_id=? ";
+			String sql= "SELECT product_id FROM products_orders WHERE order_id=? ";
 			PreparedStatement stmt= c.prepareStatement(sql);
 			stmt.setInt(1, id);
 			ResultSet rs=stmt.executeQuery();
 			while(rs.next()) {
-				int p_id=rs.getInt("id");
+				int p_id=rs.getInt("product_id");
 				ids.add(p_id);
 			}
 			rs.close();
