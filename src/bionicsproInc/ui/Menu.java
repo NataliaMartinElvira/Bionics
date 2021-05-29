@@ -21,8 +21,6 @@ public class Menu {
 	private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 	private static Order temporaryOrder = new Order();
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-	private static JDBCManager JDBCmethod = new JDBCManager();
-	private static List<Product> p;
 
 	public static void main(String[] args) throws Exception {
 		dbman.connect();
@@ -408,8 +406,9 @@ public class Menu {
 			String email = reader.readLine();
 			System.out.println("Confirm your id: ");
 			int engId = Integer.parseInt(reader.readLine());
-			userman.quitEngineer(email);
 			dbman.deleteEngineer(engId);
+			dbman.disconnect();
+			userman.quitEngineer(email);
 			System.out.println("YOU HAVE BECOME UNEMPLOYED!");
 		} catch (Exception e) {
 			e.printStackTrace();
