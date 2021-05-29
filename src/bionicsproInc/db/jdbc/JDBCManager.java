@@ -34,7 +34,7 @@ public class JDBCManager implements DBManager {
 			String sql1 = "CREATE TABLE products " + "(id INTEGER  PRIMARY KEY AUTOINCREMENT,"
 					+ " name TEXT NOT NULL UNIQUE, " + " bodypart  TEXT NOT NULL," + " price REAL NOT NULL,"
 					+ " date_creation DATE NOT NULL,"+ " engineer_id INTEGER NOT NULL,"
-					+ " FOREIGN KEY (engineer_id) REFERENCES engineer(id))";
+					+ " FOREIGN KEY (engineer_id) REFERENCES engineer(id) ON DELETE CASCADE)";
 			stmt1.executeUpdate(sql1);
 			stmt1.close();
 
@@ -85,7 +85,7 @@ public class JDBCManager implements DBManager {
 			stmt7.close();
 
 			Statement stmt8 = c.createStatement();
-			String sql8 = "CREATE TABLE products_orders " + "(product_id INTEGER REFERENCES products(id),"
+			String sql8 = "CREATE TABLE products_orders " + "(product_id INTEGER REFERENCES products(id) ON DELETE CASCADE,"
 					+ " order_id INTEGER REFERENCES orders(id)," + " PRIMARY KEY (product_id, order_id))";
 			stmt8.executeUpdate(sql8);
 			stmt8.close();
@@ -575,7 +575,7 @@ public class JDBCManager implements DBManager {
 			PreparedStatement stmt = c.prepareStatement(sql);
 			stmt.setInt(1, engId);
 			ResultSet rs = stmt.executeQuery();
-			if (rs.next()) {
+			while (rs.next()) {
 				String pname = rs.getString("name");
 				prodname.add(pname);
 			}

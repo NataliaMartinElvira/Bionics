@@ -404,8 +404,9 @@ public class Menu {
 	// Engineer OPTION 9
 	private static void becomeNini() {
 		try {
-			System.out.println("Confirm your email and id for freedom: (intro)");
+			System.out.println("Confirm your email");
 			String email = reader.readLine();
+			System.out.println("Confirm your id: ");
 			int engId = Integer.parseInt(reader.readLine());
 			userman.quitEngineer(email);
 			dbman.deleteEngineer(engId);
