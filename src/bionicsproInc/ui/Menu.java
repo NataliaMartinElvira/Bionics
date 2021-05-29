@@ -502,6 +502,7 @@ public class Menu {
 			if (option == 1) {
 				System.out.println("Select id of product: ");
 				int p_id = Integer.parseInt(reader.readLine());
+				System.out.println("Product name: "+dbman.getProductName(p_id));
 				Characteristic ch = dbman.viewCharacteristicsFromProduct(p_id);
 				System.out.println("Dimensions: " + ch.getDimentions() + "; Weight: " + ch.getWeight() + ";Number of joints: "
 						+ ch.getJoints_numb() + ";Flexibility Scale: " + ch.getFlexibilty_scale());

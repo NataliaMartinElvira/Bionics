@@ -299,6 +299,24 @@ public class JDBCManager implements DBManager {
 		}
 		return p;
 	}
+	
+	public String getProductName(int id) {
+		String name=null;
+		try {
+			String sql = "SELECT name FROM products WHERE id=?";
+			PreparedStatement prep = c.prepareStatement(sql);
+			prep.setInt(1, id);
+			ResultSet rs = prep.executeQuery();
+			while (rs.next()) {
+				name=rs.getString("name");
+			}
+			prep.close();
+			rs.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return name;
+	}
 
 	public float getProductByIdPrice(int id) {
 		float price = 0;

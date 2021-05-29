@@ -34,6 +34,8 @@ public interface DBManager {
 	
 	public float getProductByIdPrice(int id);
 	
+	public String getProductName(int id);
+	
 	public int getProductId(String nameP);
 	
 	public Material getMaterial(String name);
