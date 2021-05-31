@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import bionicsproInc.db.xml.utils.SQLDateAdapter;
+import bionicsproInc.xml.utils.SQLDateAdapter;
 
 @Entity
 @Table(name = "products")

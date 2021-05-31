@@ -1,4 +1,4 @@
-package bionicsproInc.db.xml.utils;
+package bionicsproInc.xml.utils;
 
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
