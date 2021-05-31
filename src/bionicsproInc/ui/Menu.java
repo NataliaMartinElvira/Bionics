@@ -137,6 +137,7 @@ public class Menu {
 	}
 	
 	private static void renewPassword()throws Exception{
+		dbman.disconnect();
 		System.out.println("Don't worry everybody makes mistakes");
 		System.out.println("Please, write your email address");
 		String email = reader.readLine();
@@ -147,6 +148,7 @@ public class Menu {
 		byte[] hash2 = md2.digest();
 		User us=userman.updateEngineerPassword(email, hash2);
 		System.out.println("Password change succesfully :)");
+		dbman.connect();
 	}
 
 	private static void engineerMenu() throws Exception {

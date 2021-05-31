@@ -9,32 +9,51 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import bionicsproInc.db.xml.utils.SQLDateAdapter;
 
 @Entity
 @Table(name = "products")
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name= "Product")
+@XmlType(propOrder = {"name","bodypart","price","date","materials"})
 public class Product implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -2448117025953730410L;
+	@XmlTransient
 	private int id;
+	@XmlElement
 	private String name;
+	@XmlElement
 	private String bodypart;
+	@XmlElement
 	private Float price;
+	@XmlElement
+	@XmlJavaTypeAdapter(SQLDateAdapter.class)
 	private Date date_creation;
+	@XmlTransient
 	private byte[] photo;
+	@XmlElement(name="Material_Product")
+	@XmlElementWrapper(name="materials")
 	private ArrayList<Material> mats;
-	private ArrayList<Characteristic> characteristic;
+	@XmlTransient
+	private Characteristic characteristic;
 	private ArrayList<Customer> customers;
 
-	
 	public Product() {
 		super();
-	}
-	
+	}	
 
-	public Product(int id, String name, String bodypart, Float price, Date date_creation, byte[] photo,ArrayList<Material> mats, ArrayList<Characteristic> characteristic, ArrayList<Customer> customers) {
+	public Product(int id, String name, String bodypart, Float price, Date date_creation, byte[] photo,
+			ArrayList<Material> mats, Characteristic characteristic, ArrayList<Customer> customers) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -49,7 +68,7 @@ public class Product implements Serializable {
 	
 
 	public Product(String name, String bodypart, Float price, Date date_creation, byte[] photo,
-			ArrayList<Material> mats, ArrayList<Characteristic> characteristic, ArrayList<Customer> customers) {
+			ArrayList<Material> mats, Characteristic characteristic, ArrayList<Customer> customers) {
 		super();
 		this.name = name;
 		this.bodypart = bodypart;
@@ -60,6 +79,7 @@ public class Product implements Serializable {
 		this.characteristic = characteristic;
 		this.customers = customers;
 	}
+
 
 	public Product(String name, String bodypart, Float price, Date date_creation) {
 		super();
@@ -146,12 +166,13 @@ public class Product implements Serializable {
 	public void setMats(ArrayList<Material> mats) {
 		this.mats = mats;
 	}
-
-	public ArrayList<Characteristic> getCharacteristic() {
+	
+	public Characteristic getCharacteristic() {
 		return characteristic;
 	}
 
-	public void setCharacteristic(ArrayList<Characteristic> characteristic) {
+
+	public void setCharacteristic(Characteristic characteristic) {
 		this.characteristic = characteristic;
 	}
 

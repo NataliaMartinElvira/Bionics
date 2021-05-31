@@ -7,20 +7,33 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 
 @Entity
 @Table(name = "material")
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement (name ="Material")
+@XmlType(propOrder= {"price","amount"})
 public class Material implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 7510802237290550541L;
+	@XmlAttribute
 	private int id;
+	@XmlAttribute
 	private String name;
+	@XmlElement
 	private float price;
-	private ArrayList<Product> products;
+	@XmlElement
 	private int amount;
+	@XmlTransient
+	private ArrayList<Product> products;
+
 
 	public Material(int id, String name, float price, ArrayList<Product> products, int amount) {
 		super();
@@ -31,14 +44,10 @@ public class Material implements Serializable {
 		this.amount = amount;
 	}
 	
-	
-
 	public Material() {
 		super();
 	}
-
-
-
+	
 	public Material(int id, String name, float price, int amount) {
 		super();
 		this.id = id;

@@ -1,8 +1,11 @@
 package bionicsproInc.db.pojos;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "characteristics")
 public class Characteristic implements Serializable {
 
 	/**
@@ -14,9 +17,7 @@ public class Characteristic implements Serializable {
 	private float weight;
 	private int joints_numb;
 	private int flexibilty_scale;
-	private ArrayList<Product> products;
-
-	
+	private Product products;
 
 	public Characteristic(String dimentions, float weigth, int joints_numb, int flexibilty_scale) {
 		super();
@@ -30,11 +31,11 @@ public class Characteristic implements Serializable {
 		return id;
 	}
 
-	public ArrayList<Product> getProducts() {
+	public Product getProducts() {
 		return products;
 	}
 
-	public void setProducts(ArrayList<Product> products) {
+	public void setProducts(Product products) {
 		this.products = products;
 	}
 
