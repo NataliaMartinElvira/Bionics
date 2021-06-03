@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<!DOCTYPE ProductList [
+	<!ELEMENT ProductList (products)>
+	<!ELEMENT products (Product+)>
+	<!ELEMENT Product (name, bodypart, price , date, materials)>
+	<!ELEMENT name (#PCDATA)>
+	<!ELEMENT bodypart (#PCDATA)>
+	<!ELEMENT price (#PCDATA)>
+	<!ELEMENT date (#PCDATA)>
+	<!ELEMENT materials (Material+)>
+	<!ELEMENT Material (amount)>
+	<!ATTLIST Material name CDATA #REQUIRED
+                  	  id CDATA #REQUIRED>
+    <!ELEMENT amount (#PCDATA)>          	  
+]>

@@ -15,7 +15,7 @@ public class Java2Xml {
 		JAXBContext jaxbcont=JAXBContext.newInstance(Product.class);
 		Marshaller marshaller=jaxbcont.createMarshaller();
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,Boolean.TRUE);
-		File file= new File("./xml/ProdMarsh.xml");
+		File file= new File("./xmls/Product.xml");
 		file.createNewFile();
 		//faltan cosas
 		}catch(Exception e) {
@@ -28,7 +28,7 @@ public class Java2Xml {
 		JAXBContext jaxbcont=JAXBContext.newInstance(Material.class);
 		Marshaller marshaller=jaxbcont.createMarshaller();
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,Boolean.TRUE);
-		File file= new File("./xml/MatMarsh.xml");
+		File file= new File("./xmls/Product.xml");
 		file.createNewFile();
 		//faltan cosas
 		}catch(Exception e) {
