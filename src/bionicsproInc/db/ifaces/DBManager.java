@@ -77,5 +77,7 @@ public interface DBManager {
 	public void updateProduct(Product p, float newPrice);
 	
 	public void updateEngineerContractDate(int id, Date last_date);
+	
+	public ArrayList<Product> allProducts();
 
 }

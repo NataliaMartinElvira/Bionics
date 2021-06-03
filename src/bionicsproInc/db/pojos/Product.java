@@ -98,7 +98,16 @@ public class Product implements Serializable {
 		this.date_creation = date_creation;
 	}
 	
-	
+	public Product(int id, String name, String bodypart, Float price, Date date_creation, ArrayList<Material> mats) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.bodypart = bodypart;
+		this.price = price;
+		this.date_creation = date_creation;
+		this.mats = mats;
+	}
+
 	public Product(String name) {
 		super();
 		this.name = name;

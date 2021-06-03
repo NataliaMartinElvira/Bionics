@@ -728,5 +728,27 @@ public class JDBCManager implements DBManager {
 			e.printStackTrace();
 		}
 	}
-
+//FOR THE XML
+	public ArrayList<Product> allProducts(){
+		ArrayList<Material> matList= new ArrayList<Material>();
+		ArrayList<Product> pList= new ArrayList<Product>();
+		try {
+			String sql= "SELECT p.* FROM products AS p";
+			PreparedStatement stmt = c.prepareStatement(sql);
+			ResultSet rs= stmt.executeQuery();
+			while (rs.next()) {
+				int pId=rs.getInt("id");
+				String pname=rs.getString("name");
+				String bodypart=rs.getString("bodypart");
+				float Pprice = rs.getFloat("price");
+				Date dateP=rs.getDate("date_creation");
+				matList=viewMaterialsFromProduct(pId);
+				Product p= new Product(pId,pname,bodypart,Pprice,dateP,matList);
+				pList.add(p);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return pList;
+	}
 }
