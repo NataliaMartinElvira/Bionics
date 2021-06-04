@@ -456,6 +456,8 @@ public class Menu {
 				for(Product p:products) {
 					dbman.addProducts_orders(p, temporaryOrder);
 				}
+				
+				temporaryOrder=new Order();
 			} else {
 				return;
 			}
