@@ -33,7 +33,7 @@ public class JDBCManager implements DBManager {
 			Statement stmt1 = c.createStatement();
 			String sql1 = "CREATE TABLE products " + "(id INTEGER  PRIMARY KEY AUTOINCREMENT,"
 					+ " name TEXT NOT NULL UNIQUE, " + " bodypart  TEXT NOT NULL," + " price REAL NOT NULL,"
-					+ " date_creation DATE NOT NULL,"+ " engineer_id INTEGER NOT NULL,"
+					+ " date_creation DATE NOT NULL," + " engineer_id INTEGER NOT NULL,"
 					+ " FOREIGN KEY (engineer_id) REFERENCES engineer(id) ON DELETE CASCADE)";
 			stmt1.executeUpdate(sql1);
 			stmt1.close();
@@ -46,17 +46,17 @@ public class JDBCManager implements DBManager {
 
 			Statement stmt3 = c.createStatement();
 			String sql3 = "CREATE TABLE customer " + "(id INTEGER  PRIMARY KEY AUTOINCREMENT,"
-					+ " name     TEXT     NOT NULL, " + " phone INTEGER NOT NULL," + " street TEXT NOT NULL," 
-					+ " city TEXT NOT NULL," + " postal_code INTEGER NOT NULL,"
-					+ " role_id INTEGER NOT NULL)";
+					+ " name     TEXT     NOT NULL, " + " phone INTEGER NOT NULL," + " street TEXT NOT NULL,"
+					+ " city TEXT NOT NULL," + " postal_code INTEGER NOT NULL," + " role_id INTEGER NOT NULL)";
 			stmt3.executeUpdate(sql3);
 			stmt3.close();
 
 			Statement stmt4 = c.createStatement();
 			String sql4 = "CREATE TABLE engineer " + "(id INTEGER  PRIMARY KEY AUTOINCREMENT,"
-					+ " name_surname     TEXT     NOT NULL UNIQUE, " + " contract_starting_date DATE NOT NULL UNIQUE," 
-					+ " contract_ending_date DATE NOT NULL," + " salary REAL NOT NULL," + " bonus REAL NOT NULL," 
-					+ " experience_in_years INTEGER NOT NULL," + " date_of_birth DATE NOT NULL," + " role_id INTEGER NOT NULL)";
+					+ " name_surname     TEXT     NOT NULL UNIQUE, " + " contract_starting_date DATE NOT NULL UNIQUE,"
+					+ " contract_ending_date DATE NOT NULL," + " salary REAL NOT NULL," + " bonus REAL NOT NULL,"
+					+ " experience_in_years INTEGER NOT NULL," + " date_of_birth DATE NOT NULL,"
+					+ " role_id INTEGER NOT NULL)";
 			stmt4.executeUpdate(sql4);
 			stmt4.close();
 
@@ -85,7 +85,8 @@ public class JDBCManager implements DBManager {
 			stmt7.close();
 
 			Statement stmt8 = c.createStatement();
-			String sql8 = "CREATE TABLE products_orders " + "(product_id INTEGER REFERENCES products(id) ON DELETE CASCADE,"
+			String sql8 = "CREATE TABLE products_orders "
+					+ "(product_id INTEGER REFERENCES products(id) ON DELETE CASCADE,"
 					+ " order_id INTEGER REFERENCES orders(id)," + " PRIMARY KEY (product_id, order_id))";
 			stmt8.executeUpdate(sql8);
 			stmt8.close();
@@ -189,7 +190,7 @@ public class JDBCManager implements DBManager {
 		}
 
 	}
-	
+
 	public void addEngineer(Engineer eng) {
 		try {
 			String sql = " INSERT INTO engineer (name_surname, contract_starting_date, contract_ending_date,salary, bonus,"
@@ -277,20 +278,21 @@ public class JDBCManager implements DBManager {
 		}
 		return id;
 	}
-	//VIEW PRODUCTS FOR CUSTOMER
+
+	// VIEW PRODUCTS FOR CUSTOMER
 	public Product getProductbyId(int id) {
-		Product p= new Product();
+		Product p = new Product();
 		try {
 			String sql = "SELECT * FROM products WHERE id=?";
 			PreparedStatement prep = c.prepareStatement(sql);
 			prep.setInt(1, id);
 			ResultSet rs = prep.executeQuery();
 			while (rs.next()) {
-				String name=rs.getString("name");
+				String name = rs.getString("name");
 				String bodypart = rs.getString("bodypart");
 				float price = rs.getFloat("price");
 				Date date_creation = rs.getDate("date_creation");
-				p=new Product(id, name, bodypart, price, date_creation);
+				p = new Product(id, name, bodypart, price, date_creation);
 			}
 			prep.close();
 			rs.close();
@@ -299,16 +301,16 @@ public class JDBCManager implements DBManager {
 		}
 		return p;
 	}
-	
+
 	public String getProductName(int id) {
-		String name=null;
+		String name = null;
 		try {
 			String sql = "SELECT name FROM products WHERE id=?";
 			PreparedStatement prep = c.prepareStatement(sql);
 			prep.setInt(1, id);
 			ResultSet rs = prep.executeQuery();
 			while (rs.next()) {
-				name=rs.getString("name");
+				name = rs.getString("name");
 			}
 			prep.close();
 			rs.close();
@@ -356,23 +358,24 @@ public class JDBCManager implements DBManager {
 		}
 		return null;
 	}
+
 	public int getOrderId(int c_id, Date d_order) {
-		int id=0;
+		int id = 0;
 		try {
-			String sql=" SELECT id FROM orders WHERE customer_id=? AND date_order=? ";
-			PreparedStatement stm=c.prepareStatement(sql);
+			String sql = " SELECT id FROM orders WHERE customer_id=? AND date_order=? ";
+			PreparedStatement stm = c.prepareStatement(sql);
 			stm.setInt(1, c_id);
 			stm.setDate(2, d_order);
-			ResultSet rs= stm.executeQuery();
-			while(rs.next()) {
-				id=rs.getInt("id");
+			ResultSet rs = stm.executeQuery();
+			while (rs.next()) {
+				id = rs.getInt("id");
 			}
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return id;
 	}
-	
+
 	public Engineer getEngineerById(int id) {
 		try {
 			String sql = "SELECT name_surname,contract_ending_date FROM engineer WHERE id=?";
@@ -380,9 +383,9 @@ public class JDBCManager implements DBManager {
 			prep.setInt(1, id);
 			ResultSet rs = prep.executeQuery();
 			while (rs.next()) {
-				String name=rs.getString("name_surname");
-				Date contract_end_date= rs.getDate("contract_ending_date d");
-				return new Engineer(name,contract_end_date);
+				String name = rs.getString("name_surname");
+				Date contract_end_date = rs.getDate("contract_ending_date d");
+				return new Engineer(name, contract_end_date);
 			}
 			prep.close();
 			rs.close();
@@ -391,7 +394,6 @@ public class JDBCManager implements DBManager {
 		}
 		return null;
 	}
-
 
 	// METHODS FOR THE MENU
 
@@ -427,8 +429,8 @@ public class JDBCManager implements DBManager {
 			e.printStackTrace();
 		}
 	}
-	
-	//DELETE ENGINEER
+
+	// DELETE ENGINEER
 	public void deleteEngineer(int engId) {
 		try {
 			String sql = "DELETE FROM engineer WHERE id = ? ";
@@ -436,7 +438,7 @@ public class JDBCManager implements DBManager {
 			stmt.setInt(1, engId);
 			stmt.executeUpdate();
 			stmt.close();
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -488,14 +490,14 @@ public class JDBCManager implements DBManager {
 	// METHOD THAT SHOWS US THE BONUS OF THE ENGINEER
 	@Override
 	public float viewBonus(int engId) {
-		float bonus=0;
+		float bonus = 0;
 		try {
 			String sql = "SELECT bonus FROM engineer WHERE id= ?";
 			PreparedStatement stmt = c.prepareStatement(sql);
 			stmt.setInt(1, engId);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
-				bonus=rs.getFloat("bonus");
+				bonus = rs.getFloat("bonus");
 				return bonus;
 			}
 			rs.close();
@@ -548,20 +550,21 @@ public class JDBCManager implements DBManager {
 		}
 		return orders;
 	}
-	public List<Integer> viewProdIdsFromOrder(int id){
-		List<Integer> ids= new ArrayList<Integer>();
+
+	public List<Integer> viewProdIdsFromOrder(int id) {
+		List<Integer> ids = new ArrayList<Integer>();
 		try {
-			String sql= "SELECT product_id FROM products_orders WHERE order_id=? ";
-			PreparedStatement stmt= c.prepareStatement(sql);
+			String sql = "SELECT product_id FROM products_orders WHERE order_id=? ";
+			PreparedStatement stmt = c.prepareStatement(sql);
 			stmt.setInt(1, id);
-			ResultSet rs=stmt.executeQuery();
-			while(rs.next()) {
-				int p_id=rs.getInt("product_id");
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				int p_id = rs.getInt("product_id");
 				ids.add(p_id);
 			}
 			rs.close();
 			stmt.close();
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return ids;
@@ -715,7 +718,7 @@ public class JDBCManager implements DBManager {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void updateEngineerContractDate(int id, Date last_date) {
 		try {
 			String sql = "UPDATE engineer SET contract_ending_date=? WHERE id=?";
@@ -724,31 +727,49 @@ public class JDBCManager implements DBManager {
 			stmt.setInt(2, id);
 			stmt.executeUpdate();
 			stmt.close();
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+
 //FOR THE XML
-	public ArrayList<Product> allProducts(){
-		ArrayList<Material> matList= new ArrayList<Material>();
-		ArrayList<Product> pList= new ArrayList<Product>();
+	public ArrayList<Product> allProducts() {
+		ArrayList<Material> matList = new ArrayList<Material>();
+		ArrayList<Product> pList = new ArrayList<Product>();
 		try {
-			String sql= "SELECT p.* FROM products AS p";
+			String sql = "SELECT p.* FROM products AS p";
 			PreparedStatement stmt = c.prepareStatement(sql);
-			ResultSet rs= stmt.executeQuery();
+			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
-				int pId=rs.getInt("id");
-				String pname=rs.getString("name");
-				String bodypart=rs.getString("bodypart");
+				int pId = rs.getInt("id");
+				String pname = rs.getString("name");
+				String bodypart = rs.getString("bodypart");
 				float Pprice = rs.getFloat("price");
-				Date dateP=rs.getDate("date_creation");
-				matList=viewMaterialsFromProduct(pId);
-				Product p= new Product(pId,pname,bodypart,Pprice,dateP,matList);
+				Date dateP = rs.getDate("date_creation");
+				matList = viewMaterialsFromProduct(pId);
+				Product p = new Product(pId, pname, bodypart, Pprice, dateP, matList);
 				pList.add(p);
 			}
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return pList;
+	}
+
+	public void addProductsFromXML(ProductList ps) {
+		try {
+			String sql = "INSERT INTO products (name,bodypart,price,date_creation) " + " VALUES(?,?,?,?)";
+			PreparedStatement prep = c.prepareStatement(sql);
+			for (int i=0; i<ps.getNumProds(); i++) {
+				prep.setString(1, ps.getProd(i).getName());
+				prep.setString(2, ps.getProd(i).getBodypart());
+				prep.setFloat(3, ps.getProd(i).getPrice());
+				prep.setDate(4, ps.getProd(i).getDate_creation());
+				prep.executeUpdate();
+			}
+			prep.close();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

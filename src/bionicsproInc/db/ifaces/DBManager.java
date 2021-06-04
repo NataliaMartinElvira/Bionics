@@ -79,5 +79,7 @@ public interface DBManager {
 	public void updateEngineerContractDate(int id, Date last_date);
 	
 	public ArrayList<Product> allProducts();
+	
+	public void addProductsFromXML(ProductList ps);
 
 }

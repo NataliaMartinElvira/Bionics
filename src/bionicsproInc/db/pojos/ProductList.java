@@ -35,4 +35,18 @@ public class ProductList implements Serializable {
 		super();
 		this.products = products;
 	}
+	public int getNumProds() {
+		int cont=products.size();
+		return cont;
+	}
+	public Product getProd(int i) {
+		Product p= new Product();
+		p=products.get(i);
+		return p;
+	}
+	@Override
+	public String toString() {
+		return "ProductList [products=" + products + "]";
+	}
+	
 }

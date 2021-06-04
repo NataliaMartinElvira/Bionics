@@ -1,0 +1,33 @@
+package bionicsproInc.xml;
+
+import java.io.File;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
+
+import bionicsproInc.db.ifaces.DBManager;
+import bionicsproInc.db.jdbc.JDBCManager;
+import bionicsproInc.db.pojos.Product;
+import bionicsproInc.db.pojos.ProductList;
+
+public class Xml2Java {
+	private static DBManager dbman = new JDBCManager();
+
+	public void Xml2JavaProd() {
+		try {
+			JAXBContext jaxbcont=JAXBContext.newInstance(Product.class);
+			Unmarshaller unmarshaller=jaxbcont.createUnmarshaller();
+			File file= new File("./xmls/Product.xml");
+			ProductList listP= (ProductList) unmarshaller.unmarshal(file);
+			if (listP.equals(null)) {
+				System.out.println("ERROR, there aren't any products in the xml");
+			}else {
+				listP.getProducts().toString();
+				dbman.addProductsFromXML(listP);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+}

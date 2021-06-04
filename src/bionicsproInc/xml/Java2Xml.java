@@ -7,7 +7,6 @@ import javax.xml.bind.Marshaller;
 
 import bionicsproInc.db.ifaces.DBManager;
 import bionicsproInc.db.jdbc.JDBCManager;
-import bionicsproInc.db.pojos.Material;
 import bionicsproInc.db.pojos.Product;
 import bionicsproInc.db.pojos.ProductList;
 
