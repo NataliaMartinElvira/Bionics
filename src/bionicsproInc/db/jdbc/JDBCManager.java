@@ -266,7 +266,7 @@ public class JDBCManager implements DBManager {
 		try {
 			String sql = "SELECT id FROM products WHERE name=?";
 			PreparedStatement prep = c.prepareStatement(sql);
-			prep.setString(1, "%" + nameP + "%");
+			prep.setString(1,nameP);
 			ResultSet rs = prep.executeQuery();
 			while (rs.next()) {
 				id = rs.getInt("id");

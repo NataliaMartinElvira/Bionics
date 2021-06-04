@@ -78,6 +78,15 @@ public class Order implements Serializable {
 		}
 		return p_names;
 	}
+	
+	public void removeProductbyName(String name) {
+		for (int i = 0; i < this.products.size(); i++) {
+			if(this.products.get(i).getName().equals(name)) {
+				this.products.remove(i);
+			}
+		}
+	}
+	
 
 	@Override
 	public int hashCode() {

@@ -467,7 +467,7 @@ public class Menu {
 	// Customer OPTION 3
 	private static void changeProduct() throws Exception {
 		try {
-			List <String> prods=dbman.viewCart(temporaryOrder);
+			List <String> prods=temporaryOrder.getProductNames();
 			System.out.println("These are the products: \n");
 			for(String p_name: prods) {
 				System.out.println(p_name);
@@ -477,6 +477,7 @@ public class Menu {
 			System.out.println("Are you sure you want to delete that product? " + " 1->YES 0->NO");
 			int option = Integer.parseInt(reader.readLine());
 			if (option == 1) {
+				temporaryOrder.removeProductbyName(pName);
 				dbman.deleteProdFromCart(pName, temporaryOrder);
 			} else {
 				return;
