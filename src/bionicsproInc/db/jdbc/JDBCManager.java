@@ -774,4 +774,21 @@ public class JDBCManager implements DBManager {
 			e.printStackTrace();
 		}
 	}
+	
+	public void addMaterialFromXML(MaterialList ms) {
+		try {
+			String sql = "INSERT INTO material (id,name,price,amount) " + " VALUES(?,?,?,?)";
+			PreparedStatement prep = c.prepareStatement(sql);
+			for (int i=0; i<ms.getNumMats(); i++) {
+				prep.setInt(1, ms.getMat(i).getId());
+				prep.setString(2, ms.getMat(i).getName());
+				prep.setFloat(3, ms.getMat(i).getPrice());
+				prep.setInt(4, ms.getMat(i).getAmount());
+				prep.executeUpdate();
+			}
+			prep.close();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

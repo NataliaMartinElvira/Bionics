@@ -81,5 +81,7 @@ public interface DBManager {
 	public ArrayList<Product> allProducts();
 	
 	public void addProductsFromXML(ProductList ps);
+	
+	public void addMaterialFromXML(MaterialList ms);
 
 }
