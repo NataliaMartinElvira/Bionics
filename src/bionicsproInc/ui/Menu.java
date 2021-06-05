@@ -13,7 +13,7 @@ import bionicsproInc.db.jdbc.JDBCManager;
 import bionicsproInc.db.jpa.JPAUserManager;
 import bionicsproInc.db.pojos.*;
 import bionicsproInc.db.pojos.users.*;
-import bionicsproInc.xml.Java2Xml;
+import bionicsproInc.xml.*;
 
 public class Menu {
 
@@ -32,6 +32,7 @@ public class Menu {
 			System.out.println("2. Login");
 			System.out.println("3. Have you forgotten your password?");
 			System.out.println("4. Create xml");
+			System.out.println("5. Create html");
 			System.out.println("0. Exit");
 			int choice = Integer.parseInt(reader.readLine());
 			switch (choice) {
@@ -47,6 +48,10 @@ public class Menu {
 			case 4:
 				Java2Xml.Java2XmlProd();
 				Java2Xml.Java2XmlMat();
+				break;
+			case 5:
+				Xml2Html.Xml2HtmlProduct();
+				Xml2Html.Xml2HtmlMaterial();
 				break;
 			case 0:
 				dbman.disconnect();

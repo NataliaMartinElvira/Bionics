@@ -15,7 +15,7 @@ public class Xml2Java {
 
 	public void Xml2JavaProd() {
 		try {
-			JAXBContext jaxbcont=JAXBContext.newInstance(Product.class);
+			JAXBContext jaxbcont=JAXBContext.newInstance(ProductList.class);
 			Unmarshaller unmarshaller=jaxbcont.createUnmarshaller();
 			File file= new File("./xmls/Product.xml");
 			ProductList listP= (ProductList) unmarshaller.unmarshal(file);

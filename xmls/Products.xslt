@@ -8,10 +8,10 @@
 		<xsl:for-each select="ProductList/products">
 		<xsl:sort select="name"/>
 			<tr>
-				<td><xsl:value-of select="name"</td>
-				<td><xsl:value-of select="bodypart"</td>
-				<td><xsl:value-of select="price"</td>
-				<td><xsl:value-of select="date_creation"</td>
+				<td><xsl:value-of select="name"/></td>
+				<td><xsl:value-of select="bodypart"/></td>
+				<td><xsl:value-of select="price"/></td>
+				<td><xsl:value-of select="date_creation"/></td>
 			</tr>
 		</xsl:for-each>
 	</table>
