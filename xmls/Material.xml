@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<MaterialList>
+    <materials id="1" name="Carbon fibers ">
+        <price>100.0</price>
+        <amount>50</amount>
+    </materials>
+    <materials id="2" name="Cobalt">
+        <price>3000.0</price>
+        <amount>50</amount>
+    </materials>
+    <materials id="3" name="Screw">
+        <price>3.0</price>
+        <amount>200</amount>
+    </materials>
+    <materials id="4" name="Aluminium">
+        <price>100.0</price>
+        <amount>35</amount>
+    </materials>
+    <materials id="5" name="polyethylene">
+        <price>0.45</price>
+        <amount>500</amount>
+    </materials>
+    <materials id="6" name="titanium">
+        <price>300.0</price>
+        <amount>15</amount>
+    </materials>
+    <materials id="7" name="polypropylene">
+        <price>13.0</price>
+        <amount>100</amount>
+    </materials>
+    <materials id="8" name="bioactive glass">
+        <price>1000.0</price>
+        <amount>40</amount>
+    </materials>
+</MaterialList>

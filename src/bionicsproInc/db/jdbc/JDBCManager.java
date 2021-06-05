@@ -737,7 +737,7 @@ public class JDBCManager implements DBManager {
 		ArrayList<Material> matList = new ArrayList<Material>();
 		ArrayList<Product> pList = new ArrayList<Product>();
 		try {
-			String sql = "SELECT p.* FROM products AS p";
+			String sql = "SELECT id,name,bodypart,price,date_creation FROM products";
 			PreparedStatement stmt = c.prepareStatement(sql);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
@@ -750,6 +750,8 @@ public class JDBCManager implements DBManager {
 				Product p = new Product(pId, pname, bodypart, Pprice, dateP, matList);
 				pList.add(p);
 			}
+			rs.close();
+			stmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

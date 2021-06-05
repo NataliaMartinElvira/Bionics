@@ -2,14 +2,15 @@
 <!DOCTYPE ProductList [
 	<!ELEMENT ProductList (products)>
 	<!ELEMENT products (Product+)>
-	<!ELEMENT Product (name, bodypart, price , date, materials)>
+	<!ELEMENT Product (name, bodypart, price , date, mats)>
 	<!ELEMENT name (#PCDATA)>
 	<!ELEMENT bodypart (#PCDATA)>
 	<!ELEMENT price (#PCDATA)>
 	<!ELEMENT date (#PCDATA)>
-	<!ELEMENT materials (Material+)>
-	<!ELEMENT Material (amount)>
+	<!ELEMENT mats (Material+)>
+	<!ELEMENT Material (amount, price)>
 	<!ATTLIST Material name CDATA #REQUIRED
                   	  id CDATA #REQUIRED>
-    <!ELEMENT amount (#PCDATA)>          	  
+    <!ELEMENT amount (#PCDATA)> 
+    <!ELEMENT price (#PCDATA)>         	  
 ]>

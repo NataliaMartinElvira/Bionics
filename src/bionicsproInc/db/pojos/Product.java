@@ -22,7 +22,7 @@ import bionicsproInc.xml.utils.SQLDateAdapter;
 @Table(name = "products")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name= "Product")
-@XmlType(propOrder = {"name","bodypart","price","date","materials"})
+@XmlType(propOrder = {"name","bodypart","price","date_creation","mats"})
 public class Product implements Serializable {
 	/**
 	 * 
@@ -42,10 +42,11 @@ public class Product implements Serializable {
 	@XmlTransient
 	private byte[] photo;
 	@XmlElement(name="Material_Product")
-	@XmlElementWrapper(name="materials")
+	@XmlElementWrapper(name="mats")
 	private ArrayList<Material> mats;
 	@XmlTransient
 	private Characteristic characteristic;
+	@XmlTransient
 	private ArrayList<Customer> customers;
 
 	public Product() {

@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlType;
 @Table(name = "material")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement (name ="Material")
-@XmlType(propOrder= {"amount"})
+@XmlType(propOrder= {"price", "amount"})
 public class Material implements Serializable {
 	/**
 	 * 
@@ -27,7 +27,7 @@ public class Material implements Serializable {
 	private int id;
 	@XmlAttribute
 	private String name;
-	@XmlTransient
+	@XmlElement
 	private float price;
 	@XmlElement
 	private int amount;
