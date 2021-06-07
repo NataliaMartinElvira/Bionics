@@ -46,15 +46,13 @@ public class Product implements Serializable {
 	private ArrayList<Material> mats;
 	@XmlTransient
 	private Characteristic characteristic;
-	@XmlTransient
-	private ArrayList<Customer> customers;
 
 	public Product() {
 		super();
 	}	
 
 	public Product(int id, String name, String bodypart, Float price, Date date_creation, byte[] photo,
-			ArrayList<Material> mats, Characteristic characteristic, ArrayList<Customer> customers) {
+			ArrayList<Material> mats, Characteristic characteristic) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -64,12 +62,11 @@ public class Product implements Serializable {
 		this.photo = photo;
 		this.mats = mats;
 		this.characteristic = characteristic;
-		this.customers = customers;
 	}
 	
 
 	public Product(String name, String bodypart, Float price, Date date_creation, byte[] photo,
-			ArrayList<Material> mats, Characteristic characteristic, ArrayList<Customer> customers) {
+			ArrayList<Material> mats, Characteristic characteristic) {
 		super();
 		this.name = name;
 		this.bodypart = bodypart;
@@ -78,7 +75,6 @@ public class Product implements Serializable {
 		this.photo = photo;
 		this.mats = mats;
 		this.characteristic = characteristic;
-		this.customers = customers;
 	}
 
 
@@ -186,15 +182,6 @@ public class Product implements Serializable {
 		this.characteristic = characteristic;
 	}
 
-	public ArrayList<Customer> getCustomers() {
-		return customers;
-	}
-
-	public void setCustomers(ArrayList<Customer> customers) {
-		this.customers = customers;
-	}
-
-
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -205,7 +192,6 @@ public class Product implements Serializable {
 		int result = 1;
 		result = prime * result + ((bodypart == null) ? 0 : bodypart.hashCode());
 		result = prime * result + ((characteristic == null) ? 0 : characteristic.hashCode());
-		result = prime * result + ((customers == null) ? 0 : customers.hashCode());
 		result = prime * result + ((date_creation == null) ? 0 : date_creation.hashCode());
 		result = prime * result + id;
 		result = prime * result + ((mats == null) ? 0 : mats.hashCode());
@@ -233,11 +219,6 @@ public class Product implements Serializable {
 			if (other.characteristic != null)
 				return false;
 		} else if (!characteristic.equals(other.characteristic))
-			return false;
-		if (customers == null) {
-			if (other.customers != null)
-				return false;
-		} else if (!customers.equals(other.customers))
 			return false;
 		if (date_creation == null) {
 			if (other.date_creation != null)
@@ -271,7 +252,7 @@ public class Product implements Serializable {
 	public String toString() {
 		return "Product [id=" + id + ", name=" + name + ", bodypart=" + bodypart + ", price=" + price
 				+ ", date_creation=" + date_creation + ", photo=" + Arrays.toString(photo) + ", mats=" + mats
-				+ ", characteristic=" + characteristic + ", customers=" + customers + "]";
+				+ ", characteristic=" + characteristic + "]";
 	}
 
 }
