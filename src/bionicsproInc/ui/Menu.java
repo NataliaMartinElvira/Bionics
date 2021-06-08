@@ -97,6 +97,7 @@ public class Menu {
 			Date birth_Date = Date.valueOf(birthDate);
 			Engineer eng = new Engineer(name, startDate, endDate, salary, bonus, experience, birth_Date, id);
 			dbman.addEngineer(eng);
+			System.out.println("This will be your id, please remember it: "+dbman.getLastEngId());
 			MessageDigest md1 = MessageDigest.getInstance("MD5");
 			md1.update(passwordEng.getBytes());
 			byte[] hash1 = md1.digest();
@@ -125,6 +126,7 @@ public class Menu {
 			User userC = new User(emailCust, hash2, role);
 			Customer cust = new Customer(custName, phone, street, city, postalCode, id);
 			dbman.addCustomer(cust);
+			System.out.println("This will be your id, please remember it: "+dbman.getLastCustId());
 			userman.newUser(userC);
 			break;
 		}
@@ -296,10 +298,10 @@ public class Menu {
 			int amount = Integer.parseInt(reader.readLine());
 			Material m = new Material(nameMat, pMat, amount);
 			dbman.addMaterial(m);
+			
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
-
 	}
 
 	// Engineer OPTION 3
@@ -346,7 +348,7 @@ public class Menu {
 			dbman.addCharacteristic(cha, dbman.getProduct(name).getId());
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 
 	}
@@ -361,7 +363,7 @@ public class Menu {
 				System.out.println("Name: " + name);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 	}
 
@@ -377,7 +379,7 @@ public class Menu {
 			int id = Integer.parseInt(reader.readLine());
 			dbman.removeProd(id);
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 	}
 
@@ -424,7 +426,7 @@ public class Menu {
 			userman.quitEngineer(email);
 			System.out.println("YOU HAVE BECOME UNEMPLOYED!");
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 	}
 
@@ -442,7 +444,7 @@ public class Menu {
 				return;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 	}
 
@@ -473,7 +475,7 @@ public class Menu {
 				return;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 	}
 
@@ -496,7 +498,7 @@ public class Menu {
 				return;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 	}
 
@@ -531,7 +533,7 @@ public class Menu {
 				return;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 	}
 }

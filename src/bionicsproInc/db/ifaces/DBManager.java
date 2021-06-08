@@ -44,6 +44,10 @@ public interface DBManager {
 	
 	public Engineer getEngineerById(int id);
 	
+	public int getLastEngId();
+		
+	public int getLastCustId();
+		
 	public void removeProd(int prodId);
 	
 	public void deleteProdFromCart(String name, Order o);

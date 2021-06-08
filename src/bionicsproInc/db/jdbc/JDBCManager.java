@@ -23,7 +23,7 @@ public class JDBCManager implements DBManager {
 			sqlE.printStackTrace();
 		} catch (Exception e) {
 			System.out.println("There was a general exception.");
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 	}
 
@@ -93,7 +93,7 @@ public class JDBCManager implements DBManager {
 
 		} catch (SQLException e) {
 			if (!e.getMessage().contains("already exists")) {
-				e.printStackTrace();
+				System.out.println("THERE WAS AN ERROR");
 			}
 		}
 	}
@@ -105,7 +105,7 @@ public class JDBCManager implements DBManager {
 			System.out.println("Database is closed .");
 		} catch (SQLException e) {
 			System.out.println("There was a problem while closing the database connection.");
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 	}
 
@@ -123,7 +123,7 @@ public class JDBCManager implements DBManager {
 			prep.executeUpdate();
 			prep.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 	}
 
@@ -137,7 +137,7 @@ public class JDBCManager implements DBManager {
 			prep.executeUpdate();
 			prep.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 
 	}
@@ -151,7 +151,7 @@ public class JDBCManager implements DBManager {
 			prep.executeUpdate();
 			prep.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 	}
 
@@ -168,7 +168,7 @@ public class JDBCManager implements DBManager {
 			prep.executeUpdate();
 			prep.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 	}
 
@@ -186,7 +186,7 @@ public class JDBCManager implements DBManager {
 			prep.executeUpdate();
 			prep.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 
 	}
@@ -207,7 +207,7 @@ public class JDBCManager implements DBManager {
 			prep.executeUpdate();
 			prep.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 
 	}
@@ -221,7 +221,7 @@ public class JDBCManager implements DBManager {
 			prep.executeUpdate();
 			prep.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 	}
 
@@ -235,7 +235,7 @@ public class JDBCManager implements DBManager {
 			prep.executeUpdate();
 			prep.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 	}
 
@@ -256,7 +256,7 @@ public class JDBCManager implements DBManager {
 			prep.close();
 			rs.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 		return null;
 	}
@@ -274,7 +274,7 @@ public class JDBCManager implements DBManager {
 			prep.close();
 			rs.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 		return id;
 	}
@@ -297,7 +297,7 @@ public class JDBCManager implements DBManager {
 			prep.close();
 			rs.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 		return p;
 	}
@@ -315,7 +315,7 @@ public class JDBCManager implements DBManager {
 			prep.close();
 			rs.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 		return name;
 	}
@@ -333,7 +333,7 @@ public class JDBCManager implements DBManager {
 			prep.close();
 			rs.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 		return price;
 	}
@@ -354,7 +354,7 @@ public class JDBCManager implements DBManager {
 			prep.close();
 			rs.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 		return null;
 	}
@@ -371,7 +371,7 @@ public class JDBCManager implements DBManager {
 				id = rs.getInt("id");
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 		return id;
 	}
@@ -390,9 +390,42 @@ public class JDBCManager implements DBManager {
 			prep.close();
 			rs.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 		return null;
+	}
+	public int getLastEngId() {
+		int id=0;
+		try {
+			String sql = "SELECT id FROM engineer WHERE id= (SELECT MAX(id) FROM engineer)";
+			PreparedStatement prep = c.prepareStatement(sql);
+			ResultSet rs = prep.executeQuery();
+			while (rs.next()) {
+				id = rs.getInt("id");
+			}
+			rs.close();
+			prep.close();
+		} catch (Exception e) {
+			System.out.println("THERE WAS AN ERROR");
+		}
+		return id;
+	}
+	
+	public int getLastCustId() {
+		int id=0;
+		try {
+			String sql = "SELECT id FROM customer WHERE id= (SELECT MAX(id) FROM customer)";
+			PreparedStatement prep = c.prepareStatement(sql);
+			ResultSet rs = prep.executeQuery();
+			while (rs.next()) {
+				id = rs.getInt("id");
+			}
+			prep.close();
+			rs.close();
+		} catch (Exception e) {
+			System.out.println("THERE WAS AN ERROR");
+		}
+		return id;
 	}
 
 	// METHODS FOR THE MENU
@@ -408,7 +441,7 @@ public class JDBCManager implements DBManager {
 			stmt.executeUpdate();
 			stmt.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 	}
 
@@ -426,7 +459,7 @@ public class JDBCManager implements DBManager {
 			rs.close();
 			stmt.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 	}
 
@@ -439,7 +472,7 @@ public class JDBCManager implements DBManager {
 			stmt.executeUpdate();
 			stmt.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 	}
 
@@ -459,7 +492,7 @@ public class JDBCManager implements DBManager {
 			rs.close();
 			stm.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 		return bodyPart;
 	}
@@ -482,7 +515,7 @@ public class JDBCManager implements DBManager {
 			rs.close();
 			stm.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 		return products;
 	}
@@ -503,7 +536,7 @@ public class JDBCManager implements DBManager {
 			rs.close();
 			stmt.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 		return bonus;
 	}
@@ -523,7 +556,7 @@ public class JDBCManager implements DBManager {
 			rs.close();
 			stmt.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 		return p_names;
 	}
@@ -546,7 +579,7 @@ public class JDBCManager implements DBManager {
 			rs.close();
 			stmt.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 		return orders;
 	}
@@ -565,7 +598,7 @@ public class JDBCManager implements DBManager {
 			rs.close();
 			stmt.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 		return ids;
 	}
@@ -585,7 +618,7 @@ public class JDBCManager implements DBManager {
 			rs.close();
 			stmt.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 		return prodname;
 	}
@@ -607,7 +640,7 @@ public class JDBCManager implements DBManager {
 			rs.close();
 			stmt.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 		return null;
 	}
@@ -633,7 +666,7 @@ public class JDBCManager implements DBManager {
 			rs.close();
 			stmt.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 		return materials;
 	}
@@ -656,7 +689,7 @@ public class JDBCManager implements DBManager {
 			rs.close();
 			stmt.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 		return materials;
 	}
@@ -678,7 +711,7 @@ public class JDBCManager implements DBManager {
 			rs.close();
 			stmt.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 		return products;
 
@@ -700,7 +733,7 @@ public class JDBCManager implements DBManager {
 			rs.close();
 			stm.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 		return products;
 	}
@@ -715,7 +748,7 @@ public class JDBCManager implements DBManager {
 			stmt.executeUpdate();
 			stmt.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 	}
 
@@ -728,7 +761,7 @@ public class JDBCManager implements DBManager {
 			stmt.executeUpdate();
 			stmt.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 	}
 
@@ -753,7 +786,7 @@ public class JDBCManager implements DBManager {
 			rs.close();
 			stmt.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 		return pList;
 	}
@@ -771,7 +804,7 @@ public class JDBCManager implements DBManager {
 			}
 			prep.close();
 		}catch(Exception e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 	}
 	
@@ -788,7 +821,7 @@ public class JDBCManager implements DBManager {
 			}
 			prep.close();
 		}catch(Exception e) {
-			e.printStackTrace();
+			System.out.println("THERE WAS AN ERROR");
 		}
 	}
 }
